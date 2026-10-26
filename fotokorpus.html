@@ -230,6 +230,15 @@ td.ans{color:var(--acc);font-weight:500}
 .logo1 .marks{display:flex;justify-content:center;align-items:center;gap:28px}
 .logo1 .marks .avatar{width:72px;height:72px}
 
+/* Слоганы */
+.sl{display:grid;grid-template-rows:repeat(7,1fr);border-top:1px solid var(--ln)}
+.sl-row{display:grid;grid-template-columns:22% 1fr 110px;align-items:center;gap:16px;border-bottom:1px solid var(--ln);padding:6px 14px}
+.sl-row .k{color:var(--acc)}
+.sl-row p{font:700 clamp(16px,1.9vw,24px)/1.15 var(--display);color:var(--fg)}
+.sl-row.main{background:var(--acc);border-color:transparent;border-radius:6px}
+.sl-row.main .k,.sl-row.main p{color:var(--on-acc)}
+.sl-row .tag{justify-self:end;font:700 11px/1 var(--body);letter-spacing:.12em;text-transform:uppercase;color:var(--on-acc);border:1px solid currentColor;border-radius:99px;padding:5px 10px}
+
 @media (max-width:900px){
   .slide{aspect-ratio:auto}
   .g4{grid-template-columns:repeat(2,1fr)}
@@ -240,6 +249,7 @@ td.ans{color:var(--acc);font-weight:500}
   .ads{grid-template-columns:1fr;grid-template-rows:none}.msg{grid-column:1;grid-row:auto}
   .posgrid{grid-template-columns:1fr 1fr}.posgrid>.pos,.posgrid>.pos:nth-child(n+5){grid-column:auto}
   .slg{grid-template-columns:1fr}
+  .sl{grid-template-rows:none}.sl-row{grid-template-columns:1fr;gap:4px;padding:10px 12px}
   .logo1{grid-template-columns:1fr;grid-template-rows:none}.logo1 .main{grid-row:auto;min-height:220px}
   .fill .pos p:not(.t){margin-top:0}
   .src{columns:1}
@@ -353,21 +363,18 @@ td.ans{color:var(--acc);font-weight:500}
   <span class="pg">06 / 08</span>
 </section>
 
-<!-- 7. Слоган -->
+<!-- 7. Слоганы -->
 <section class="slide">
-  <div class="eyebrow">6 · Слоган</div>
-  <h2>Две фразы — два отличия</h2>
-  <div class="slg fill">
-    <p class="big-slogan">«Снято честно. Проверено кликом.»</p>
-    <div class="slg-r">
-      <h3>Почему этот</h3>
-      <ol class="why-list">
-        <li>«Снято честно» — реальный товар; «проверено кликом» — обложка, прошедшая A/B-тест</li>
-        <li>«Клик» — слово из мира продавца: CTR, кликабельность</li>
-        <li>Ритм «два слова + два слова» легко запомнить и повторить</li>
-      </ol>
-      <div class="sub"><span class="k">Подпись к услуге</span><p><b>«От вещи до карточки»</b> — описывает весь путь товара. Используем под логотипом и в объявлениях вместе со слоганом.</p></div>
-    </div>
+  <div class="eyebrow">6 · Слоганы</div>
+  <h2>Фраза к каждому пункту позиционирования</h2>
+  <div class="sl fill">
+    <div class="sl-row"><span class="k">1 · По атрибуту</span><p>«Готовая. Продающая. Честная.»</p></div>
+    <div class="sl-row"><span class="k">2 · По применению</span><p>«Из показа — в заказ»</p></div>
+    <div class="sl-row"><span class="k">3 · По категории</span><p>«Не просто фото, а вся карточка»</p></div>
+    <div class="sl-row"><span class="k">4 · По потребителю</span><p>«Для тех, кто продаёт своё»</p></div>
+    <div class="sl-row"><span class="k">5 · По благу</span><p>«Заказы вместо возвратов»</p></div>
+    <div class="sl-row main"><span class="k">6 · По преимуществу</span><p>«Снято честно. Проверено кликом.»</p><span class="tag">основной</span></div>
+    <div class="sl-row"><span class="k">7 · По конкуренту</span><p>«Честнее ИИ. Полнее студии.»</p></div>
   </div>
   <span class="pg">07 / 08</span>
 </section>
