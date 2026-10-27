@@ -1,0 +1,387 @@
+<title>Фотостудия для селлеров Зеленограда</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700&family=Onest:wght@400;500;600;700&display=swap">
+<style>
+/* Слайды 16:9 стопкой, как в PDF. Графит — нейтральный «студийный» фон, бордо — единственный акцент. */
+:root{
+  --bg:#e9e8e6;--slide:#f7f6f4;--card:#ffffff;--fg:#232528;--mut:#5d6066;--ln:#d8d5d2;
+  --acc:#7b1e2e;--acc-soft:#f3e6e8;--on-acc:#ffffff;
+  --ink:#25272b;--ink-2:#31343a;--ink-fg:#eeece9;--ink-mut:#a9abb0;--ink-acc:#d9707f;
+  --logo-light:#f7f6f4;--logo-ink:#25272b;--logo-acc:#7b1e2e;--logo-acc-l:#d9707f;--logo-white:#ffffff;
+  --display:"Unbounded","Arial Black",system-ui,sans-serif;
+  --body:"Onest","Segoe UI",Roboto,Arial,sans-serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#121315;--slide:#1b1c1f;--card:#24262a;--fg:#ebe9e6;--mut:#a3a5aa;--ln:#36383d;
+  --acc:#d4697a;--acc-soft:#3a2328;--on-acc:#ffffff;color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#121315;--slide:#1b1c1f;--card:#24262a;--fg:#ebe9e6;--mut:#a3a5aa;--ln:#36383d;
+  --acc:#d4697a;--acc-soft:#3a2328;--on-acc:#ffffff;color-scheme:dark}
+
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font:400 16px/1.5 var(--body);
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:24px 40px}
+.deck{display:flex;flex-direction:column;gap:24px;max-width:1200px;margin:0 auto}
+a{color:var(--acc)}
+
+.slide{position:relative;background:var(--slide);border-radius:6px;aspect-ratio:16/9;
+  padding:clamp(22px,4.2vw,56px) clamp(18px,4.6vw,60px) clamp(36px,4.6vw,60px);
+  display:flex;flex-direction:column;gap:clamp(14px,1.8vw,22px)}
+.slide>*{min-width:0}
+.pg{position:absolute;right:clamp(18px,4.6vw,60px);bottom:clamp(12px,1.8vw,22px);font:500 11px/1 var(--body);letter-spacing:.12em;color:var(--mut);font-variant-numeric:tabular-nums}
+
+.eyebrow{font:700 12px/1 var(--body);letter-spacing:.16em;text-transform:uppercase;color:var(--acc)}
+h1,h2{font-family:var(--display);font-weight:700;margin:0;text-wrap:balance;letter-spacing:-.01em}
+h2{font-size:clamp(22px,2.9vw,36px);line-height:1.15}
+h3{font:600 15px/1.3 var(--body);margin:0 0 6px;color:var(--fg)}
+p{margin:0}
+.lead{font-size:clamp(15px,1.6vw,19px);color:var(--mut);max-width:62ch}
+
+.grid{display:grid;gap:12px}
+.g2{grid-template-columns:repeat(2,1fr)}
+.g3{grid-template-columns:repeat(3,1fr)}
+.g4{grid-template-columns:repeat(4,1fr)}
+.box{background:var(--card);border:1px solid var(--ln);border-radius:6px;padding:14px 16px;font-size:14px;color:var(--mut)}
+.box b{color:var(--fg);font-weight:600}
+.box ul{margin:4px 0 0;padding-left:18px;display:grid;gap:4px}
+.note{font-size:12.5px;color:var(--mut)}
+
+/* Логотип */
+.lk{display:block;height:auto;aspect-ratio:446/80;max-width:100%;overflow:visible;color:var(--fg);--lm-acc:var(--acc)}
+.lm-v{display:inline-flex;flex-direction:column;align-items:center;gap:.45em;line-height:1}
+.lm-v svg{height:2.6em;width:1.95em}
+.wm{font-family:var(--display);font-weight:700;letter-spacing:-.01em}
+.lm-v small{font:500 .5em/1.2 var(--body);letter-spacing:.06em;opacity:.75}
+
+/* Титул */
+.ink{background:var(--ink);color:var(--ink-fg)}
+.ink .eyebrow{color:var(--ink-acc)}
+.ink .lead{color:var(--ink-mut)}
+.ink .pg{color:var(--ink-mut)}
+.ink .box{background:var(--ink-2);border-color:transparent;color:var(--ink-mut)}
+.ink .box h3{color:var(--ink-acc)}
+.brand{margin:4px 0}
+.brand .lk{width:clamp(260px,62vw,700px);color:var(--ink-fg);--lm-acc:var(--ink-acc)}
+.slogan{font:500 clamp(17px,2vw,24px)/1.3 var(--display);color:var(--ink-fg)}
+.words{display:flex;flex-wrap:wrap;gap:8px}
+.chip{display:inline-block;border:1px solid var(--ink-mut);color:var(--ink-fg);border-radius:99px;padding:3px 11px;font:600 12.5px/1.4 var(--body)}
+
+/* Процесс */
+.step h3{display:flex;align-items:center;gap:10px}
+.num{flex:none;width:28px;height:28px;border-radius:50%;background:var(--acc);color:var(--on-acc);display:inline-grid;place-items:center;font:700 13px/1 var(--body)}
+
+/* Аудитория */
+.aud{display:grid;grid-template-columns:2fr 1fr;gap:12px}
+.pain{background:var(--ink);color:var(--ink-fg);border-color:transparent}
+.pain h3{color:var(--ink-fg)}
+.pain li{color:var(--ink-mut)}
+.seg p+p{margin-top:4px}
+
+/* Таблицы */
+.tw{overflow-x:auto;border:1px solid var(--ln);border-radius:6px;background:var(--card)}
+table{border-collapse:collapse;width:100%;min-width:780px;font-size:13px;line-height:1.4}
+th,td{padding:7px 11px;text-align:left;vertical-align:top;border-bottom:1px solid var(--ln)}
+tr:last-child td{border-bottom:0}
+th{background:var(--ink);color:var(--ink-fg);font-weight:600}
+td{color:var(--mut)}
+td:first-child b{color:var(--fg);display:block}
+td.ans{color:var(--acc);font-weight:500}
+.miss{display:inline-block;margin-top:4px;font-size:11.5px;font-weight:600;color:var(--acc);background:var(--acc-soft);border-radius:4px;padding:1px 7px}
+.cmp td,.cmp th{text-align:center}
+.cmp td:first-child,.cmp th:first-child{text-align:left}
+.cmp table{min-width:640px}
+.yes{color:var(--acc);font-weight:700}
+
+/* Позиционирование: все пункты в одном формате */
+.pos{background:var(--card);border:1px solid var(--ln);border-radius:6px;padding:16px 18px;display:flex;flex-direction:column;gap:8px}
+.pos .k{font:700 11px/1.2 var(--body);letter-spacing:.14em;text-transform:uppercase;color:var(--acc)}
+.pos .t{font:700 clamp(17px,1.75vw,22px)/1.2 var(--display);color:var(--fg);text-wrap:balance}
+.pos p:not(.t){font-size:14px;color:var(--mut)}
+.diff{display:grid;grid-template-columns:1fr 1.6fr;gap:12px}
+.motto{background:var(--ink);color:var(--ink-fg);border-radius:6px;padding:18px 20px;display:flex;flex-direction:column;justify-content:space-between;gap:10px}
+.motto .k{color:var(--ink-acc)}
+.motto strong{font:700 clamp(24px,2.8vw,36px)/1.05 var(--display)}
+.motto p{font-size:13.5px;color:var(--ink-mut)}
+.formula{background:var(--acc);color:var(--on-acc);border-radius:6px;padding:18px 20px;font:500 15px/1.5 var(--body);display:flex;flex-direction:column;gap:8px}
+.formula b{font-weight:700}
+.formula .k{color:var(--on-acc);opacity:.8}
+.k{font:700 11px/1.2 var(--body);letter-spacing:.14em;text-transform:uppercase}
+
+/* Слоган */
+.big-slogan{font:700 clamp(30px,5vw,64px)/1.05 var(--display);color:var(--acc);text-wrap:balance}
+.variant{display:grid;grid-template-columns:auto 1fr;gap:4px 12px;align-items:baseline}
+.variant q{font:600 15px/1.3 var(--body);color:var(--fg)}
+.variant span{font:700 11px/1 var(--body);letter-spacing:.1em;text-transform:uppercase;color:var(--mut)}
+.variant span.on{color:var(--acc)}
+.variant p{grid-column:1/-1;font-size:13.5px;color:var(--mut)}
+
+/* Логотип: слайды */
+.tile{border-radius:6px;padding:22px 18px;display:grid;place-items:center;min-height:120px;text-align:center}
+.t-light{background:var(--logo-light);color:var(--logo-ink);--lm-acc:var(--logo-acc);border:1px solid var(--ln)}
+.t-ink{background:var(--logo-ink);color:var(--logo-light);--lm-acc:var(--logo-acc-l)}
+.t-acc{background:var(--logo-acc);color:var(--logo-white);--lm-acc:var(--logo-white)}
+.tile .lk{color:inherit;--lm-acc:inherit}
+.t-light .lk{--lm-acc:var(--logo-acc)}.t-ink .lk{--lm-acc:var(--logo-acc-l)}.t-acc .lk{--lm-acc:var(--logo-white)}
+.tcap{display:block;font:600 11px/1 var(--body);letter-spacing:.12em;text-transform:uppercase;color:var(--mut);margin-top:8px}
+.logo-hero{display:grid;grid-template-columns:1fr 1fr;gap:12px;align-items:stretch}
+.logo-hero .tile .lk{max-width:420px}
+.constr{display:block;width:100%;height:auto;color:var(--fg);--lm-acc:var(--acc);overflow:visible}
+.constr .gl{stroke:var(--mut);stroke-width:.8;stroke-dasharray:4 4}
+.constr .gt{font:500 9px var(--body);fill:var(--mut)}
+.parts{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.part{display:flex;gap:14px;align-items:flex-start}
+.part svg{flex:none;width:42px;height:56px;color:var(--fg);--lm-acc:var(--acc)}
+.part p{font-size:13.5px;color:var(--mut)}
+.avatar{width:84px;height:84px;border-radius:50%;background:var(--logo-ink);display:grid;place-items:center;color:var(--logo-light);--lm-acc:var(--logo-acc-l)}
+.sizes{display:flex;align-items:flex-end;gap:16px;color:var(--logo-ink);--lm-acc:var(--logo-acc)}
+.sizes figure{margin:0;display:flex;flex-direction:column;align-items:center;gap:6px;font:500 11px/1 var(--body);color:var(--mut)}
+.sw{display:flex;flex-wrap:wrap;gap:10px}
+.sw div{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--mut);font-variant-numeric:tabular-nums}
+.sw i{width:22px;height:22px;border-radius:4px;border:1px solid var(--ln);display:block}
+
+/* Источники */
+.src{columns:2;column-gap:28px;margin:0;padding-left:20px;font-size:13px;color:var(--mut)}
+.src li{break-inside:avoid;margin-bottom:7px}
+
+
+/* Логотип: Ф из шрифта названия в рамке фокуса 4:3 */
+.lockup{display:inline-flex;align-items:baseline;font:700 1em/1 var(--display);white-space:nowrap;padding:.1em 0 .1em .17em;letter-spacing:0}
+.fr{position:relative;display:inline-block;margin-right:.18em}
+.fr svg{position:absolute;left:-.16em;top:-.1em;width:1.6em;height:1.2em;overflow:visible}
+.fr path{fill:none;stroke:var(--lm-acc);stroke-width:9}
+.lockup .k2,.wm .k2{color:var(--lm-acc)}
+.mark{display:inline-flex;font:700 1em/1 var(--display);padding:.1em .17em}
+.mark .fr{margin-right:0}
+.brand{font-size:clamp(26px,6.6vw,76px);line-height:1;color:var(--ink-fg);--lm-acc:var(--ink-acc)}
+.tile{container-type:inline-size}
+.tile .lockup{font-size:min(34px,9.3cqi)}
+.logo-hero .tile .lockup{font-size:min(54px,9.3cqi)}
+.lv{display:inline-flex;flex-direction:column;align-items:center;gap:.5em;line-height:1}
+.lv .mark{font-size:2.1em}
+.lv small{font:500 .55em/1.2 var(--body);letter-spacing:.06em;opacity:.75}
+.constr{position:relative;container-type:inline-size;padding-block:14px;display:flex;line-height:1}
+.constr .lockup{font-size:min(44px,9.3cqi);color:var(--fg);--lm-acc:var(--acc)}
+.constr .gl{position:absolute;left:0;right:0;border-top:1px dashed var(--mut);font:500 10px/1 var(--body);color:var(--mut);text-align:right}
+.constr .gl span{position:relative;top:-14px}
+.part .ic{flex:none;width:56px;display:grid;place-items:center;color:var(--fg);--lm-acc:var(--acc)}
+.part .ic svg{width:56px;height:42px}
+.part .ic path{fill:none;stroke:var(--lm-acc);stroke-width:9}
+.part .ic b{font:700 30px/1 var(--display);color:var(--fg)}
+.pair{display:flex;gap:4px}.pair i{width:24px;height:24px;border-radius:4px;display:block}
+
+/* Композиция: основной блок слайда занимает всё свободное место */
+.fill{flex:1 1 auto;min-height:0}
+.grid.fill{grid-auto-rows:1fr;align-content:stretch}
+.aud.fill{align-items:stretch}
+.tw.fill table{height:100%}
+.fill .pos{gap:10px}
+.fill .pos .t{font-size:clamp(18px,2vw,26px)}
+.fill .pos p:not(.t){margin-top:auto;font-size:clamp(13.5px,1.2vw,15px)}
+.fill>.box,.fill .box{font-size:clamp(13.5px,1.2vw,15px)}
+.step{display:flex;flex-direction:column;gap:6px}
+.step h3{font-size:clamp(15px,1.4vw,17px)}
+.cell{display:flex;flex-direction:column}.cell>.tile{flex:1}
+.logo-hero.fill>*{min-height:0}
+
+/* Композиция v2 */
+.step{display:flex;flex-direction:column;justify-content:flex-start;gap:14px}
+.step .num{width:auto;height:auto;border-radius:0;background:none;color:var(--acc);display:block;font:700 clamp(24px,2.6vw,34px)/1 var(--display);font-variant-numeric:tabular-nums}
+.segs .seg{display:flex;flex-direction:column;gap:6px}
+.segs .seg h3{font-size:clamp(15px,1.5vw,18px);margin-bottom:4px}
+.segs .why{margin-top:auto;padding-top:10px;border-top:1px solid var(--ln)}
+.painband{background:var(--ink);color:var(--ink-fg);border-radius:6px;padding:14px 18px;display:grid;grid-template-columns:auto 1fr;gap:6px 22px;align-items:start}
+.painband h3{color:var(--ink-fg);margin:0}
+.painband ul{margin:0;padding:0;list-style:none;display:grid;grid-template-columns:repeat(5,1fr);gap:14px;font-size:13px;color:var(--ink-mut)}
+.painband li{border-left:2px solid var(--ink-acc);padding-left:9px}
+.ads{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:repeat(3,1fr);gap:12px}
+.ads>.box{grid-column:1}
+.ads h3{margin-bottom:2px}
+.msg{grid-column:2;grid-row:1/4;background:var(--acc);color:var(--on-acc);border-radius:6px;padding:22px 24px;display:flex;flex-direction:column;gap:14px}
+.msg .k{opacity:.8}
+.msg-s{font:700 clamp(24px,3vw,38px)/1.1 var(--display);text-wrap:balance}
+.msg ul{margin:auto 0 0;padding-left:18px;display:grid;gap:6px;font-size:clamp(14px,1.3vw,16px)}
+.posgrid{grid-template-columns:repeat(12,1fr)}
+.posgrid>.pos{grid-column:span 3}
+.posgrid>.pos:nth-child(n+5){grid-column:span 4}
+.posgrid .pos{padding:14px 16px}
+.fill.posgrid .pos .t{font-size:clamp(16px,1.55vw,20px)}
+.fill.posgrid .pos p:not(.t){font-size:13.5px}
+.slg{display:grid;grid-template-columns:1.15fr 1fr;gap:clamp(20px,4vw,56px);align-items:center}
+.slg .big-slogan{font-size:clamp(32px,5.4vw,68px)}
+.slg-r{display:flex;flex-direction:column;gap:12px}
+.slg-r h3{font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--acc)}
+.why-list{margin:0;padding:0;list-style:none;counter-reset:w;display:grid}
+.why-list li{counter-increment:w;display:grid;grid-template-columns:34px 1fr;padding:12px 0;border-top:1px solid var(--ln);font-size:clamp(14px,1.35vw,17px);color:var(--fg)}
+.why-list li::before{content:counter(w,decimal-leading-zero);font:700 13px/1.6 var(--display);color:var(--acc)}
+.sub{margin-top:8px;background:var(--card);border:1px solid var(--ln);border-radius:6px;padding:14px 16px;font-size:14px;color:var(--mut);display:grid;gap:6px}
+.sub .k{color:var(--acc)}
+.sub b{color:var(--fg)}
+
+/* Логотип: один слайд */
+.logo1{display:grid;grid-template-columns:1.7fr 1fr;grid-template-rows:repeat(3,1fr);gap:12px}
+.logo1 .main{grid-row:1/4;position:relative}
+.logo1 .main .lockup{font-size:min(60px,9.3cqi)}
+.logo1 .tile:not(.main) .lockup{font-size:min(30px,9.3cqi)}
+.logo1 .foot{position:absolute;left:18px;right:18px;bottom:14px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;font:500 12px/1.4 var(--body);color:var(--mut);text-align:left}
+.sw2{display:inline-flex;align-items:center;gap:6px;font-variant-numeric:tabular-nums}
+.sw2 i{width:14px;height:14px;border-radius:3px;display:inline-block;margin-left:6px}
+.logo1 .marks{display:flex;justify-content:center;align-items:center;gap:28px}
+.logo1 .marks .avatar{width:72px;height:72px}
+
+/* Слоганы */
+.sl{display:grid;grid-template-rows:repeat(7,1fr);border-top:1px solid var(--ln)}
+.sl-row{display:grid;grid-template-columns:22% 1fr 110px;align-items:center;gap:16px;border-bottom:1px solid var(--ln);padding:6px 14px}
+.sl-row .k{color:var(--acc)}
+.sl-row p{font:700 clamp(16px,1.9vw,24px)/1.15 var(--display);color:var(--fg)}
+.sl-row.main{background:var(--acc);border-color:transparent;border-radius:6px}
+.sl-row.main .k,.sl-row.main p{color:var(--on-acc)}
+.sl-row .tag{justify-self:end;font:700 11px/1 var(--body);letter-spacing:.12em;text-transform:uppercase;color:var(--on-acc);border:1px solid currentColor;border-radius:99px;padding:5px 10px}
+
+.title-h{font:700 clamp(30px,5.2vw,64px)/1.05 var(--display);color:var(--ink-fg);max-width:16ch;margin:6px 0}
+.sl{grid-template-rows:repeat(6,1fr)!important}
+.sl-row{grid-template-columns:64px 1fr!important}
+.sl-row .n{font:700 clamp(18px,2vw,24px)/1 var(--display);color:var(--acc)}
+.sl-row p{font-size:clamp(18px,2.3vw,30px)!important}
+
+@media (max-width:900px){
+  .slide{aspect-ratio:auto}
+  .g4{grid-template-columns:repeat(2,1fr)}
+  .g3,.parts{grid-template-columns:1fr 1fr}
+  .aud,.diff,.logo-hero{grid-template-columns:1fr}
+  .grid.fill{grid-auto-rows:auto}
+  .painband{grid-template-columns:1fr}.painband ul{grid-template-columns:1fr 1fr}
+  .ads{grid-template-columns:1fr;grid-template-rows:none}.msg{grid-column:1;grid-row:auto}
+  .posgrid{grid-template-columns:1fr 1fr}.posgrid>.pos,.posgrid>.pos:nth-child(n+5){grid-column:auto}
+  .slg{grid-template-columns:1fr}
+  .sl{grid-template-rows:none}.sl-row{grid-template-columns:1fr;gap:4px;padding:10px 12px}
+  .logo1{grid-template-columns:1fr;grid-template-rows:none}.logo1 .main{grid-row:auto;min-height:220px}
+  .fill .pos p:not(.t){margin-top:0}
+  .src{columns:1}
+}
+@media (max-width:560px){
+  .g2,.g3,.g4,.parts{grid-template-columns:1fr}
+  .posgrid,.painband ul{grid-template-columns:1fr}
+}
+@media print{
+  @page{size:338.67mm 190.5mm;margin:0}
+  body{background:none;padding:0}
+  .deck{gap:0;max-width:none}
+  .slide{width:338.67mm;height:190.5mm;aspect-ratio:auto;border-radius:0;break-after:page;
+    -webkit-print-color-adjust:exact;print-color-adjust:exact}
+}
+</style>
+
+<main class="deck">
+
+<!-- 1. Титул -->
+<section class="slide ink">
+  <div class="eyebrow">Концепция бренда</div>
+  <h1 class="title-h">Фотостудия для продавцов маркетплейсов</h1>
+  <p class="lead">«Фабрика карточек» для Wildberries и Ozon: съёмка, инфографика и текст для тех, кто продаёт свой товар. Зеленоград.</p>
+  <p class="slogan">«Снято честно. Проверено кликом.»</p>
+  <div class="grid g3" style="margin-top:auto">
+    <div class="box"><h3>Что мы продаём</h3><p>Карточку товара для Wildberries и Ozon: фото, инфографика и текст в одном пакете.</p></div>
+    <div class="box"><h3>Наша карточка</h3><div class="words"><span class="chip">Готовая</span><span class="chip">Продающая</span><span class="chip">Честная</span></div></div>
+    <div class="box"><h3>Территория</h3><p>Зеленоград (ЗелАО, Москва). Снимаем в городе, образцы отдаём сразу после съёмки.</p></div>
+  </div>
+  <span class="pg">01 / 07</span>
+</section>
+
+<!-- 2. Процесс -->
+<section class="slide">
+  <div class="eyebrow">1 · Производственный процесс</div>
+  <h2>От коробки до карточки за 48 часов</h2>
+  <div class="grid g3 fill">
+    <div class="box step"><span class="num">01</span><div><h3>Бриф и разбор выдачи</h3><p>Онлайн, 10 минут: категория, площадка, референсы. Смотрим топ выдачи по запросу клиента и находим, чем выделиться.</p></div></div>
+    <div class="box step"><span class="num">02</span><div><h3>Приём товара</h3><p>Акт приёма образцов, маркировка, проверка состояния, список кадров.</p></div></div>
+    <div class="box step"><span class="num">03</span><div><h3>Съёмка</h3><p>Только реальный товар: белый фон, сцены, детали, масштаб. Свет по типу товара. Образцы отдаём в тот же день.</p></div></div>
+    <div class="box step"><span class="num">04</span><div><h3>Обработка</h3><p>Цвет как в жизни, ретушь, фон. Формат 3:4, от 900×1200 px. ИИ только для фона, сам товар не меняем.</p></div></div>
+    <div class="box step"><span class="num">05</span><div><h3>Инфографика и текст</h3><p>Две обложки, слайды с преимуществами и размерами, название, описание, характеристики, ключевые слова.</p></div></div>
+    <div class="box step"><span class="num">06</span><div><h3>Сдача и тест обложки</h3><p>Карточка готова за 48 часов, две правки включены. Затем A/B-тест двух обложек, оставляем ту, у которой выше CTR.</p></div></div>
+  </div>
+  <p class="note">На WB до 30 фото в карточке, на Ozon до 15, на главном фото Ozon без инфографики. Тест обложки — в кабинете WB, для Ozon — внешние сервисы.</p>
+  <span class="pg">02 / 07</span>
+</section>
+
+<!-- 3. Аудитория -->
+<section class="slide">
+  <div class="eyebrow">2 · Целевая аудитория</div>
+  <h2>Продавцы со своим товаром: 5–80 артикулов</h2>
+  <div class="grid g3 fill segs">
+    <div class="box seg"><h3>Мастера и мини-производства</h3><p><b>Кто:</b> рукодельники, мастерские, небольшие цеха.</p><p><b>Продают:</b> мыло, свечи, керамику, текстиль, украшения.</p><p class="why"><b>Почему мы:</b> товар уникальный, фото от поставщика нет, нужен честный кадр.</p></div>
+    <div class="box seg"><h3>Местные магазины и бренды</h3><p><b>Кто:</b> офлайн-точки и салоны Зеленограда, которые выходят на маркетплейсы.</p><p><b>Продают:</b> одежду, подарки, зоотовары, товары для дома.</p><p class="why"><b>Почему мы:</b> ассортимент есть, контента и опыта нет.</p></div>
+    <div class="box seg"><h3>Начинающие продавцы</h3><p><b>Кто:</b> только выходят на маркетплейс: товар есть, а оборудования, опыта и навыков дизайна нет.</p><p><b>Продают:</b> первые артикулы: аксессуары, косметику, товары для дома.</p><p class="why"><b>Почему мы:</b> получают карточку, которая с первого раза проходит требования WB и Ozon.</p></div>
+  </div>
+  <div class="painband"><h3>Боли клиента</h3><ul>
+    <li>Карточку видят, но не кликают: низкий CTR</li>
+    <li>Возвраты и отзывы «не соответствует фото»</li>
+    <li>Нет времени искать фотографа, дизайнера и копирайтера</li>
+    <li>Непонятны требования WB и Ozon к фото</li>
+    <li>Заплатил за съёмку, а продаёт ли она, неизвестно</li>
+  </ul></div>
+  <span class="pg">03 / 07</span>
+</section>
+
+<!-- 4. Конкуренция -->
+<section class="slide">
+  <div class="eyebrow">3 · Конкуренция</div>
+  <h2>Кто решает ту же задачу</h2>
+  <div class="tw fill"><table>
+    <tr><th>Конкурент</th><th>Сильные стороны</th><th>Слабые стороны</th><th>Наш ответ</th></tr>
+    <tr><td><b>Студии для маркетплейсов</b>Пиксель Плюс, Daily Studio, Кариба <span class="miss">карточка не готовая</span></td><td>Опыт, оборудование, серийная съёмка; от 1 000 ₽ за артикул</td><td>Часто сдают только фото; продаёт ли карточка, не проверяют</td><td class="ans">Карточка целиком и тест обложки</td></tr>
+    <tr><td><b>Частные фотографы и аренда залов</b>Профи.ру, Авито, Vibes Studio <span class="miss">карточка не готовая</span></td><td>Рядом, дёшево: от 1 000 ₽ в час</td><td>Нет стандарта и договора; ретушь и карточка на продавце</td><td class="ans">Стандарт, договор, две правки</td></tr>
+    <tr><td><b>Съёмка от площадок и фулфилмента</b><span class="miss">карточка не продающая</span></td><td>Удобно рядом со складом</td><td>Шаблонно, поверхностная карточка</td><td class="ans">Обложка под выдачу клиента</td></tr>
+    <tr><td><b>ИИ-съёмка и генерация</b><span class="miss">карточка не честная</span></td><td>Дёшево и быстро; студии обещают рост CTR</td><td>Товар «плывёт»; WB отклоняет сгенерированный товар и тестирует метку «Похоже на ИИ»</td><td class="ans">Реальный товар; ИИ только для фона</td></tr>
+    <tr><td><b>Фрилансеры-карточечники</b><span class="miss">карточка не готовая</span></td><td>SEO и инфографика; под ключ от 16 900 ₽</td><td>Нет съёмки, фото берут у клиента</td><td class="ans">Один исполнитель на весь цикл</td></tr>
+  </table></div>
+  <p class="note">В Зеленограде уже есть студии, залы и фотографы, поэтому близость не преимущество: мы отличаемся проверенным результатом. Пометка — какого из трёх свойств нашей карточки не хватает конкуренту.</p>
+  <span class="pg">04 / 07</span>
+</section>
+
+<!-- 5. Реклама -->
+<section class="slide">
+  <div class="eyebrow">4 · Реклама</div>
+  <h2>Идём туда, где сидят наши продавцы</h2>
+  <div class="ads fill">
+    <div class="box"><h3>Локальные каналы</h3><ul><li>Чаты Зеленограда (ВК, Telegram), группы продавцов WB и Ozon</li><li>Объявления в коворкингах, у ПВЗ и точек доставки</li><li>Партнёрство с фулфилментами</li></ul></div>
+    <div class="box"><h3>Цифровая реклама</h3><ul><li>Яндекс Директ и Карты: «фото для маркетплейсов Зеленоград»</li><li>Профиль в 2ГИС и Яндекс Картах с отзывами</li><li>Telegram-канал с разборами «до / после»</li></ul></div>
+    <div class="box"><h3>Доверие и промо</h3><ul><li>Первая съёмка одного артикула со скидкой</li><li>Бесплатный разбор чужой карточки</li><li>Результаты A/B-тестов обложек (с согласия клиентов)</li></ul></div>
+    <div class="msg"><span class="k">Главное сообщение</span><p class="msg-s">«Снято честно. Проверено кликом.»</p><ul><li>Слоган во всех каналах</li><li>Ролик «было / стало» с цифрами CTR из теста</li><li>В каждом объявлении три слова: готовая, продающая, честная</li></ul></div>
+  </div>
+  <span class="pg">05 / 07</span>
+</section>
+
+<!-- 6. Позиционирование -->
+<section class="slide">
+  <div class="eyebrow">5 · Позиционирование</div>
+  <h2>Что продаём и почему выбирают нас</h2>
+  <div class="grid fill posgrid">
+    <div class="pos"><span class="k">1 · По атрибуту</span><p class="t">Готовая, продающая и честная карточка товара</p></div>
+    <div class="pos"><span class="k">2 · По применению</span><p class="t">Превращает показ в заказ</p><p>Карточка работает на маркетплейсе как витрина и продавец: показ в поиске → клик → корзина → заказ.</p></div>
+    <div class="pos"><span class="k">3 · По категории</span><p class="t">Контент для маркетплейсов</p><p>Фото, инфографика и SEO-текст карточки в одном пакете. Это шире фотоуслуги и шире дизайна.</p></div>
+    <div class="pos"><span class="k">4 · По потребителю</span><p class="t">Продавцы со своим товаром</p><p>Мастера, мини-производства, местные магазины и начинающие продавцы с 5–80 артикулами.</p></div>
+    <div class="pos"><span class="k">5 · По благу</span><p class="t">Больше заказов, меньше возвратов</p><p>Карточка приносит клики и заказы, реже возвращается с пометкой «не соответствует фото», а продавцу не нужно искать фотографа, дизайнера и копирайтера.</p></div>
+    <div class="pos"><span class="k">6 · По преимуществу</span><p class="t">Обложка, проверенная тестом</p><p>Снимаем только реальный товар, делаем две обложки и оставляем ту, что набрала больше кликов в A/B-тесте.</p></div>
+    <div class="pos"><span class="k">7 · По конкуренту</span><p class="t">Честнее ИИ, полнее студии, надёжнее частника</p><p>ИИ подменяет товар, студия часто сдаёт только фото, частник работает без договора. Мы снимаем реальный товар, собираем карточку целиком и проверяем обложку.</p></div>
+  </div>
+  <span class="pg">06 / 07</span>
+</section>
+
+<!-- 7. Слоганы -->
+<section class="slide">
+  <div class="eyebrow">6 · Слоганы</div>
+  <h2>Варианты слогана для бренда</h2>
+  <div class="sl fill">
+    <div class="sl-row"><span class="n">01</span><p>«Снято честно. Проверено кликом.»</p></div>
+    <div class="sl-row"><span class="n">02</span><p>«От вещи до карточки»</p></div>
+    <div class="sl-row"><span class="n">03</span><p>«Из показа — в заказ»</p></div>
+    <div class="sl-row"><span class="n">04</span><p>«Заказы вместо возвратов»</p></div>
+    <div class="sl-row"><span class="n">05</span><p>«Для тех, кто продаёт своё»</p></div>
+    <div class="sl-row"><span class="n">06</span><p>«Честная карточка продаёт лучше»</p></div>
+  </div>
+  <span class="pg">07 / 07</span>
+</section>
+
+</main>
