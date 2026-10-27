@@ -1,0 +1,178 @@
+<title>Слоганы бренда</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@600;700&family=Onest:wght@400;500;600;700&display=swap">
+<style>
+/* Исследовательский отчёт в стиле презентации: графит и бордо, широкий гротеск в заголовках */
+:root{--bg:#f7f6f4;--card:#fff;--fg:#232528;--mut:#5d6066;--ln:#d8d5d2;--acc:#7b1e2e;--acc-soft:#f3e6e8;--ink:#25272b;--ink-fg:#eeece9;--ink-mut:#a9abb0;--ink-acc:#d9707f;
+--display:"Unbounded","Arial Black",system-ui,sans-serif;--body:"Onest","Segoe UI",Roboto,Arial,sans-serif}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#151618;--card:#212327;--fg:#ebe9e6;--mut:#a3a5aa;--ln:#36383d;--acc:#d4697a;--acc-soft:#3a2328;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#151618;--card:#212327;--fg:#ebe9e6;--mut:#a3a5aa;--ln:#36383d;--acc:#d4697a;--acc-soft:#3a2328;color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font:400 16px/1.55 var(--body);padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 56px}
+.wrap{max-width:1120px;margin:0 auto;display:flex;flex-direction:column;gap:48px;padding-top:44px}
+header{background:var(--ink);color:var(--ink-fg);margin-inline:calc(-1*max(16px,env(safe-area-inset-left,0px)));padding:56px max(16px,env(safe-area-inset-left,0px)) 48px}
+header .in{max-width:1120px;margin:0 auto;display:grid;gap:14px}
+.eyebrow{font:700 12px/1 var(--body);letter-spacing:.16em;text-transform:uppercase;color:var(--acc)}
+header .eyebrow{color:var(--ink-acc)}
+h1,h2{font-family:var(--display);font-weight:700;margin:0;text-wrap:balance;letter-spacing:-.01em}
+h1{font-size:clamp(30px,5vw,56px);line-height:1.05}
+h2{font-size:clamp(22px,2.8vw,32px);line-height:1.15}
+header p{color:var(--ink-mut);max-width:62ch;margin:0}
+.facts{display:flex;flex-wrap:wrap;gap:28px;margin-top:8px}
+.facts div{display:grid}.facts b{font:700 28px/1 var(--display);color:var(--ink-fg)}.facts span{font-size:13px;color:var(--ink-mut)}
+section{display:grid;gap:18px}
+.lead{color:var(--mut);max-width:65ch;margin:0}
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.card{background:var(--card);border:1px solid var(--ln);border-radius:6px;padding:18px 20px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.card:first-child{background:var(--acc);border-color:transparent;color:#fff}
+.card:first-child .n,.card:first-child .why,.card:first-child .score{color:#fff}
+.card .n{font:700 14px/1 var(--display);color:var(--acc)}
+.card .sl{font:700 clamp(18px,1.9vw,23px)/1.2 var(--display);margin:0;text-wrap:balance}
+.card .why{font-size:14px;color:var(--mut);margin:0}
+.card .score{margin-top:auto;font:600 12px/1 var(--body);letter-spacing:.08em;color:var(--mut)}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.box{background:var(--card);border:1px solid var(--ln);border-radius:6px;padding:18px 20px;min-width:0}
+.box h3{font:600 16px/1.3 var(--body);margin:0 0 10px}
+.box ul,.box ol{margin:0;padding-left:20px;display:grid;gap:6px;font-size:14.5px;color:var(--mut)}
+.box b{color:var(--fg)}
+.tw{overflow-x:auto;border:1px solid var(--ln);border-radius:6px;background:var(--card)}
+table{border-collapse:collapse;width:100%;min-width:860px;font-size:14px}
+th,td{padding:8px 10px;border-bottom:1px solid var(--ln);text-align:left;vertical-align:top}
+th{background:var(--ink);color:var(--ink-fg);font-weight:600;font-size:12.5px;position:sticky;top:0}
+td.num,th.num{text-align:center;font-variant-numeric:tabular-nums;width:56px}
+td.tot{font-weight:700;color:var(--fg)}
+td.g{color:var(--mut);font-size:12.5px;white-space:nowrap}
+td.s{font-weight:600}
+td.c{color:var(--mut);font-size:13px}
+tr.top td{background:var(--acc-soft)}
+.pick{display:inline-block;margin-left:6px;font:700 11px/1 var(--body);color:var(--acc);border:1px solid var(--acc);border-radius:99px;padding:3px 7px;vertical-align:middle}
+.src{font-size:13.5px;color:var(--mut);display:grid;gap:4px;padding-left:20px;margin:0}
+a{color:var(--acc)}
+@media (max-width:900px){.cards{grid-template-columns:1fr 1fr}.grid2{grid-template-columns:1fr}}
+@media (max-width:560px){.cards{grid-template-columns:1fr}}
+</style>
+<header><div class="in">
+  <span class="eyebrow">Исследование слоганов</span>
+  <h1>Слоганы для фотостудии продавцов маркетплейсов</h1>
+  <p>50 вариантов, оценённых по пяти критериям, и шесть самых сильных. Основа — позиционирование бренда: готовая, продающая и честная карточка товара, снятый реальный товар и обложка, проверенная A/B-тестом.</p>
+  <div class="facts"><div><b>50</b><span>вариантов</span></div><div><b>7</b><span>смысловых групп</span></div><div><b>5</b><span>критериев, до 15 баллов</span></div><div><b>6</b><span>выбрано</span></div></div>
+</div></header>
+<main class="wrap">
+
+<section>
+  <span class="eyebrow">Итог</span>
+  <h2>Шесть самых выигрышных слоганов</h2>
+  <div class="cards"><article class="card"><span class="n">01</span><p class="sl">«Снято честно. Проверено кликом.»</p><p class="why">Две пары слов — два отличия: реальный товар и обложка, проверенная A/B-тестом. Подходит как основной слоган.</p><span class="score">15 / 15</span></article><article class="card"><span class="n">02</span><p class="sl">«Снимаем без фокусов»</p><p class="why">Двойной смысл: фокус камеры и «без обмана». Короткий, с игрой слов, говорит о честности без слова «честно».</p><span class="score">15 / 15</span></article><article class="card"><span class="n">03</span><p class="sl">«Что на фото — то и в коробке»</p><p class="why">Говорит языком покупателя и снимает главный страх продавца — возврат «не соответствует фото».</p><span class="score">14 / 15</span></article><article class="card"><span class="n">04</span><p class="sl">«Из показа — в заказ»</p><p class="why">Рифма и точное описание работы карточки на маркетплейсе: показ → клик → заказ.</p><span class="score">14 / 15</span></article><article class="card"><span class="n">05</span><p class="sl">«Тестируем, а не угадываем»</p><p class="why">Единственное, чего не обещает ни один найденный конкурент: результат обложки проверяется цифрами.</p><span class="score">14 / 15</span></article><article class="card"><span class="n">06</span><p class="sl">«От вещи до карточки»</p><p class="why">Весь путь товара в четырёх словах. Хорош как подпись к услуге рядом с основным слоганом.</p><span class="score">14 / 15</span></article></div>
+</section>
+
+<section>
+  <span class="eyebrow">Что уже говорит рынок</span>
+  <h2>Чего избегать</h2>
+  <div class="grid2">
+    <div class="box"><h3>Формулировки конкурентов</h3><ul>
+      <li>MPPHOTO: «каталог, который <b>продаёт</b>»</li>
+      <li>Фотофактор: «комплексный контент-сервис», сроки <b>24–72 часа</b></li>
+      <li>Фрилансеры: «карточки, которые <b>продают</b>», «больше кликов и <b>меньше возвратов</b>»</li>
+      <li>Студии: «фото и видео для маркетплейсов», «под ключ»</li>
+    </ul></div>
+    <div class="box"><h3>Вывод для слогана</h3><ul>
+      <li>«Продаёт», «под ключ», сроки и «больше кликов» уже заняты — за них снимаем баллы</li>
+      <li>Никто не говорит о <b>честности кадра</b> и <b>проверке результата</b> — это свободная территория</li>
+      <li>Близость к клиенту не отличие: в Зеленограде есть другие студии</li>
+    </ul></div>
+  </div>
+</section>
+
+<section>
+  <span class="eyebrow">Метод</span>
+  <h2>Пять критериев оценки</h2>
+  <div class="box"><ol>
+    <li><b>Связь с позиционированием</b> — отражает ли готовую, продающую и честную карточку</li>
+    <li><b>Отличие</b> — не повторяет ли конкурентов и клише ниши</li>
+    <li><b>Краткость</b> — 2–5 слов дают 3 балла, длиннее — меньше</li>
+    <li><b>Ритм и запоминаемость</b> — рифма, параллелизм, игра слов</li>
+    <li><b>Понятность продавцу</b> — говорит ли словами селлера: клик, заказ, возврат, карточка</li>
+  </ol><p class="lead" style="margin-top:10px;font-size:14px">Каждый критерий от 1 до 3 баллов. При равенстве баллов в шестёрку не вошли варианты, которые повторяют уже выбранный («Проверено кликом» — часть слогана № 1) или говорят об аудитории вместо выгоды («Для тех, кто продаёт своё»).</p></div>
+</section>
+
+<section>
+  <span class="eyebrow">Все варианты</span>
+  <h2>50 слоганов с оценками</h2>
+  <div class="tw"><table>
+    <thead><tr><th>Группа</th><th>Слоган</th><th class="num">Связь</th><th class="num">Отличие</th><th class="num">Кратко</th><th class="num">Ритм</th><th class="num">Ясно</th><th class="num">Итог</th><th>Комментарий</th></tr></thead>
+    <tbody>
+<tr class="top"><td class="g">Честность</td><td class="s">«Снято честно. Проверено кликом.» <span class="pick">№ 1</span></td><td class="num">3</td><td class="num">3</td><td class="num">3</td><td class="num">3</td><td class="num">3</td><td class="num tot">15</td><td class="c">Два отличия в двух парах слов</td></tr>
+<tr class="top"><td class="g">Честность</td><td class="s">«Что на фото — то и в коробке» <span class="pick">№ 3</span></td><td class="num">3</td><td class="num">3</td><td class="num">2</td><td class="num">3</td><td class="num">3</td><td class="num tot">14</td><td class="c">Говорит языком покупателя, снимает страх возврата</td></tr>
+<tr class=""><td class="g">Честность</td><td class="s">«Товар как в жизни»</td><td class="num">3</td><td class="num">2</td><td class="num">3</td><td class="num">2</td><td class="num">3</td><td class="num tot">13</td><td class="c"></td></tr>
+<tr class=""><td class="g">Честность</td><td class="s">«Реальный товар. Реальные заказы.»</td><td class="num">3</td><td class="num">2</td><td class="num">3</td><td class="num">2</td><td class="num">3</td><td class="num tot">13</td><td class="c"></td></tr>
+<tr class=""><td class="g">Честность</td><td class="s">«Честное фото продаёт дольше»</td><td class="num">3</td><td class="num">2</td><td class="num">3</td><td class="num">1</td><td class="num">3</td><td class="num tot">12</td><td class="c"></td></tr>
+<tr class=""><td class="g">Честность</td><td class="s">«Правда в каждом кадре»</td><td class="num">3</td><td class="num">1</td><td class="num">3</td><td class="num">2</td><td class="num">3</td><td class="num tot">12</td><td class="c">Звучит как у фотографа-документалиста</td></tr>
+<tr class=""><td class="g">Честность</td><td class="s">«Честная карточка продаёт лучше»</td><td class="num">3</td><td class="num">1</td><td class="num">3</td><td class="num">1</td><td class="num">3</td><td class="num tot">11</td><td class="c">«Продаёт» — клише ниши</td></tr>
+<tr class=""><td class="g">Честность</td><td class="s">«Без подмены — с заказами»</td><td class="num">2</td><td class="num">2</td><td class="num">3</td><td class="num">1</td><td class="num">2</td><td class="num tot">10</td><td class="c"></td></tr>
+<tr class=""><td class="g">Честность</td><td class="s">«Покажем товар таким, какой он есть»</td><td class="num">3</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td class="num">3</td><td class="num tot">9</td><td class="c">Длинно</td></tr>
+<tr class=""><td class="g">Честность</td><td class="s">«Без ИИ-сюрпризов для покупателя»</td><td class="num">2</td><td class="num">2</td><td class="num">2</td><td class="num">1</td><td class="num">2</td><td class="num tot">9</td><td class="c"></td></tr>
+<tr class=""><td class="g">Проверка кликом</td><td class="s">«Проверено кликом»</td><td class="num">3</td><td class="num">3</td><td class="num">3</td><td class="num">2</td><td class="num">3</td><td class="num tot">14</td><td class="c">Уже входит в слоган № 1</td></tr>
+<tr class="top"><td class="g">Проверка кликом</td><td class="s">«Тестируем, а не угадываем» <span class="pick">№ 5</span></td><td class="num">3</td><td class="num">3</td><td class="num">3</td><td class="num">3</td><td class="num">2</td><td class="num tot">14</td><td class="c">Единственное, чего не обещает ни одна студия</td></tr>
+<tr class=""><td class="g">Проверка кликом</td><td class="s">«Цифры вместо «красиво»»</td><td class="num">3</td><td class="num">3</td><td class="num">3</td><td class="num">2</td><td class="num">2</td><td class="num tot">13</td><td class="c"></td></tr>
+<tr class=""><td class="g">Проверка кликом</td><td class="s">«Обложка, которая доказала клик»</td><td class="num">3</td><td class="num">3</td><td class="num">2</td><td class="num">1</td><td class="num">2</td><td class="num tot">11</td><td class="c"></td></tr>
+<tr class=""><td class="g">Проверка кликом</td><td class="s">«Не «нравится», а кликают»</td><td class="num">2</td><td class="num">2</td><td class="num">3</td><td class="num">2</td><td class="num">2</td><td class="num tot">11</td><td class="c"></td></tr>
+<tr class=""><td class="g">Проверка кликом</td><td class="s">«Ваш CTR — наша работа»</td><td class="num">2</td><td class="num">2</td><td class="num">3</td><td class="num">2</td><td class="num">2</td><td class="num tot">11</td><td class="c">Обещание, которое трудно гарантировать</td></tr>
+<tr class=""><td class="g">Проверка кликом</td><td class="s">«Каждый кадр — на проверку кликом»</td><td class="num">3</td><td class="num">2</td><td class="num">2</td><td class="num">1</td><td class="num">2</td><td class="num tot">10</td><td class="c"></td></tr>
+<tr class=""><td class="g">Проверка кликом</td><td class="s">«Клик проверяет всё»</td><td class="num">2</td><td class="num">2</td><td class="num">3</td><td class="num">1</td><td class="num">1</td><td class="num tot">9</td><td class="c"></td></tr>
+<tr class="top"><td class="g">Готовая карточка</td><td class="s">«От вещи до карточки» <span class="pick">№ 6</span></td><td class="num">3</td><td class="num">2</td><td class="num">3</td><td class="num">3</td><td class="num">3</td><td class="num tot">14</td><td class="c">Весь путь товара в четырёх словах</td></tr>
+<tr class=""><td class="g">Готовая карточка</td><td class="s">«Принёс товар — получил карточку»</td><td class="num">3</td><td class="num">2</td><td class="num">2</td><td class="num">3</td><td class="num">3</td><td class="num tot">13</td><td class="c"></td></tr>
+<tr class=""><td class="g">Готовая карточка</td><td class="s">«Из коробки — в карточку»</td><td class="num">3</td><td class="num">2</td><td class="num">3</td><td class="num">2</td><td class="num">3</td><td class="num tot">13</td><td class="c">Дублирует «От вещи до карточки»</td></tr>
+<tr class=""><td class="g">Готовая карточка</td><td class="s">«Карточка за один визит»</td><td class="num">3</td><td class="num">2</td><td class="num">3</td><td class="num">2</td><td class="num">3</td><td class="num tot">13</td><td class="c"></td></tr>
+<tr class=""><td class="g">Готовая карточка</td><td class="s">«Вся карточка в одних руках»</td><td class="num">3</td><td class="num">1</td><td class="num">3</td><td class="num">2</td><td class="num">3</td><td class="num tot">12</td><td class="c"></td></tr>
+<tr class=""><td class="g">Готовая карточка</td><td class="s">«Не просто фото, а вся карточка»</td><td class="num">3</td><td class="num">2</td><td class="num">2</td><td class="num">2</td><td class="num">3</td><td class="num tot">12</td><td class="c"></td></tr>
+<tr class=""><td class="g">Готовая карточка</td><td class="s">«Сдали товар — загрузили карточку»</td><td class="num">3</td><td class="num">2</td><td class="num">2</td><td class="num">2</td><td class="num">3</td><td class="num tot">12</td><td class="c"></td></tr>
+<tr class=""><td class="g">Готовая карточка</td><td class="s">«48 часов от коробки до карточки»</td><td class="num">3</td><td class="num">1</td><td class="num">2</td><td class="num">2</td><td class="num">3</td><td class="num tot">11</td><td class="c">Сроки 24–72 ч обещают и конкуренты</td></tr>
+<tr class=""><td class="g">Готовая карточка</td><td class="s">«Фото, текст, инфографика — одним пакетом»</td><td class="num">3</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td class="num">3</td><td class="num tot">9</td><td class="c">Перечень, а не слоган</td></tr>
+<tr class="top"><td class="g">Заказ и выгода</td><td class="s">«Из показа — в заказ» <span class="pick">№ 4</span></td><td class="num">3</td><td class="num">3</td><td class="num">3</td><td class="num">3</td><td class="num">2</td><td class="num tot">14</td><td class="c">Рифма «показа — заказ», путь карточки на маркетплейсе</td></tr>
+<tr class=""><td class="g">Заказ и выгода</td><td class="s">«Заказы вместо возвратов»</td><td class="num">3</td><td class="num">2</td><td class="num">3</td><td class="num">2</td><td class="num">3</td><td class="num tot">13</td><td class="c"></td></tr>
+<tr class=""><td class="g">Заказ и выгода</td><td class="s">«Клик, корзина, заказ»</td><td class="num">3</td><td class="num">2</td><td class="num">3</td><td class="num">2</td><td class="num">3</td><td class="num tot">13</td><td class="c"></td></tr>
+<tr class=""><td class="g">Заказ и выгода</td><td class="s">«Увидели — кликнули — купили»</td><td class="num">2</td><td class="num">2</td><td class="num">3</td><td class="num">3</td><td class="num">3</td><td class="num tot">13</td><td class="c"></td></tr>
+<tr class=""><td class="g">Заказ и выгода</td><td class="s">«Меньше возвратов, больше заказов»</td><td class="num">3</td><td class="num">1</td><td class="num">3</td><td class="num">2</td><td class="num">3</td><td class="num tot">12</td><td class="c">Почти так пишут фрилансеры</td></tr>
+<tr class=""><td class="g">Заказ и выгода</td><td class="s">«Возвратов меньше, отзывов лучше»</td><td class="num">2</td><td class="num">2</td><td class="num">3</td><td class="num">2</td><td class="num">3</td><td class="num tot">12</td><td class="c"></td></tr>
+<tr class=""><td class="g">Заказ и выгода</td><td class="s">«Пусть товар продаёт себя сам»</td><td class="num">2</td><td class="num">1</td><td class="num">2</td><td class="num">2</td><td class="num">3</td><td class="num tot">10</td><td class="c"></td></tr>
+<tr class=""><td class="g">Заказ и выгода</td><td class="s">«Карточка, после которой покупают»</td><td class="num">2</td><td class="num">1</td><td class="num">2</td><td class="num">1</td><td class="num">3</td><td class="num tot">9</td><td class="c"></td></tr>
+<tr class=""><td class="g">Аудитория</td><td class="s">«Для тех, кто продаёт своё»</td><td class="num">3</td><td class="num">3</td><td class="num">3</td><td class="num">2</td><td class="num">3</td><td class="num tot">14</td><td class="c">Сильный, но про аудиторию, а не про выгоду</td></tr>
+<tr class=""><td class="g">Аудитория</td><td class="s">«Ваше — честно и красиво»</td><td class="num">2</td><td class="num">2</td><td class="num">3</td><td class="num">2</td><td class="num">2</td><td class="num tot">11</td><td class="c"></td></tr>
+<tr class=""><td class="g">Аудитория</td><td class="s">«Своё — с первой карточки»</td><td class="num">2</td><td class="num">2</td><td class="num">3</td><td class="num">2</td><td class="num">2</td><td class="num tot">11</td><td class="c"></td></tr>
+<tr class=""><td class="g">Аудитория</td><td class="s">«Снимаем своих для своих»</td><td class="num">1</td><td class="num">2</td><td class="num">3</td><td class="num">3</td><td class="num">2</td><td class="num tot">11</td><td class="c"></td></tr>
+<tr class=""><td class="g">Аудитория</td><td class="s">«Ваш товар заслуживает правды»</td><td class="num">3</td><td class="num">2</td><td class="num">2</td><td class="num">1</td><td class="num">2</td><td class="num tot">10</td><td class="c"></td></tr>
+<tr class=""><td class="g">Аудитория</td><td class="s">«Первая карточка — сразу как надо»</td><td class="num">2</td><td class="num">2</td><td class="num">2</td><td class="num">1</td><td class="num">3</td><td class="num tot">10</td><td class="c"></td></tr>
+<tr class=""><td class="g">Аудитория</td><td class="s">«Зеленоград снимает для маркетплейсов»</td><td class="num">2</td><td class="num">2</td><td class="num">2</td><td class="num">1</td><td class="num">3</td><td class="num tot">10</td><td class="c">Близость — не отличие</td></tr>
+<tr class=""><td class="g">Против конкурентов</td><td class="s">«Не нейросеть — объектив»</td><td class="num">3</td><td class="num">3</td><td class="num">3</td><td class="num">2</td><td class="num">2</td><td class="num tot">13</td><td class="c"></td></tr>
+<tr class=""><td class="g">Против конкурентов</td><td class="s">«Честнее ИИ. Полнее студии.»</td><td class="num">3</td><td class="num">3</td><td class="num">3</td><td class="num">2</td><td class="num">1</td><td class="num tot">12</td><td class="c">Риск некорректного сравнения по закону «О рекламе»</td></tr>
+<tr class=""><td class="g">Против конкурентов</td><td class="s">«Больше, чем фото»</td><td class="num">2</td><td class="num">1</td><td class="num">3</td><td class="num">2</td><td class="num">3</td><td class="num tot">11</td><td class="c">Встречается у многих</td></tr>
+<tr class=""><td class="g">Против конкурентов</td><td class="s">«Не красиво, а продаёт»</td><td class="num">2</td><td class="num">1</td><td class="num">3</td><td class="num">2</td><td class="num">3</td><td class="num tot">11</td><td class="c">Клише ниши</td></tr>
+<tr class=""><td class="g">Против конкурентов</td><td class="s">«Студия, которая отвечает за клик»</td><td class="num">3</td><td class="num">2</td><td class="num">2</td><td class="num">1</td><td class="num">2</td><td class="num tot">10</td><td class="c"></td></tr>
+<tr class="top"><td class="g">Игра слов</td><td class="s">«Снимаем без фокусов» <span class="pick">№ 2</span></td><td class="num">3</td><td class="num">3</td><td class="num">3</td><td class="num">3</td><td class="num">3</td><td class="num tot">15</td><td class="c">Двойной смысл: фокус камеры и «без обмана»</td></tr>
+<tr class=""><td class="g">Игра слов</td><td class="s">«В фокусе — ваш товар»</td><td class="num">2</td><td class="num">2</td><td class="num">3</td><td class="num">2</td><td class="num">3</td><td class="num tot">12</td><td class="c"></td></tr>
+<tr class=""><td class="g">Игра слов</td><td class="s">«Фокус на заказе»</td><td class="num">2</td><td class="num">2</td><td class="num">3</td><td class="num">2</td><td class="num">2</td><td class="num tot">11</td><td class="c"></td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section>
+  <span class="eyebrow">Перед запуском</span>
+  <h2>Что проверить</h2>
+  <div class="box"><ul>
+    <li>Свободны ли выбранные слоганы как товарные знаки — поиск в открытых реестрах ФИПС</li>
+    <li>«Снимаем без фокусов» — распространённое выражение, проверить, не используют ли его другие студии в регионе</li>
+    <li>Короткий опрос 20–30 продавцов: какой из шести слоганов вызывает больше доверия</li>
+  </ul></div>
+</section>
+
+<section>
+  <span class="eyebrow">Источники</span>
+  <ol class="src">
+    <li><a href="https://mpphoto.ru/" target="_blank" rel="noopener">MPPHOTO</a> — заголовок главной страницы</li>
+    <li><a href="https://fotofactor.ru/" target="_blank" rel="noopener">Фотофактор</a> — описание сервиса и сроки</li>
+    <li><a href="https://www.fl.ru/uslugi-freelancera/19058/infografika-dlya-marketpleyso.html" target="_blank" rel="noopener">FL.ru</a> — формулировки фрилансеров</li>
+    <li><a href="https://elama.ru/glossary/slogan" target="_blank" rel="noopener">eLama</a> и <a href="https://www.unisender.com/ru/blog/30-primerov-sloganov-ot-neodnoznachnyh-do-udachnyh/" target="_blank" rel="noopener">Unisender</a> — требования к слогану: краткость, ритм, выгода</li>
+  </ol>
+</section>
+</main>
