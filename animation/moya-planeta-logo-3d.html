@@ -3435,14 +3435,14 @@ const renderer = new THREE.WebGLRenderer({ canvas: glc, antialias: true, preserv
 renderer.setPixelRatio(1);
 renderer.setSize(W, H, false);
 renderer.outputEncoding = THREE.sRGBEncoding;
-renderer.toneMapping = THREE.ACESFilmicToneMapping;
+renderer.toneMapping = THREE.NoToneMapping;
 renderer.toneMappingExposure = 0.82;
 renderer.shadowMap.enabled = true;
-renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+renderer.shadowMap.type = THREE.PCFShadowMap;
 
 const scene = new THREE.Scene();
-const HORIZON = new THREE.Color("#ffdcb4"), ZENITH = new THREE.Color("#2a9fd6");
-scene.fog = new THREE.Fog(HORIZON, 3500, 16000);
+const HORIZON = new THREE.Color("#e3eef4"), ZENITH = new THREE.Color("#a7d8ee");
+scene.fog = new THREE.Fog(HORIZON, 1500, 5200);
 
 // ---------------- helpers ----------------
 const clamp = (v, a = 0, b = 1) => Math.min(b, Math.max(a, v));
@@ -3463,73 +3463,47 @@ const rnd = (i, n) => { const x = Math.sin(i * 127.1 + n * 311.7) * 43758.5453; 
 const simplex = new THREE.SimplexNoise({ random: (() => { let s = 7; return () => (s = (s * 16807) % 2147483647) / 2147483647; })() });
 const fbm3 = (x, y, z, o = 5) => { let a = 0.5, f = 1, s = 0; for (let i = 0; i < o; i++) { s += a * simplex.noise3d(x * f, y * f, z * f); a *= 0.5; f *= 2.03; } return s; };
 
-// ---------------- sky, sun, dunes ----------------
+// ---------------- studio: seamless light cyclorama ----------------
 const skyMat = new THREE.ShaderMaterial({
   side: THREE.BackSide, depthWrite: false, fog: false,
-  uniforms: { hz: { value: HORIZON }, zn: { value: ZENITH }, sunDir: { value: new THREE.Vector3() } },
+  uniforms: { hz: { value: HORIZON }, zn: { value: ZENITH } },
   vertexShader: "varying vec3 vD; void main(){ vD = normalize(position); gl_Position = projectionMatrix*modelViewMatrix*vec4(position,1.0); }",
-  fragmentShader: `uniform vec3 hz; uniform vec3 zn; uniform vec3 sunDir; varying vec3 vD;
-    void main(){ float h = clamp(vD.y, -0.2, 1.0);
-      vec3 c = mix(hz, zn, pow(smoothstep(-0.01, 0.16, h), 0.75));
-      float s = max(dot(normalize(vD), normalize(sunDir)), 0.0);
-      c += vec3(1.0,0.82,0.55) * (pow(s, 900.0)*2.5 + pow(s, 12.0)*0.35);
+  fragmentShader: `uniform vec3 hz; uniform vec3 zn; varying vec3 vD;
+    void main(){ float h = clamp(vD.y, 0.0, 1.0);
+      vec3 c = mix(hz, zn, smoothstep(0.0, 0.55, h));
       gl_FragColor = vec4(c, 1.0);
       #include <tonemapping_fragment>
       #include <encodings_fragment>
     }`,
 });
-const sky = new THREE.Mesh(new THREE.SphereGeometry(16000, 48, 24), skyMat); scene.add(sky);
+scene.add(new THREE.Mesh(new THREE.SphereGeometry(16000, 48, 24), skyMat));
 
-const SUN_DIR = new THREE.Vector3(-0.62, 0.42, 0.66).normalize();
-skyMat.uniforms.sunDir.value.copy(SUN_DIR);
-const sun = new THREE.DirectionalLight(0xfff4e6, 1.75);
+const SUN_DIR = new THREE.Vector3(-0.55, 0.62, 0.56).normalize();
+const sun = new THREE.DirectionalLight(0xffffff, 0.95);
 sun.position.copy(SUN_DIR).multiplyScalar(2400).add(new THREE.Vector3(0, 250, 0));
 sun.target.position.set(0, 250, 0); scene.add(sun.target);
 sun.castShadow = true;
 sun.shadow.mapSize.set(2048, 2048);
 Object.assign(sun.shadow.camera, { left: -760, right: 760, top: 700, bottom: -700, near: 400, far: 5200 });
-sun.shadow.radius = 3; sun.shadow.bias = -0.0006; sun.shadow.normalBias = 0.6;
+sun.shadow.radius = 7; sun.shadow.bias = -0.0006; sun.shadow.normalBias = 0.6;
 scene.add(sun);
-scene.add(new THREE.HemisphereLight(0xf2e4d6, 0xd8b07a, 0.34));
+scene.add(new THREE.HemisphereLight(0xffffff, 0xdfe8ee, 0.38));
 
-// Environment for reflections: the same sky over a sand floor.
+// Environment for reflections: soft studio gradient over a white floor.
 {
   const envScene = new THREE.Scene();
   envScene.add(new THREE.Mesh(new THREE.SphereGeometry(100, 32, 16), skyMat));
-  const floor = new THREE.Mesh(new THREE.CircleGeometry(100, 32), new THREE.MeshBasicMaterial({ color: 0xd9b98a }));
+  const floor = new THREE.Mesh(new THREE.CircleGeometry(100, 32), new THREE.MeshBasicMaterial({ color: 0xf2f5f7 }));
   floor.rotation.x = -Math.PI / 2; floor.position.y = -2; envScene.add(floor);
+  const softbox = new THREE.Mesh(new THREE.PlaneGeometry(60, 30), new THREE.MeshBasicMaterial({ color: 0xffffff, side: THREE.DoubleSide }));
+  softbox.position.set(-45, 55, 45); softbox.lookAt(0, 0, 0); envScene.add(softbox);
   const pm = new THREE.PMREMGenerator(renderer);
   scene.environment = pm.fromScene(envScene, 0.02).texture;
 }
 
-// Sand: rippled bump texture + low dunes rising away from the pin.
-const rip = document.createElement("canvas"); rip.width = rip.height = 512;
-{
-  const c = rip.getContext("2d"), img = c.createImageData(512, 512);
-  for (let y = 0; y < 512; y++) for (let x = 0; x < 512; x++) {
-    const u = x / 512 * Math.PI * 2, v = y / 512 * Math.PI * 2;
-    const warp = 0.9 * simplex.noise3d(Math.cos(u) * 1.2, Math.sin(u) * 1.2, Math.sin(v) * 1.2 + Math.cos(v));
-    const r = 0.5 + 0.5 * Math.sin(v * 14 + warp * 3.0 + 0.5 * Math.sin(u * 3));
-    const g = Math.pow(r, 1.6) * 200 + 30 + 25 * rnd(x * 512 + y, 3);
-    const i = (y * 512 + x) * 4; img.data[i] = img.data[i + 1] = img.data[i + 2] = g; img.data[i + 3] = 255;
-  }
-  c.putImageData(img, 0, 0);
-}
-const ripTex = new THREE.CanvasTexture(rip);
-ripTex.wrapS = ripTex.wrapT = THREE.RepeatWrapping; ripTex.repeat.set(70, 70); ripTex.anisotropy = 8;
-const duneGeo = new THREE.PlaneGeometry(30000, 30000, 220, 220);
-duneGeo.rotateX(-Math.PI / 2);
-{
-  const p = duneGeo.attributes.position;
-  for (let i = 0; i < p.count; i++) {
-    const x = p.getX(i), z = p.getZ(i), d = Math.hypot(x, z + 400);
-    const k = clamp((d - 900) / 2600);
-    const h = (fbm3(x / 2600, 0.3, z / 2600, 4) * 0.5 + 0.5) * 520 + 140 * Math.sin(x / 1700 + z / 2300);
-    p.setY(i, k * k * Math.max(0, h) - 2);
-  }
-  duneGeo.computeVertexNormals();
-}
-const sand = new THREE.Mesh(duneGeo, new THREE.MeshStandardMaterial({ color: 0xe3be86, roughness: 0.96, metalness: 0, bumpMap: ripTex, bumpScale: 2.2, envMapIntensity: 0.35 }));
+// Floor fades into the backdrop through fog of the same colour — no visible horizon.
+const sand = new THREE.Mesh(new THREE.PlaneGeometry(40000, 40000).rotateX(-Math.PI / 2),
+  new THREE.MeshStandardMaterial({ color: 0xf1f6f9, roughness: 1, metalness: 0, envMapIntensity: 0.35 }));
 sand.receiveShadow = true; scene.add(sand);
 
 // ---------------- gloss sweep (shader patch shared by logo materials) ----------------
@@ -3688,7 +3662,7 @@ const letters = [];
 
 // Sand puff where the tip plants itself.
 const puffMat = new THREE.MeshStandardMaterial({ color: 0xe8cfa4, roughness: 1, transparent: true, opacity: 1 });
-const PUFF = Array.from({ length: 40 }, (_, i) => {
+const PUFF = Array.from({ length: 0 }, (_, i) => {
   const m = new THREE.Mesh(new THREE.IcosahedronGeometry(1, 1), puffMat.clone()); m.castShadow = false; scene.add(m);
   return { m, a: rnd(i, 1) * Math.PI * 2, sp: 60 + rnd(i, 2) * 160, up: 30 + rnd(i, 3) * 90, sz: 2 + rnd(i, 4) * 5 };
 });
