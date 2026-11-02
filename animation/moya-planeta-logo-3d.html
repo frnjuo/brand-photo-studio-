@@ -5,9 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Моя Планета 3D</title>
 <style>
-html,body{margin:0;height:100%;background:#fff;}
+html,body{margin:0;height:100%;background:#f3e3c9;}
 body{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;font-family:system-ui,sans-serif;}
-#c{max-width:100vw;max-height:calc(100vh - 60px);background:#fff;display:block;}
+#c{max-width:100vw;max-height:calc(100vh - 60px);display:block;}
 #gl{position:absolute;left:-99999px;top:0;}
 .ui{display:flex;gap:10px;align-items:center;color:#0b5f78;font-size:14px;padding:0 16px;}
 .ui button{border:1px solid #00B6E6;background:#fff;color:#0b5f78;border-radius:6px;padding:6px 14px;cursor:pointer;font:inherit;}
@@ -2815,139 +2815,609 @@ body.capture #c{max-width:none;max-height:none;}
 	THREE.SVGLoader = SVGLoader;
 
 } )();
-</script>
-<script>( function () {
 
-	/**
- * https://github.com/google/model-viewer/blob/master/packages/model-viewer/src/three-components/EnvironmentScene.ts
- */
-	class RoomEnvironment extends THREE.Scene {
+( function () {
 
-		constructor() {
+	const _tempNormal = new THREE.Vector3();
+	function getUv( faceDirVector, normal, uvAxis, projectionAxis, radius, sideLength ) {
 
-			super();
-			const geometry = new THREE.BoxGeometry();
-			geometry.deleteAttribute( 'uv' );
-			const roomMaterial = new THREE.MeshStandardMaterial( {
-				side: THREE.BackSide
-			} );
-			const boxMaterial = new THREE.MeshStandardMaterial();
-			const mainLight = new THREE.PointLight( 0xffffff, 5.0, 28, 2 );
-			mainLight.position.set( 0.418, 16.199, 0.300 );
-			this.add( mainLight );
-			const room = new THREE.Mesh( geometry, roomMaterial );
-			room.position.set( - 0.757, 13.219, 0.717 );
-			room.scale.set( 31.713, 28.305, 28.591 );
-			this.add( room );
-			const box1 = new THREE.Mesh( geometry, boxMaterial );
-			box1.position.set( - 10.906, 2.009, 1.846 );
-			box1.rotation.set( 0, - 0.195, 0 );
-			box1.scale.set( 2.328, 7.905, 4.651 );
-			this.add( box1 );
-			const box2 = new THREE.Mesh( geometry, boxMaterial );
-			box2.position.set( - 5.607, - 0.754, - 0.758 );
-			box2.rotation.set( 0, 0.994, 0 );
-			box2.scale.set( 1.970, 1.534, 3.955 );
-			this.add( box2 );
-			const box3 = new THREE.Mesh( geometry, boxMaterial );
-			box3.position.set( 6.167, 0.857, 7.803 );
-			box3.rotation.set( 0, 0.561, 0 );
-			box3.scale.set( 3.927, 6.285, 3.687 );
-			this.add( box3 );
-			const box4 = new THREE.Mesh( geometry, boxMaterial );
-			box4.position.set( - 2.017, 0.018, 6.124 );
-			box4.rotation.set( 0, 0.333, 0 );
-			box4.scale.set( 2.002, 4.566, 2.064 );
-			this.add( box4 );
-			const box5 = new THREE.Mesh( geometry, boxMaterial );
-			box5.position.set( 2.291, - 0.756, - 2.621 );
-			box5.rotation.set( 0, - 0.286, 0 );
-			box5.scale.set( 1.546, 1.552, 1.496 );
-			this.add( box5 );
-			const box6 = new THREE.Mesh( geometry, boxMaterial );
-			box6.position.set( - 2.193, - 0.369, - 5.547 );
-			box6.rotation.set( 0, 0.516, 0 );
-			box6.scale.set( 3.875, 3.487, 2.986 );
-			this.add( box6 );
+		const totArcLength = 2 * Math.PI * radius / 4;
 
-			// -x right
-			const light1 = new THREE.Mesh( geometry, createAreaLightMaterial( 50 ) );
-			light1.position.set( - 16.116, 14.37, 8.208 );
-			light1.scale.set( 0.1, 2.428, 2.739 );
-			this.add( light1 );
+		// length of the planes between the arcs on each axis
+		const centerLength = Math.max( sideLength - 2 * radius, 0 );
+		const halfArc = Math.PI / 4;
 
-			// -x left
-			const light2 = new THREE.Mesh( geometry, createAreaLightMaterial( 50 ) );
-			light2.position.set( - 16.109, 18.021, - 8.207 );
-			light2.scale.set( 0.1, 2.425, 2.751 );
-			this.add( light2 );
+		// Get the vector projected onto the Y plane
+		_tempNormal.copy( normal );
+		_tempNormal[ projectionAxis ] = 0;
+		_tempNormal.normalize();
 
-			// +x
-			const light3 = new THREE.Mesh( geometry, createAreaLightMaterial( 17 ) );
-			light3.position.set( 14.904, 12.198, - 1.832 );
-			light3.scale.set( 0.15, 4.265, 6.331 );
-			this.add( light3 );
+		// total amount of UV space alloted to a single arc
+		const arcUvRatio = 0.5 * totArcLength / ( totArcLength + centerLength );
 
-			// +z
-			const light4 = new THREE.Mesh( geometry, createAreaLightMaterial( 43 ) );
-			light4.position.set( - 0.462, 8.89, 14.520 );
-			light4.scale.set( 4.38, 5.441, 0.088 );
-			this.add( light4 );
+		// the distance along one arc the point is at
+		const arcAngleRatio = 1.0 - _tempNormal.angleTo( faceDirVector ) / halfArc;
+		if ( Math.sign( _tempNormal[ uvAxis ] ) === 1 ) {
 
-			// -z
-			const light5 = new THREE.Mesh( geometry, createAreaLightMaterial( 20 ) );
-			light5.position.set( 3.235, 11.486, - 12.541 );
-			light5.scale.set( 2.5, 2.0, 0.1 );
-			this.add( light5 );
+			return arcAngleRatio * arcUvRatio;
 
-			// +y
-			const light6 = new THREE.Mesh( geometry, createAreaLightMaterial( 100 ) );
-			light6.position.set( 0.0, 20.0, 0.0 );
-			light6.scale.set( 1.0, 0.1, 1.0 );
-			this.add( light6 );
+		} else {
+
+			// total amount of UV space alloted to the plane between the arcs
+			const lenUv = centerLength / ( totArcLength + centerLength );
+			return lenUv + arcUvRatio + arcUvRatio * ( 1.0 - arcAngleRatio );
 
 		}
-		dispose() {
 
-			const resources = new Set();
-			this.traverse( object => {
+	}
 
-				if ( object.isMesh ) {
+	class RoundedBoxGeometry extends THREE.BoxGeometry {
 
-					resources.add( object.geometry );
-					resources.add( object.material );
+		constructor( width = 1, height = 1, depth = 1, segments = 2, radius = 0.1 ) {
+
+			// ensure segments is odd so we have a plane connecting the rounded corners
+			segments = segments * 2 + 1;
+
+			// ensure radius isn't bigger than shortest side
+			radius = Math.min( width / 2, height / 2, depth / 2, radius );
+			super( 1, 1, 1, segments, segments, segments );
+
+			// if we just have one segment we're the same as a regular box
+			if ( segments === 1 ) return;
+			const geometry2 = this.toNonIndexed();
+			this.index = null;
+			this.attributes.position = geometry2.attributes.position;
+			this.attributes.normal = geometry2.attributes.normal;
+			this.attributes.uv = geometry2.attributes.uv;
+
+			//
+
+			const position = new THREE.Vector3();
+			const normal = new THREE.Vector3();
+			const box = new THREE.Vector3( width, height, depth ).divideScalar( 2 ).subScalar( radius );
+			const positions = this.attributes.position.array;
+			const normals = this.attributes.normal.array;
+			const uvs = this.attributes.uv.array;
+			const faceTris = positions.length / 6;
+			const faceDirVector = new THREE.Vector3();
+			const halfSegmentSize = 0.5 / segments;
+			for ( let i = 0, j = 0; i < positions.length; i += 3, j += 2 ) {
+
+				position.fromArray( positions, i );
+				normal.copy( position );
+				normal.x -= Math.sign( normal.x ) * halfSegmentSize;
+				normal.y -= Math.sign( normal.y ) * halfSegmentSize;
+				normal.z -= Math.sign( normal.z ) * halfSegmentSize;
+				normal.normalize();
+				positions[ i + 0 ] = box.x * Math.sign( position.x ) + normal.x * radius;
+				positions[ i + 1 ] = box.y * Math.sign( position.y ) + normal.y * radius;
+				positions[ i + 2 ] = box.z * Math.sign( position.z ) + normal.z * radius;
+				normals[ i + 0 ] = normal.x;
+				normals[ i + 1 ] = normal.y;
+				normals[ i + 2 ] = normal.z;
+				const side = Math.floor( i / faceTris );
+				switch ( side ) {
+
+					case 0:
+						// right
+
+						// generate UVs along Z then Y
+						faceDirVector.set( 1, 0, 0 );
+						uvs[ j + 0 ] = getUv( faceDirVector, normal, 'z', 'y', radius, depth );
+						uvs[ j + 1 ] = 1.0 - getUv( faceDirVector, normal, 'y', 'z', radius, height );
+						break;
+					case 1:
+						// left
+
+						// generate UVs along Z then Y
+						faceDirVector.set( - 1, 0, 0 );
+						uvs[ j + 0 ] = 1.0 - getUv( faceDirVector, normal, 'z', 'y', radius, depth );
+						uvs[ j + 1 ] = 1.0 - getUv( faceDirVector, normal, 'y', 'z', radius, height );
+						break;
+					case 2:
+						// top
+
+						// generate UVs along X then Z
+						faceDirVector.set( 0, 1, 0 );
+						uvs[ j + 0 ] = 1.0 - getUv( faceDirVector, normal, 'x', 'z', radius, width );
+						uvs[ j + 1 ] = getUv( faceDirVector, normal, 'z', 'x', radius, depth );
+						break;
+					case 3:
+						// bottom
+
+						// generate UVs along X then Z
+						faceDirVector.set( 0, - 1, 0 );
+						uvs[ j + 0 ] = 1.0 - getUv( faceDirVector, normal, 'x', 'z', radius, width );
+						uvs[ j + 1 ] = 1.0 - getUv( faceDirVector, normal, 'z', 'x', radius, depth );
+						break;
+					case 4:
+						// front
+
+						// generate UVs along X then Y
+						faceDirVector.set( 0, 0, 1 );
+						uvs[ j + 0 ] = 1.0 - getUv( faceDirVector, normal, 'x', 'y', radius, width );
+						uvs[ j + 1 ] = 1.0 - getUv( faceDirVector, normal, 'y', 'x', radius, height );
+						break;
+					case 5:
+						// back
+
+						// generate UVs along X then Y
+						faceDirVector.set( 0, 0, - 1 );
+						uvs[ j + 0 ] = getUv( faceDirVector, normal, 'x', 'y', radius, width );
+						uvs[ j + 1 ] = 1.0 - getUv( faceDirVector, normal, 'y', 'x', radius, height );
+						break;
 
 				}
-
-			} );
-			for ( const resource of resources ) {
-
-				resource.dispose();
 
 			}
 
 		}
 
 	}
-	function createAreaLightMaterial( intensity ) {
 
-		const material = new THREE.MeshBasicMaterial();
-		material.color.setScalar( intensity );
-		return material;
+	THREE.RoundedBoxGeometry = RoundedBoxGeometry;
+
+} )();
+</script>
+<script>( function () {
+
+	// Ported from Stefan Gustavson's java implementation
+	// http://staffwww.itn.liu.se/~stegu/simplexnoise/simplexnoise.pdf
+	// Read Stefan's excellent paper for details on how this code works.
+	//
+	// Sean McCullough banksean@gmail.com
+	//
+	// Added 4D noise
+
+	/**
+ * You can pass in a random number generator object if you like.
+ * It is assumed to have a random() method.
+ */
+	class SimplexNoise {
+
+		constructor( r = Math ) {
+
+			this.grad3 = [[ 1, 1, 0 ], [ - 1, 1, 0 ], [ 1, - 1, 0 ], [ - 1, - 1, 0 ], [ 1, 0, 1 ], [ - 1, 0, 1 ], [ 1, 0, - 1 ], [ - 1, 0, - 1 ], [ 0, 1, 1 ], [ 0, - 1, 1 ], [ 0, 1, - 1 ], [ 0, - 1, - 1 ]];
+			this.grad4 = [[ 0, 1, 1, 1 ], [ 0, 1, 1, - 1 ], [ 0, 1, - 1, 1 ], [ 0, 1, - 1, - 1 ], [ 0, - 1, 1, 1 ], [ 0, - 1, 1, - 1 ], [ 0, - 1, - 1, 1 ], [ 0, - 1, - 1, - 1 ], [ 1, 0, 1, 1 ], [ 1, 0, 1, - 1 ], [ 1, 0, - 1, 1 ], [ 1, 0, - 1, - 1 ], [ - 1, 0, 1, 1 ], [ - 1, 0, 1, - 1 ], [ - 1, 0, - 1, 1 ], [ - 1, 0, - 1, - 1 ], [ 1, 1, 0, 1 ], [ 1, 1, 0, - 1 ], [ 1, - 1, 0, 1 ], [ 1, - 1, 0, - 1 ], [ - 1, 1, 0, 1 ], [ - 1, 1, 0, - 1 ], [ - 1, - 1, 0, 1 ], [ - 1, - 1, 0, - 1 ], [ 1, 1, 1, 0 ], [ 1, 1, - 1, 0 ], [ 1, - 1, 1, 0 ], [ 1, - 1, - 1, 0 ], [ - 1, 1, 1, 0 ], [ - 1, 1, - 1, 0 ], [ - 1, - 1, 1, 0 ], [ - 1, - 1, - 1, 0 ]];
+			this.p = [];
+			for ( let i = 0; i < 256; i ++ ) {
+
+				this.p[ i ] = Math.floor( r.random() * 256 );
+
+			}
+
+			// To remove the need for index wrapping, double the permutation table length
+			this.perm = [];
+			for ( let i = 0; i < 512; i ++ ) {
+
+				this.perm[ i ] = this.p[ i & 255 ];
+
+			}
+
+			// A lookup table to traverse the simplex around a given point in 4D.
+			// Details can be found where this table is used, in the 4D noise method.
+			this.simplex = [[ 0, 1, 2, 3 ], [ 0, 1, 3, 2 ], [ 0, 0, 0, 0 ], [ 0, 2, 3, 1 ], [ 0, 0, 0, 0 ], [ 0, 0, 0, 0 ], [ 0, 0, 0, 0 ], [ 1, 2, 3, 0 ], [ 0, 2, 1, 3 ], [ 0, 0, 0, 0 ], [ 0, 3, 1, 2 ], [ 0, 3, 2, 1 ], [ 0, 0, 0, 0 ], [ 0, 0, 0, 0 ], [ 0, 0, 0, 0 ], [ 1, 3, 2, 0 ], [ 0, 0, 0, 0 ], [ 0, 0, 0, 0 ], [ 0, 0, 0, 0 ], [ 0, 0, 0, 0 ], [ 0, 0, 0, 0 ], [ 0, 0, 0, 0 ], [ 0, 0, 0, 0 ], [ 0, 0, 0, 0 ], [ 1, 2, 0, 3 ], [ 0, 0, 0, 0 ], [ 1, 3, 0, 2 ], [ 0, 0, 0, 0 ], [ 0, 0, 0, 0 ], [ 0, 0, 0, 0 ], [ 2, 3, 0, 1 ], [ 2, 3, 1, 0 ], [ 1, 0, 2, 3 ], [ 1, 0, 3, 2 ], [ 0, 0, 0, 0 ], [ 0, 0, 0, 0 ], [ 0, 0, 0, 0 ], [ 2, 0, 3, 1 ], [ 0, 0, 0, 0 ], [ 2, 1, 3, 0 ], [ 0, 0, 0, 0 ], [ 0, 0, 0, 0 ], [ 0, 0, 0, 0 ], [ 0, 0, 0, 0 ], [ 0, 0, 0, 0 ], [ 0, 0, 0, 0 ], [ 0, 0, 0, 0 ], [ 0, 0, 0, 0 ], [ 2, 0, 1, 3 ], [ 0, 0, 0, 0 ], [ 0, 0, 0, 0 ], [ 0, 0, 0, 0 ], [ 3, 0, 1, 2 ], [ 3, 0, 2, 1 ], [ 0, 0, 0, 0 ], [ 3, 1, 2, 0 ], [ 2, 1, 0, 3 ], [ 0, 0, 0, 0 ], [ 0, 0, 0, 0 ], [ 0, 0, 0, 0 ], [ 3, 1, 0, 2 ], [ 0, 0, 0, 0 ], [ 3, 2, 0, 1 ], [ 3, 2, 1, 0 ]];
+
+		}
+		dot( g, x, y ) {
+
+			return g[ 0 ] * x + g[ 1 ] * y;
+
+		}
+		dot3( g, x, y, z ) {
+
+			return g[ 0 ] * x + g[ 1 ] * y + g[ 2 ] * z;
+
+		}
+		dot4( g, x, y, z, w ) {
+
+			return g[ 0 ] * x + g[ 1 ] * y + g[ 2 ] * z + g[ 3 ] * w;
+
+		}
+		noise( xin, yin ) {
+
+			let n0; // Noise contributions from the three corners
+			let n1;
+			let n2;
+			// Skew the input space to determine which simplex cell we're in
+			const F2 = 0.5 * ( Math.sqrt( 3.0 ) - 1.0 );
+			const s = ( xin + yin ) * F2; // Hairy factor for 2D
+			const i = Math.floor( xin + s );
+			const j = Math.floor( yin + s );
+			const G2 = ( 3.0 - Math.sqrt( 3.0 ) ) / 6.0;
+			const t = ( i + j ) * G2;
+			const X0 = i - t; // Unskew the cell origin back to (x,y) space
+			const Y0 = j - t;
+			const x0 = xin - X0; // The x,y distances from the cell origin
+			const y0 = yin - Y0;
+
+			// For the 2D case, the simplex shape is an equilateral triangle.
+			// Determine which simplex we are in.
+			let i1; // Offsets for second (middle) corner of simplex in (i,j) coords
+
+			let j1;
+			if ( x0 > y0 ) {
+
+				i1 = 1;
+				j1 = 0;
+
+				// lower triangle, XY order: (0,0)->(1,0)->(1,1)
+
+			} else {
+
+				i1 = 0;
+				j1 = 1;
+
+			} // upper triangle, YX order: (0,0)->(0,1)->(1,1)
+
+			// A step of (1,0) in (i,j) means a step of (1-c,-c) in (x,y), and
+			// a step of (0,1) in (i,j) means a step of (-c,1-c) in (x,y), where
+			// c = (3-sqrt(3))/6
+			const x1 = x0 - i1 + G2; // Offsets for middle corner in (x,y) unskewed coords
+			const y1 = y0 - j1 + G2;
+			const x2 = x0 - 1.0 + 2.0 * G2; // Offsets for last corner in (x,y) unskewed coords
+			const y2 = y0 - 1.0 + 2.0 * G2;
+			// Work out the hashed gradient indices of the three simplex corners
+			const ii = i & 255;
+			const jj = j & 255;
+			const gi0 = this.perm[ ii + this.perm[ jj ] ] % 12;
+			const gi1 = this.perm[ ii + i1 + this.perm[ jj + j1 ] ] % 12;
+			const gi2 = this.perm[ ii + 1 + this.perm[ jj + 1 ] ] % 12;
+			// Calculate the contribution from the three corners
+			let t0 = 0.5 - x0 * x0 - y0 * y0;
+			if ( t0 < 0 ) n0 = 0.0; else {
+
+				t0 *= t0;
+				n0 = t0 * t0 * this.dot( this.grad3[ gi0 ], x0, y0 ); // (x,y) of grad3 used for 2D gradient
+
+			}
+
+			let t1 = 0.5 - x1 * x1 - y1 * y1;
+			if ( t1 < 0 ) n1 = 0.0; else {
+
+				t1 *= t1;
+				n1 = t1 * t1 * this.dot( this.grad3[ gi1 ], x1, y1 );
+
+			}
+
+			let t2 = 0.5 - x2 * x2 - y2 * y2;
+			if ( t2 < 0 ) n2 = 0.0; else {
+
+				t2 *= t2;
+				n2 = t2 * t2 * this.dot( this.grad3[ gi2 ], x2, y2 );
+
+			}
+
+			// Add contributions from each corner to get the final noise value.
+			// The result is scaled to return values in the interval [-1,1].
+			return 70.0 * ( n0 + n1 + n2 );
+
+		}
+
+		// 3D simplex noise
+		noise3d( xin, yin, zin ) {
+
+			let n0; // Noise contributions from the four corners
+			let n1;
+			let n2;
+			let n3;
+			// Skew the input space to determine which simplex cell we're in
+			const F3 = 1.0 / 3.0;
+			const s = ( xin + yin + zin ) * F3; // Very nice and simple skew factor for 3D
+			const i = Math.floor( xin + s );
+			const j = Math.floor( yin + s );
+			const k = Math.floor( zin + s );
+			const G3 = 1.0 / 6.0; // Very nice and simple unskew factor, too
+			const t = ( i + j + k ) * G3;
+			const X0 = i - t; // Unskew the cell origin back to (x,y,z) space
+			const Y0 = j - t;
+			const Z0 = k - t;
+			const x0 = xin - X0; // The x,y,z distances from the cell origin
+			const y0 = yin - Y0;
+			const z0 = zin - Z0;
+
+			// For the 3D case, the simplex shape is a slightly irregular tetrahedron.
+			// Determine which simplex we are in.
+			let i1; // Offsets for second corner of simplex in (i,j,k) coords
+
+			let j1;
+			let k1;
+			let i2; // Offsets for third corner of simplex in (i,j,k) coords
+			let j2;
+			let k2;
+			if ( x0 >= y0 ) {
+
+				if ( y0 >= z0 ) {
+
+					i1 = 1;
+					j1 = 0;
+					k1 = 0;
+					i2 = 1;
+					j2 = 1;
+					k2 = 0;
+
+					// X Y Z order
+
+				} else if ( x0 >= z0 ) {
+
+					i1 = 1;
+					j1 = 0;
+					k1 = 0;
+					i2 = 1;
+					j2 = 0;
+					k2 = 1;
+
+					// X Z Y order
+
+				} else {
+
+					i1 = 0;
+					j1 = 0;
+					k1 = 1;
+					i2 = 1;
+					j2 = 0;
+					k2 = 1;
+
+				} // Z X Y order
+
+			} else {
+
+				// x0<y0
+
+				if ( y0 < z0 ) {
+
+					i1 = 0;
+					j1 = 0;
+					k1 = 1;
+					i2 = 0;
+					j2 = 1;
+					k2 = 1;
+
+					// Z Y X order
+
+				} else if ( x0 < z0 ) {
+
+					i1 = 0;
+					j1 = 1;
+					k1 = 0;
+					i2 = 0;
+					j2 = 1;
+					k2 = 1;
+
+					// Y Z X order
+
+				} else {
+
+					i1 = 0;
+					j1 = 1;
+					k1 = 0;
+					i2 = 1;
+					j2 = 1;
+					k2 = 0;
+
+				} // Y X Z order
+
+			}
+
+			// A step of (1,0,0) in (i,j,k) means a step of (1-c,-c,-c) in (x,y,z),
+			// a step of (0,1,0) in (i,j,k) means a step of (-c,1-c,-c) in (x,y,z), and
+			// a step of (0,0,1) in (i,j,k) means a step of (-c,-c,1-c) in (x,y,z), where
+			// c = 1/6.
+			const x1 = x0 - i1 + G3; // Offsets for second corner in (x,y,z) coords
+			const y1 = y0 - j1 + G3;
+			const z1 = z0 - k1 + G3;
+			const x2 = x0 - i2 + 2.0 * G3; // Offsets for third corner in (x,y,z) coords
+			const y2 = y0 - j2 + 2.0 * G3;
+			const z2 = z0 - k2 + 2.0 * G3;
+			const x3 = x0 - 1.0 + 3.0 * G3; // Offsets for last corner in (x,y,z) coords
+			const y3 = y0 - 1.0 + 3.0 * G3;
+			const z3 = z0 - 1.0 + 3.0 * G3;
+			// Work out the hashed gradient indices of the four simplex corners
+			const ii = i & 255;
+			const jj = j & 255;
+			const kk = k & 255;
+			const gi0 = this.perm[ ii + this.perm[ jj + this.perm[ kk ] ] ] % 12;
+			const gi1 = this.perm[ ii + i1 + this.perm[ jj + j1 + this.perm[ kk + k1 ] ] ] % 12;
+			const gi2 = this.perm[ ii + i2 + this.perm[ jj + j2 + this.perm[ kk + k2 ] ] ] % 12;
+			const gi3 = this.perm[ ii + 1 + this.perm[ jj + 1 + this.perm[ kk + 1 ] ] ] % 12;
+			// Calculate the contribution from the four corners
+			let t0 = 0.6 - x0 * x0 - y0 * y0 - z0 * z0;
+			if ( t0 < 0 ) n0 = 0.0; else {
+
+				t0 *= t0;
+				n0 = t0 * t0 * this.dot3( this.grad3[ gi0 ], x0, y0, z0 );
+
+			}
+
+			let t1 = 0.6 - x1 * x1 - y1 * y1 - z1 * z1;
+			if ( t1 < 0 ) n1 = 0.0; else {
+
+				t1 *= t1;
+				n1 = t1 * t1 * this.dot3( this.grad3[ gi1 ], x1, y1, z1 );
+
+			}
+
+			let t2 = 0.6 - x2 * x2 - y2 * y2 - z2 * z2;
+			if ( t2 < 0 ) n2 = 0.0; else {
+
+				t2 *= t2;
+				n2 = t2 * t2 * this.dot3( this.grad3[ gi2 ], x2, y2, z2 );
+
+			}
+
+			let t3 = 0.6 - x3 * x3 - y3 * y3 - z3 * z3;
+			if ( t3 < 0 ) n3 = 0.0; else {
+
+				t3 *= t3;
+				n3 = t3 * t3 * this.dot3( this.grad3[ gi3 ], x3, y3, z3 );
+
+			}
+
+			// Add contributions from each corner to get the final noise value.
+			// The result is scaled to stay just inside [-1,1]
+			return 32.0 * ( n0 + n1 + n2 + n3 );
+
+		}
+
+		// 4D simplex noise
+		noise4d( x, y, z, w ) {
+
+			// For faster and easier lookups
+			const grad4 = this.grad4;
+			const simplex = this.simplex;
+			const perm = this.perm;
+
+			// The skewing and unskewing factors are hairy again for the 4D case
+			const F4 = ( Math.sqrt( 5.0 ) - 1.0 ) / 4.0;
+			const G4 = ( 5.0 - Math.sqrt( 5.0 ) ) / 20.0;
+			let n0; // Noise contributions from the five corners
+			let n1;
+			let n2;
+			let n3;
+			let n4;
+			// Skew the (x,y,z,w) space to determine which cell of 24 simplices we're in
+			const s = ( x + y + z + w ) * F4; // Factor for 4D skewing
+			const i = Math.floor( x + s );
+			const j = Math.floor( y + s );
+			const k = Math.floor( z + s );
+			const l = Math.floor( w + s );
+			const t = ( i + j + k + l ) * G4; // Factor for 4D unskewing
+			const X0 = i - t; // Unskew the cell origin back to (x,y,z,w) space
+			const Y0 = j - t;
+			const Z0 = k - t;
+			const W0 = l - t;
+			const x0 = x - X0; // The x,y,z,w distances from the cell origin
+			const y0 = y - Y0;
+			const z0 = z - Z0;
+			const w0 = w - W0;
+
+			// For the 4D case, the simplex is a 4D shape I won't even try to describe.
+			// To find out which of the 24 possible simplices we're in, we need to
+			// determine the magnitude ordering of x0, y0, z0 and w0.
+			// The method below is a good way of finding the ordering of x,y,z,w and
+			// then find the correct traversal order for the simplex we’re in.
+			// First, six pair-wise comparisons are performed between each possible pair
+			// of the four coordinates, and the results are used to add up binary bits
+			// for an integer index.
+			const c1 = x0 > y0 ? 32 : 0;
+			const c2 = x0 > z0 ? 16 : 0;
+			const c3 = y0 > z0 ? 8 : 0;
+			const c4 = x0 > w0 ? 4 : 0;
+			const c5 = y0 > w0 ? 2 : 0;
+			const c6 = z0 > w0 ? 1 : 0;
+			const c = c1 + c2 + c3 + c4 + c5 + c6;
+
+			// simplex[c] is a 4-vector with the numbers 0, 1, 2 and 3 in some order.
+			// Many values of c will never occur, since e.g. x>y>z>w makes x<z, y<w and x<w
+			// impossible. Only the 24 indices which have non-zero entries make any sense.
+			// We use a thresholding to set the coordinates in turn from the largest magnitude.
+			// The number 3 in the "simplex" array is at the position of the largest coordinate.
+			const i1 = simplex[ c ][ 0 ] >= 3 ? 1 : 0;
+			const j1 = simplex[ c ][ 1 ] >= 3 ? 1 : 0;
+			const k1 = simplex[ c ][ 2 ] >= 3 ? 1 : 0;
+			const l1 = simplex[ c ][ 3 ] >= 3 ? 1 : 0;
+			// The number 2 in the "simplex" array is at the second largest coordinate.
+			const i2 = simplex[ c ][ 0 ] >= 2 ? 1 : 0;
+			const j2 = simplex[ c ][ 1 ] >= 2 ? 1 : 0;
+			const k2 = simplex[ c ][ 2 ] >= 2 ? 1 : 0;
+			const l2 = simplex[ c ][ 3 ] >= 2 ? 1 : 0;
+			// The number 1 in the "simplex" array is at the second smallest coordinate.
+			const i3 = simplex[ c ][ 0 ] >= 1 ? 1 : 0;
+			const j3 = simplex[ c ][ 1 ] >= 1 ? 1 : 0;
+			const k3 = simplex[ c ][ 2 ] >= 1 ? 1 : 0;
+			const l3 = simplex[ c ][ 3 ] >= 1 ? 1 : 0;
+			// The fifth corner has all coordinate offsets = 1, so no need to look that up.
+			const x1 = x0 - i1 + G4; // Offsets for second corner in (x,y,z,w) coords
+			const y1 = y0 - j1 + G4;
+			const z1 = z0 - k1 + G4;
+			const w1 = w0 - l1 + G4;
+			const x2 = x0 - i2 + 2.0 * G4; // Offsets for third corner in (x,y,z,w) coords
+			const y2 = y0 - j2 + 2.0 * G4;
+			const z2 = z0 - k2 + 2.0 * G4;
+			const w2 = w0 - l2 + 2.0 * G4;
+			const x3 = x0 - i3 + 3.0 * G4; // Offsets for fourth corner in (x,y,z,w) coords
+			const y3 = y0 - j3 + 3.0 * G4;
+			const z3 = z0 - k3 + 3.0 * G4;
+			const w3 = w0 - l3 + 3.0 * G4;
+			const x4 = x0 - 1.0 + 4.0 * G4; // Offsets for last corner in (x,y,z,w) coords
+			const y4 = y0 - 1.0 + 4.0 * G4;
+			const z4 = z0 - 1.0 + 4.0 * G4;
+			const w4 = w0 - 1.0 + 4.0 * G4;
+			// Work out the hashed gradient indices of the five simplex corners
+			const ii = i & 255;
+			const jj = j & 255;
+			const kk = k & 255;
+			const ll = l & 255;
+			const gi0 = perm[ ii + perm[ jj + perm[ kk + perm[ ll ] ] ] ] % 32;
+			const gi1 = perm[ ii + i1 + perm[ jj + j1 + perm[ kk + k1 + perm[ ll + l1 ] ] ] ] % 32;
+			const gi2 = perm[ ii + i2 + perm[ jj + j2 + perm[ kk + k2 + perm[ ll + l2 ] ] ] ] % 32;
+			const gi3 = perm[ ii + i3 + perm[ jj + j3 + perm[ kk + k3 + perm[ ll + l3 ] ] ] ] % 32;
+			const gi4 = perm[ ii + 1 + perm[ jj + 1 + perm[ kk + 1 + perm[ ll + 1 ] ] ] ] % 32;
+			// Calculate the contribution from the five corners
+			let t0 = 0.6 - x0 * x0 - y0 * y0 - z0 * z0 - w0 * w0;
+			if ( t0 < 0 ) n0 = 0.0; else {
+
+				t0 *= t0;
+				n0 = t0 * t0 * this.dot4( grad4[ gi0 ], x0, y0, z0, w0 );
+
+			}
+
+			let t1 = 0.6 - x1 * x1 - y1 * y1 - z1 * z1 - w1 * w1;
+			if ( t1 < 0 ) n1 = 0.0; else {
+
+				t1 *= t1;
+				n1 = t1 * t1 * this.dot4( grad4[ gi1 ], x1, y1, z1, w1 );
+
+			}
+
+			let t2 = 0.6 - x2 * x2 - y2 * y2 - z2 * z2 - w2 * w2;
+			if ( t2 < 0 ) n2 = 0.0; else {
+
+				t2 *= t2;
+				n2 = t2 * t2 * this.dot4( grad4[ gi2 ], x2, y2, z2, w2 );
+
+			}
+
+			let t3 = 0.6 - x3 * x3 - y3 * y3 - z3 * z3 - w3 * w3;
+			if ( t3 < 0 ) n3 = 0.0; else {
+
+				t3 *= t3;
+				n3 = t3 * t3 * this.dot4( grad4[ gi3 ], x3, y3, z3, w3 );
+
+			}
+
+			let t4 = 0.6 - x4 * x4 - y4 * y4 - z4 * z4 - w4 * w4;
+			if ( t4 < 0 ) n4 = 0.0; else {
+
+				t4 *= t4;
+				n4 = t4 * t4 * this.dot4( grad4[ gi4 ], x4, y4, z4, w4 );
+
+			}
+
+			// Sum up and scale the result to cover the range [-1,1]
+			return 27.0 * ( n0 + n1 + n2 + n3 + n4 );
+
+		}
 
 	}
 
-	THREE.RoomEnvironment = RoomEnvironment;
+	THREE.SimplexNoise = SimplexNoise;
 
 } )();
 </script>
 <script>
 "use strict";
 // ---------------------------------------------------------------------------
-//  «МОЯ ПЛАНЕТА» — fully 3D logo animation (three.js).
-//  render(t) is a pure function of time: the same code plays live and renders
-//  frame-exact 30 fps video. Units = pixels of the original 512×512 artwork;
-//  3D origin = artwork point (255.5, 255), y up, z toward the viewer.
+//  «МОЯ ПЛАНЕТА» — 3D logo ident.
+//  Concept (after the channel's 2012 identity: the «Человек Планеты» with a
+//  backpack placed in a traveller's natural environment with «living»
+//  textures — sand, leaves, skin): the logo is a physical geo-pin that flies
+//  in and plants itself into desert dunes at golden hour. The circle is a
+//  real rotating globe, the hiker a white ceramic figure, the outline a
+//  glossy lacquered tube, the lettering solid blue type.
+//  render(t) is a pure function of time — live preview and frame-exact video.
+//  Units = pixels of the 512×512 artwork. World: y up, sand at y = 0,
+//  the pin's tip touches the sand.
 // ---------------------------------------------------------------------------
 const Q = new URLSearchParams(location.search);
 const W = +Q.get("w") || 1920, H = +Q.get("h") || 1080;
@@ -2965,52 +3435,14 @@ const renderer = new THREE.WebGLRenderer({ canvas: glc, antialias: true, preserv
 renderer.setPixelRatio(1);
 renderer.setSize(W, H, false);
 renderer.outputEncoding = THREE.sRGBEncoding;
-renderer.toneMapping = THREE.NoToneMapping;
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure = 0.82;
 renderer.shadowMap.enabled = true;
 renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 
 const scene = new THREE.Scene();
-scene.background = new THREE.Color(0xffffff);
-const pmrem = new THREE.PMREMGenerator(renderer);
-scene.environment = pmrem.fromScene(new THREE.RoomEnvironment(), 0.04).texture;
-
-// Static frontal camera; logo (482 px tall) fills ~80% of the frame height.
-const FOV = 30;
-const camera = new THREE.PerspectiveCamera(FOV, W / H, 10, 20000);
-const camDist = Math.max((482 / 0.80 / 2) / Math.tan(FOV / 2 * Math.PI / 180), (360 / 0.80 / 2) / (Math.tan(FOV / 2 * Math.PI / 180) * W / H));
-camera.position.set(0, 0, camDist);
-camera.lookAt(0, 0, 0);
-
-const hemi = new THREE.HemisphereLight(0xffffff, 0xcfe3ea, 0.25); scene.add(hemi);
-const key = new THREE.DirectionalLight(0xffffff, 0.55);
-key.position.set(-260, 420, 1500);
-key.castShadow = true;
-key.shadow.mapSize.set(2048, 2048);
-key.shadow.camera.left = -520; key.shadow.camera.right = 520;
-key.shadow.camera.top = 520; key.shadow.camera.bottom = -520;
-key.shadow.camera.near = 200; key.shadow.camera.far = 3000;
-key.shadow.radius = 14; key.shadow.blurSamples = 20; key.shadow.bias = -0.0008;
-scene.add(key);
-const wall = new THREE.Mesh(new THREE.PlaneGeometry(6000, 4000), new THREE.ShadowMaterial({ opacity: 0.07 }));
-wall.position.z = -160; wall.receiveShadow = true; scene.add(wall);
-
-// ---------------- gloss sweep (shared shader patch) ----------------
-const SWEEP = { value: new THREE.Vector3(-9999, 30, 0) }; // x position, width, strength
-function glossy(mat) {
-  mat.onBeforeCompile = (sh) => {
-    sh.uniforms.uSweep = SWEEP;
-    sh.vertexShader = "varying vec3 vSwW;\n" + sh.vertexShader.replace("#include <project_vertex>",
-      "#include <project_vertex>\n vSwW = (modelMatrix * vec4(transformed, 1.0)).xyz;");
-    sh.fragmentShader = "uniform vec3 uSweep;\nvarying vec3 vSwW;\n" + sh.fragmentShader.replace("#include <dithering_fragment>",
-      "float sd = (vSwW.x + vSwW.y * 0.42) - uSweep.x;\n" +
-      "float band = exp(-sd*sd/(2.0*uSweep.y*uSweep.y)) + 0.6*exp(-pow(sd-2.2*uSweep.y,2.0)/(0.18*uSweep.y*uSweep.y));\n" +
-      "gl_FragColor.rgb = mix(gl_FragColor.rgb, vec3(1.0), clamp(band*uSweep.z,0.0,1.0));\n#include <dithering_fragment>");
-  };
-  mat.customProgramCacheKey = () => "glossy";
-  return mat;
-}
-const blueMat = () => glossy(new THREE.MeshStandardMaterial({ color: BLUE, roughness: 0.5, metalness: 0.0, envMapIntensity: 0.38 }));
-const whiteMat = () => glossy(new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.5, metalness: 0.0, envMapIntensity: 0.55 }));
+const HORIZON = new THREE.Color("#ffdcb4"), ZENITH = new THREE.Color("#2a9fd6");
+scene.fog = new THREE.Fog(HORIZON, 3500, 16000);
 
 // ---------------- helpers ----------------
 const clamp = (v, a = 0, b = 1) => Math.min(b, Math.max(a, v));
@@ -3027,150 +3459,207 @@ const bump = (t, t0, tin, hold, tout) => {
   if (t < t0 + tin + hold) return 1;
   return 1 - eInOutSine(clamp((t - t0 - tin - hold) / tout));
 };
-const P = (x, y) => new THREE.Vector2(x - 255.5, 255 - y);       // artwork → 3D
+const rnd = (i, n) => { const x = Math.sin(i * 127.1 + n * 311.7) * 43758.5453; return x - Math.floor(x); };
+const simplex = new THREE.SimplexNoise({ random: (() => { let s = 7; return () => (s = (s * 16807) % 2147483647) / 2147483647; })() });
+const fbm3 = (x, y, z, o = 5) => { let a = 0.5, f = 1, s = 0; for (let i = 0; i < o; i++) { s += a * simplex.noise3d(x * f, y * f, z * f); a *= 0.5; f *= 2.03; } return s; };
+
+// ---------------- sky, sun, dunes ----------------
+const skyMat = new THREE.ShaderMaterial({
+  side: THREE.BackSide, depthWrite: false, fog: false,
+  uniforms: { hz: { value: HORIZON }, zn: { value: ZENITH }, sunDir: { value: new THREE.Vector3() } },
+  vertexShader: "varying vec3 vD; void main(){ vD = normalize(position); gl_Position = projectionMatrix*modelViewMatrix*vec4(position,1.0); }",
+  fragmentShader: `uniform vec3 hz; uniform vec3 zn; uniform vec3 sunDir; varying vec3 vD;
+    void main(){ float h = clamp(vD.y, -0.2, 1.0);
+      vec3 c = mix(hz, zn, pow(smoothstep(-0.01, 0.16, h), 0.75));
+      float s = max(dot(normalize(vD), normalize(sunDir)), 0.0);
+      c += vec3(1.0,0.82,0.55) * (pow(s, 900.0)*2.5 + pow(s, 12.0)*0.35);
+      gl_FragColor = vec4(c, 1.0);
+      #include <tonemapping_fragment>
+      #include <encodings_fragment>
+    }`,
+});
+const sky = new THREE.Mesh(new THREE.SphereGeometry(16000, 48, 24), skyMat); scene.add(sky);
+
+const SUN_DIR = new THREE.Vector3(-0.62, 0.42, 0.66).normalize();
+skyMat.uniforms.sunDir.value.copy(SUN_DIR);
+const sun = new THREE.DirectionalLight(0xfff4e6, 1.75);
+sun.position.copy(SUN_DIR).multiplyScalar(2400).add(new THREE.Vector3(0, 250, 0));
+sun.target.position.set(0, 250, 0); scene.add(sun.target);
+sun.castShadow = true;
+sun.shadow.mapSize.set(2048, 2048);
+Object.assign(sun.shadow.camera, { left: -760, right: 760, top: 700, bottom: -700, near: 400, far: 5200 });
+sun.shadow.radius = 3; sun.shadow.bias = -0.0006; sun.shadow.normalBias = 0.6;
+scene.add(sun);
+scene.add(new THREE.HemisphereLight(0xf2e4d6, 0xd8b07a, 0.34));
+
+// Environment for reflections: the same sky over a sand floor.
+{
+  const envScene = new THREE.Scene();
+  envScene.add(new THREE.Mesh(new THREE.SphereGeometry(100, 32, 16), skyMat));
+  const floor = new THREE.Mesh(new THREE.CircleGeometry(100, 32), new THREE.MeshBasicMaterial({ color: 0xd9b98a }));
+  floor.rotation.x = -Math.PI / 2; floor.position.y = -2; envScene.add(floor);
+  const pm = new THREE.PMREMGenerator(renderer);
+  scene.environment = pm.fromScene(envScene, 0.02).texture;
+}
+
+// Sand: rippled bump texture + low dunes rising away from the pin.
+const rip = document.createElement("canvas"); rip.width = rip.height = 512;
+{
+  const c = rip.getContext("2d"), img = c.createImageData(512, 512);
+  for (let y = 0; y < 512; y++) for (let x = 0; x < 512; x++) {
+    const u = x / 512 * Math.PI * 2, v = y / 512 * Math.PI * 2;
+    const warp = 0.9 * simplex.noise3d(Math.cos(u) * 1.2, Math.sin(u) * 1.2, Math.sin(v) * 1.2 + Math.cos(v));
+    const r = 0.5 + 0.5 * Math.sin(v * 14 + warp * 3.0 + 0.5 * Math.sin(u * 3));
+    const g = Math.pow(r, 1.6) * 200 + 30 + 25 * rnd(x * 512 + y, 3);
+    const i = (y * 512 + x) * 4; img.data[i] = img.data[i + 1] = img.data[i + 2] = g; img.data[i + 3] = 255;
+  }
+  c.putImageData(img, 0, 0);
+}
+const ripTex = new THREE.CanvasTexture(rip);
+ripTex.wrapS = ripTex.wrapT = THREE.RepeatWrapping; ripTex.repeat.set(70, 70); ripTex.anisotropy = 8;
+const duneGeo = new THREE.PlaneGeometry(30000, 30000, 220, 220);
+duneGeo.rotateX(-Math.PI / 2);
+{
+  const p = duneGeo.attributes.position;
+  for (let i = 0; i < p.count; i++) {
+    const x = p.getX(i), z = p.getZ(i), d = Math.hypot(x, z + 400);
+    const k = clamp((d - 900) / 2600);
+    const h = (fbm3(x / 2600, 0.3, z / 2600, 4) * 0.5 + 0.5) * 520 + 140 * Math.sin(x / 1700 + z / 2300);
+    p.setY(i, k * k * Math.max(0, h) - 2);
+  }
+  duneGeo.computeVertexNormals();
+}
+const sand = new THREE.Mesh(duneGeo, new THREE.MeshStandardMaterial({ color: 0xe3be86, roughness: 0.96, metalness: 0, bumpMap: ripTex, bumpScale: 2.2, envMapIntensity: 0.35 }));
+sand.receiveShadow = true; scene.add(sand);
+
+// ---------------- gloss sweep (shader patch shared by logo materials) ----------------
+const SWEEP = { value: new THREE.Vector3(-9999, 30, 0) };
+function glossy(mat) {
+  mat.onBeforeCompile = (sh) => {
+    sh.uniforms.uSweep = SWEEP;
+    sh.vertexShader = "varying vec3 vSwW;\n" + sh.vertexShader.replace("#include <project_vertex>",
+      "#include <project_vertex>\n vSwW = (modelMatrix * vec4(transformed, 1.0)).xyz;");
+    sh.fragmentShader = "uniform vec3 uSweep;\nvarying vec3 vSwW;\n" + sh.fragmentShader.replace("#include <dithering_fragment>",
+      "float sd = (vSwW.x + (vSwW.y - 250.0) * 0.42) - uSweep.x;\n" +
+      "float band = exp(-sd*sd/(2.0*uSweep.y*uSweep.y)) + 0.55*exp(-pow(sd-2.4*uSweep.y,2.0)/(0.16*uSweep.y*uSweep.y));\n" +
+      "gl_FragColor.rgb = mix(gl_FragColor.rgb, vec3(1.0), clamp(band*uSweep.z,0.0,1.0));\n#include <dithering_fragment>");
+  };
+  mat.customProgramCacheKey = () => "glossy";
+  return mat;
+}
+// Brand blue as glossy lacquer; white as matte ceramic.
+const lacquer = () => glossy(new THREE.MeshPhysicalMaterial({ color: BLUE, roughness: 0.3, metalness: 0, clearcoat: 1, clearcoatRoughness: 0.06, envMapIntensity: 0.5, toneMapped: false }));
+const ceramic = () => glossy(new THREE.MeshPhysicalMaterial({ color: 0xf7f7f4, roughness: 0.55, metalness: 0, clearcoat: 0.25, clearcoatRoughness: 0.4, envMapIntensity: 0.6 }));
+
+// ---------------- logo geometry ----------------
+const P = (x, y) => new THREE.Vector2(x - 255.5, 496.5 - y);    // artwork → logo space (tip at y = 0)
 const shapeOf = pts => new THREE.Shape(pts.map(([x, y]) => P(x, y)));
-function extrude(shapes, depth, bevel = 1.2) {
-  const g = new THREE.ExtrudeGeometry(shapes, { depth, bevelEnabled: true, bevelThickness: bevel, bevelSize: bevel * 0.7, bevelSegments: 3, curveSegments: 28 });
-  g.translate(0, 0, -depth / 2);
-  return g;
+function extrude(shapes, depth, bevel = 2, segs = 4) {
+  const g = new THREE.ExtrudeGeometry(shapes, { depth, bevelEnabled: true, bevelThickness: bevel, bevelSize: bevel * 0.8, bevelSegments: segs, curveSegments: 32 });
+  g.translate(0, 0, -depth / 2); return g;
 }
 function svgShapes(d) {
   const data = new THREE.SVGLoader().parse(`<svg xmlns="http://www.w3.org/2000/svg"><path d="${d}"/></svg>`);
   return data.paths.flatMap(p => THREE.SVGLoader.createShapes(p));
 }
-function mesh(geo, mat, parent) {
-  const m = new THREE.Mesh(geo, mat); m.castShadow = true; m.receiveShadow = true;
-  (parent || logo).add(m); return m;
-}
-
-// ---------------- logo scene graph ----------------
 const logo = new THREE.Group(); scene.add(logo);
+function part(geo, mat, pivot, parent = logo) {     // a rig placed at pivot; geometry relative to it
+  const rig = new THREE.Group(); parent.add(rig);
+  geo.translate(-pivot.x, -pivot.y, 0);
+  rig.position.set(pivot.x, pivot.y, 0);
+  rig.userData.home = rig.position.clone();
+  const m = new THREE.Mesh(geo, mat); m.castShadow = m.receiveShadow = true; rig.add(m);
+  rig.userData.mesh = m; return rig;
+}
 
-// Globe: a real sphere. Flattened on z it reads as the flat disc of the logo.
-const DISC = { x: 254.5, y: 176.5, r: 134 };
-const globeRig = new THREE.Group(); logo.add(globeRig);           // fly-in
-const globeTilt = new THREE.Group(); globeRig.add(globeTilt);       // tilt / squash
-globeRig.position.set(DISC.x - 255.5, 255 - DISC.y, 0);
-const texC = document.createElement("canvas"); texC.width = 2048; texC.height = 1024;
-const globeTex = new THREE.CanvasTexture(texC); globeTex.encoding = THREE.sRGBEncoding; globeTex.anisotropy = 8;
-const globe = mesh(new THREE.SphereGeometry(DISC.r, 128, 96), glossy(new THREE.MeshStandardMaterial({ map: globeTex, roughness: 0.55, envMapIntensity: 0.38 })), globeTilt);
-
-const LAND = [
-  [[-20,35],[5,38],[30,33],[45,15],[40,-5],[30,-25],[18,-35],[10,-20],[0,0],[-15,10],[-18,25]],
-  [[60,55],[100,62],[140,60],[150,45],[120,30],[100,20],[80,25],[65,40]],
-  [[-125,50],[-95,58],[-70,52],[-80,30],[-100,20],[-115,30]],
-  [[-80,8],[-50,-5],[-38,-12],[-55,-30],[-70,-50],[-75,-20]],
-  [[115,-15],[145,-12],[152,-28],[130,-35],[114,-28]],
-  [[-50,75],[-25,80],[-20,70],[-40,62]],
-];
-let texG = -1;
-function paintGlobe(g) {
-  g = Math.round(g * 60) / 60;
-  if (g === texG) return; texG = g;
-  const c = texC.getContext("2d"), w = texC.width, h = texC.height;
-  c.fillStyle = "#00B6E6"; c.fillRect(0, 0, w, h);
-  if (g > 0) {
-    const X = lon => (lon + 180) / 360 * w, Y = lat => (90 - lat) / 180 * h;
-    c.fillStyle = `rgba(150,226,248,${0.85 * g})`;
-    for (const loop of LAND) {
-      c.beginPath();
-      const pts = loop.map(([lo, la]) => [X(lo), Y(la)]);
-      c.moveTo((pts[0][0] + pts.at(-1)[0]) / 2, (pts[0][1] + pts.at(-1)[1]) / 2);
-      for (let i = 0; i < pts.length; i++) {
-        const a = pts[i], b = pts[(i + 1) % pts.length];
-        c.quadraticCurveTo(a[0], a[1], (a[0] + b[0]) / 2, (a[1] + b[1]) / 2);
-      }
-      c.fill();
+// Globe — a true sphere set back behind the outline, procedural planet in brand colours.
+const DISC = { x: 254.5, y: 176.5, r: 134 }, GLOBE_Z = -48;
+const globeTex = (() => {
+  const w = 1024, h = 512, c = document.createElement("canvas"); c.width = w; c.height = h;
+  const r = document.createElement("canvas"); r.width = w; r.height = h;
+  const cx = c.getContext("2d"), rx = r.getContext("2d");
+  const img = cx.createImageData(w, h), rim = rx.createImageData(w, h);
+  const ocean = [0, 182, 230], deep = [0, 118, 178], land = [246, 252, 253], hill = [206, 236, 245];
+  for (let y = 0; y < h; y++) {
+    const lat = (0.5 - y / h) * Math.PI;
+    for (let x = 0; x < w; x++) {
+      const lon = x / w * Math.PI * 2;
+      const X = Math.cos(lat) * Math.cos(lon), Y = Math.sin(lat), Z = Math.cos(lat) * Math.sin(lon);
+      const n = fbm3(X * 1.35 + 3.1, Y * 1.35, Z * 1.35, 6) + 0.18 * Math.abs(Y) ** 3 * 2;
+      const i = (y * w + x) * 4; let col, rough;
+      if (n > 0.16) { const k = clamp((n - 0.16) * 3); col = ocean.map((_, j) => lerp(land[j], hill[j], k * 0.6)); rough = 225; }
+      else { const k = clamp((0.16 - n) * 1.6); col = ocean.map((o, j) => lerp(o, deep[j], k)); rough = 40; }
+      if (n > 0.12 && n <= 0.16) { col = ocean.map((o, j) => lerp(o, 255, 0.35)); }
+      img.data[i] = col[0]; img.data[i + 1] = col[1]; img.data[i + 2] = col[2]; img.data[i + 3] = 255;
+      rim.data[i] = rim.data[i + 1] = rim.data[i + 2] = rough; rim.data[i + 3] = 255;
     }
-    c.strokeStyle = `rgba(255,255,255,${0.45 * g})`; c.lineWidth = 3;
-    for (let lon = -180; lon < 180; lon += 30) { c.beginPath(); c.moveTo(X(lon), 0); c.lineTo(X(lon), h); c.stroke(); }
-    for (let lat = -60; lat <= 60; lat += 30) { c.beginPath(); c.moveTo(0, Y(lat)); c.lineTo(w, Y(lat)); c.stroke(); }
   }
-  globeTex.needsUpdate = true;
-}
+  cx.putImageData(img, 0, 0); rx.putImageData(rim, 0, 0);
+  const t = new THREE.CanvasTexture(c); t.encoding = THREE.sRGBEncoding; t.anisotropy = 8;
+  const tr = new THREE.CanvasTexture(r);
+  return { map: t, rough: tr };
+})();
+const globeRig = new THREE.Group(); logo.add(globeRig);
+const gp = P(DISC.x, DISC.y); globeRig.position.set(gp.x, gp.y, GLOBE_Z); globeRig.userData.home = globeRig.position.clone();
+const globeTilt = new THREE.Group(); globeTilt.rotation.set(0.38, 0, -0.22); globeRig.add(globeTilt);
+const globe = new THREE.Mesh(new THREE.SphereGeometry(DISC.r, 128, 96),
+  glossy(new THREE.MeshPhysicalMaterial({ map: globeTex.map, roughnessMap: globeTex.rough, roughness: 1, clearcoat: 0.8, clearcoatRoughness: 0.1, envMapIntensity: 0.55 })));
+globe.castShadow = globe.receiveShadow = true; globeTilt.add(globe);
 
-// Ground: the white hill of the logo, a non-rotating skin on the globe surface.
-const WHITE2D = new Path2D("M245.62 309.85C245.07 309.80 243.33 309.63 241.75 309.48C226.20 308.03 209.74 303.35 195.77 296.41C191.19 294.14 187.69 292.23 187.83 292.08C188.03 291.88 191.12 291.51 194.79 291.25C196.76 291.11 199.11 290.88 200.00 290.75C200.89 290.61 204.72 290.33 208.50 290.12C212.28 289.91 215.54 289.69 215.75 289.63C215.96 289.57 218.54 289.40 221.50 289.25C227.64 288.94 229.39 288.68 229.75 288.00C230.16 287.23 230.04 285.01 229.27 279.69C228.42 273.81 227.99 269.92 226.73 257.06C226.41 253.85 226.57 244.16 226.98 241.50C228.19 233.60 228.58 230.93 228.90 228.25C229.10 226.53 229.43 224.44 229.64 223.59C230.35 220.67 230.67 205.05 230.10 201.31C229.91 200.07 229.04 199.75 225.79 199.72C221.03 199.68 220.96 199.78 220.77 207.55C220.67 211.32 220.52 213.33 220.33 213.52C219.73 214.12 219.56 212.73 219.43 206.00C219.36 202.22 219.22 198.92 219.12 198.68C219.02 198.43 218.42 197.88 217.78 197.45C213.29 194.40 212.28 192.37 213.52 188.85C214.15 187.05 214.06 185.27 213.29 184.29C212.74 183.59 208.96 177.98 207.63 175.88C206.68 174.38 203.53 168.82 202.76 167.28C201.41 164.59 201.97 161.85 204.21 160.13C205.89 158.85 206.23 158.23 206.24 156.43C206.25 154.88 205.89 153.93 205.00 153.13C203.52 151.79 203.46 150.43 204.76 147.48C205.93 144.82 205.76 143.40 203.99 141.11C202.14 138.72 201.93 137.92 201.77 132.93L201.62 128.49 L200.42 127.46C198.80 126.07 198.88 125.55 200.86 124.88C202.54 124.31 201.99 125.15 205.91 117.14C207.12 114.68 208.50 112.19 208.99 111.61C209.48 111.03 210.49 109.74 211.25 108.75C212.01 107.76 213.66 106.05 214.92 104.95L217.22 102.95 L217.37 101.54C217.46 100.76 217.55 99.90 217.58 99.62C217.65 98.84 218.40 99.03 219.05 100.00L219.64 100.88 L221.82 100.95C223.75 101.01 224.20 100.94 225.89 100.26C228.18 99.34 228.14 99.34 230.00 100.12C231.85 100.90 232.34 100.90 234.10 100.12C235.22 99.63 235.93 99.50 237.47 99.50C239.62 99.50 240.00 99.29 240.52 97.81C240.76 97.10 240.68 96.83 239.64 94.89C236.68 89.38 236.87 89.93 236.90 86.88C236.93 83.73 237.44 81.90 238.74 80.26C239.57 79.22 239.80 78.61 240.89 74.64C242.89 67.33 245.76 64.93 251.83 65.51C254.79 65.79 255.67 66.01 256.95 66.79C258.37 67.66 260.74 70.01 261.32 71.12C262.10 72.63 262.75 76.90 262.74 80.50C262.74 88.72 261.60 91.72 257.83 93.52C256.13 94.33 255.71 94.90 255.93 96.06C256.16 97.29 256.67 97.49 260.02 97.66C261.80 97.75 263.44 97.96 263.88 98.16C265.01 98.68 268.75 102.14 270.47 104.25C272.90 107.23 272.87 107.10 272.89 116.25C272.90 124.56 272.99 125.32 274.22 127.62C274.52 128.20 274.65 129.44 274.76 132.88L274.90 137.38 L276.09 140.38C276.75 142.03 277.46 143.63 277.66 143.94C278.47 145.21 280.06 151.41 280.49 155.00C280.65 156.31 280.94 158.44 281.14 159.75C281.34 161.06 281.61 164.00 281.73 166.28L281.95 170.44 L283.12 173.28C285.97 180.26 286.50 182.49 286.50 187.60C286.50 192.56 286.03 193.92 283.54 196.25C282.59 197.14 281.68 198.13 281.52 198.43C281.25 198.96 281.65 201.84 282.75 207.38C282.89 208.06 283.23 210.37 283.52 212.50C284.77 221.89 284.99 223.42 285.23 224.49C285.50 225.68 286.31 235.34 286.75 242.75C286.90 245.16 287.12 248.08 287.25 249.25C287.37 250.42 287.60 253.12 287.75 255.25C288.02 259.01 288.29 260.45 289.84 266.12C291.07 270.63 291.28 271.29 292.63 274.88C293.38 276.88 294.00 278.65 294.00 278.80C294.00 279.49 297.87 286.82 298.79 287.86C300.50 289.80 301.01 289.98 307.12 290.76C309.32 291.04 311.52 291.38 312.00 291.50C312.48 291.63 314.39 291.91 316.25 292.13C318.11 292.35 319.79 292.58 319.99 292.65C320.48 292.82 319.52 293.38 314.25 296.02C300.02 303.14 285.71 307.35 268.63 309.41C265.56 309.78 248.36 310.11 245.62 309.85ZM276.63 287.74C277.18 287.29 277.08 286.50 276.24 284.38C275.29 282.02 275.24 280.65 276.01 278.38C276.73 276.26 276.80 273.98 276.20 271.88C275.63 269.83 274.33 262.75 273.89 259.25C273.70 257.67 273.30 255.31 273.02 254.00C272.28 250.56 271.07 241.72 270.75 237.40C270.31 231.51 270.02 230.53 268.01 228.12C267.43 227.43 266.36 225.64 265.61 224.12C264.44 221.73 264.17 220.87 263.50 217.50C262.64 213.10 262.17 211.99 259.98 209.25C258.96 207.96 257.80 205.95 256.27 202.83C253.82 197.82 253.31 197.21 252.02 197.74C250.80 198.25 250.47 199.35 250.23 203.72C249.95 208.63 249.59 213.58 249.26 217.12C249.11 218.64 248.82 221.79 248.61 224.12C247.51 236.17 246.84 241.36 245.85 245.50C245.51 246.94 245.12 248.57 245.00 249.12C244.58 250.98 244.70 254.51 245.25 256.06C245.53 256.87 245.75 258.13 245.75 258.96C245.75 259.77 245.91 262.11 246.11 264.15C246.31 266.20 246.54 269.23 246.62 270.88C246.71 272.52 246.95 275.56 247.15 277.62C247.36 279.69 247.62 282.70 247.73 284.31C247.86 286.15 248.07 287.40 248.28 287.66C248.59 288.03 249.41 288.06 257.00 287.93C261.61 287.85 267.18 287.87 269.38 287.99C274.06 288.23 276.13 288.16 276.63 287.74ZM274.96 178.48C276.23 177.12 276.30 173.71 275.10 171.51C274.42 170.25 271.67 166.67 270.15 165.05C269.20 164.04 268.25 164.03 267.90 165.04C267.71 165.59 267.84 166.07 268.68 167.79C270.17 170.89 271.60 174.14 272.38 176.22C273.37 178.87 274.05 179.46 274.96 178.48Z");
-const FEET_Y = 288.5;
-const maskC = document.createElement("canvas"); maskC.width = maskC.height = 1024;
-{ const c = maskC.getContext("2d"); c.scale(2, 2); c.fillStyle = "#000"; c.fillRect(0, 0, 512, 512);
-  c.beginPath(); c.rect(0, FEET_Y - 2, 512, 100); c.clip(); c.fillStyle = "#fff"; c.fill(WHITE2D);
-  c.beginPath(); c.rect(0, 296, 512, 100); c.clip(); c.strokeStyle = "#fff"; c.lineWidth = 3; c.stroke(WHITE2D); }
-const maskTex = new THREE.CanvasTexture(maskC);
-const groundGeo = new THREE.SphereGeometry(DISC.r * 1.006, 160, 120);
-{ // planar front projection UVs (back hemisphere → empty corner of the mask)
-  const pos = groundGeo.attributes.position, uv = groundGeo.attributes.uv;
-  for (let i = 0; i < pos.count; i++) {
-    const x = pos.getX(i), y = pos.getY(i), z = pos.getZ(i);
-    if (z < -1) uv.setXY(i, 0.001, 0.999);
-    else uv.setXY(i, (x + DISC.x) / 512, 1 - (DISC.y - y) / 512);
-  }
-}
-const ground = mesh(groundGeo, whiteMat(), globeTilt);
-ground.material.alphaMap = maskTex; ground.material.alphaTest = 0.5;
-
-// Hiker: extruded silhouette, pivoting around its own vertical axis at the feet.
-const HIKER_AXIS = 244;
+// Hiker — thick white ceramic figure standing on a white hill in front of the globe.
+const FEET_Y = 288.5, HIKER_AXIS = 244, HIKER_D = 24, HIKER_Z = 104;
 const hikerRig = new THREE.Group(); logo.add(hikerRig);
+const hp = P(HIKER_AXIS, FEET_Y); hikerRig.position.set(hp.x, hp.y, HIKER_Z); hikerRig.userData.home = hikerRig.position.clone();
 const hikerPivot = new THREE.Group(); hikerRig.add(hikerPivot);
-const HIKER_D = 14;
-const hikerGeo = extrude(svgShapes("M-25.76 -33.02 C-25.34 -32.22 -25.46 -30.05 -26.23 -24.69 C-27.08 -18.81 -27.51 -14.92 -28.77 -2.06 C-29.09 1.15 -28.93 10.84 -28.52 13.50 C-27.31 21.40 -26.92 24.07 -26.60 26.75 C-26.40 28.47 -26.07 30.56 -25.86 31.41 C-25.15 34.33 -24.83 49.95 -25.40 53.69 C-25.59 54.93 -26.46 55.25 -29.68 55.28 C-34.49 55.31 -34.55 55.21 -34.74 47.45 C-34.83 43.67 -34.97 41.68 -35.17 41.48 C-35.77 40.88 -35.94 42.27 -36.07 49.00 C-36.14 52.78 -36.28 56.08 -36.38 56.32 C-36.48 56.57 -37.08 57.12 -37.72 57.55 C-42.21 60.60 -43.22 62.63 -41.98 66.15 C-41.35 67.95 -41.44 69.73 -42.21 70.71 C-42.76 71.41 -46.54 77.02 -47.87 79.12 C-48.82 80.62 -51.97 86.18 -52.74 87.72 C-54.09 90.41 -53.53 93.15 -51.29 94.87 C-49.61 96.15 -49.27 96.77 -49.26 98.57 C-49.25 100.12 -49.61 101.07 -50.50 101.87 C-51.98 103.21 -52.04 104.57 -50.74 107.52 C-49.57 110.18 -49.74 111.60 -51.51 113.89 C-53.36 116.28 -53.57 117.08 -53.73 122.07 L-53.88 126.51 L-55.08 127.54 C-56.70 128.93 -56.62 129.45 -54.64 130.12 C-52.96 130.69 -53.51 129.85 -49.59 137.86 C-48.38 140.32 -47.00 142.81 -46.51 143.39 C-46.02 143.97 -45.01 145.26 -44.25 146.25 C-43.49 147.24 -41.84 148.95 -40.58 150.05 L-38.28 152.05 L-38.13 153.46 C-38.04 154.24 -37.95 155.10 -37.92 155.38 C-37.85 156.16 -37.10 155.97 -36.45 155.00 L-35.86 154.12 L-33.68 154.05 C-31.75 153.99 -31.30 154.06 -29.61 154.74 C-27.32 155.66 -27.36 155.66 -25.50 154.88 C-23.65 154.10 -23.16 154.10 -21.40 154.88 C-20.28 155.37 -19.57 155.50 -18.03 155.50 C-15.88 155.50 -15.50 155.71 -14.98 157.19 C-14.74 157.90 -14.82 158.17 -15.86 160.11 C-18.82 165.62 -18.63 165.07 -18.60 168.12 C-18.57 171.27 -18.06 173.10 -16.76 174.74 C-15.93 175.78 -15.70 176.39 -14.61 180.36 C-12.61 187.67 -9.74 190.07 -3.67 189.49 C-0.71 189.21 0.17 188.99 1.45 188.21 C2.87 187.34 5.24 184.99 5.82 183.88 C6.60 182.37 7.25 178.10 7.24 174.50 C7.24 166.28 6.10 163.28 2.33 161.48 C0.63 160.67 0.21 160.10 0.43 158.94 C0.66 157.71 1.17 157.51 4.52 157.34 C6.30 157.25 7.94 157.04 8.38 156.84 C9.51 156.32 13.25 152.86 14.97 150.75 C17.40 147.77 17.37 147.90 17.39 138.75 C17.40 130.44 17.49 129.68 18.72 127.38 C19.02 126.80 19.15 125.56 19.26 122.12 L19.40 117.62 L20.59 114.62 C21.25 112.97 21.96 111.37 22.16 111.06 C22.97 109.79 24.56 103.59 24.99 100.00 C25.15 98.69 25.44 96.56 25.64 95.25 C25.84 93.94 26.11 91.00 26.23 88.72 L26.45 84.56 L27.62 81.72 C30.47 74.74 31.00 72.51 31.00 67.40 C31.00 62.44 30.53 61.08 28.04 58.75 C27.09 57.86 26.18 56.87 26.02 56.57 C25.75 56.04 26.15 53.16 27.25 47.62 C27.39 46.94 27.73 44.63 28.02 42.50 C29.27 33.11 29.49 31.58 29.73 30.51 C30.00 29.32 30.81 19.66 31.25 12.25 C31.40 9.84 31.62 6.92 31.75 5.75 C31.87 4.58 32.10 1.88 32.25 -0.25 C32.52 -4.01 32.79 -5.45 34.34 -11.12 C35.57 -15.63 35.78 -16.29 37.13 -19.88 C37.88 -21.88 38.50 -23.64 38.50 -23.78 C38.50 -24.32 42.05 -31.27 42.88 -32.36 L43.75 -33.50 L8.86 -33.50 C-25.54 -33.50 -26.01 -33.49 -25.76 -33.02 ZM21.13 -32.74 C21.68 -32.29 21.58 -31.50 20.74 -29.38 C19.79 -27.02 19.74 -25.65 20.51 -23.38 C21.23 -21.26 21.30 -18.98 20.70 -16.88 C20.13 -14.83 18.83 -7.75 18.39 -4.25 C18.20 -2.67 17.80 -0.31 17.52 1.00 C16.78 4.44 15.57 13.28 15.25 17.60 C14.81 23.49 14.52 24.47 12.51 26.88 C11.93 27.57 10.86 29.36 10.11 30.88 C8.94 33.27 8.67 34.13 8.00 37.50 C7.14 41.90 6.67 43.01 4.48 45.75 C3.46 47.04 2.30 49.05 0.77 52.17 C-1.68 57.18 -2.19 57.79 -3.48 57.26 C-4.70 56.75 -5.03 55.65 -5.27 51.28 C-5.55 46.37 -5.91 41.42 -6.24 37.88 C-6.39 36.36 -6.68 33.21 -6.89 30.88 C-7.99 18.83 -8.66 13.64 -9.65 9.50 C-9.99 8.06 -10.38 6.43 -10.50 5.88 C-10.92 4.02 -10.80 0.49 -10.25 -1.06 C-9.97 -1.87 -9.75 -3.13 -9.75 -3.96 C-9.75 -4.77 -9.59 -7.11 -9.39 -9.15 C-9.19 -11.20 -8.96 -14.23 -8.88 -15.88 C-8.79 -17.52 -8.55 -20.56 -8.35 -22.62 C-8.14 -24.69 -7.88 -27.70 -7.77 -29.31 C-7.64 -31.15 -7.43 -32.40 -7.22 -32.66 C-6.91 -33.03 -6.09 -33.06 1.50 -32.93 C6.11 -32.85 11.68 -32.87 13.88 -32.99 C18.56 -33.23 20.63 -33.16 21.13 -32.74 ZM19.46 76.52 C20.73 77.88 20.80 81.29 19.60 83.49 C18.92 84.75 16.17 88.33 14.65 89.95 C13.70 90.96 12.75 90.97 12.40 89.96 C12.21 89.41 12.34 88.93 13.18 87.21 C14.67 84.11 16.10 80.86 16.88 78.78 C17.87 76.13 18.55 75.54 19.46 76.52 Z"), HIKER_D, 1.0);
-hikerGeo.translate(-(HIKER_AXIS - 255.5), -(255 - FEET_Y), 0);
-const hiker = mesh(hikerGeo, whiteMat(), hikerPivot);
-hikerRig.position.set(HIKER_AXIS - 255.5, 255 - FEET_Y, 0);
+const hikerGeo = extrude(svgShapes("M-25.76 -33.02 C-25.34 -32.22 -25.46 -30.05 -26.23 -24.69 C-27.08 -18.81 -27.51 -14.92 -28.77 -2.06 C-29.09 1.15 -28.93 10.84 -28.52 13.50 C-27.31 21.40 -26.92 24.07 -26.60 26.75 C-26.40 28.47 -26.07 30.56 -25.86 31.41 C-25.15 34.33 -24.83 49.95 -25.40 53.69 C-25.59 54.93 -26.46 55.25 -29.68 55.28 C-34.49 55.31 -34.55 55.21 -34.74 47.45 C-34.83 43.67 -34.97 41.68 -35.17 41.48 C-35.77 40.88 -35.94 42.27 -36.07 49.00 C-36.14 52.78 -36.28 56.08 -36.38 56.32 C-36.48 56.57 -37.08 57.12 -37.72 57.55 C-42.21 60.60 -43.22 62.63 -41.98 66.15 C-41.35 67.95 -41.44 69.73 -42.21 70.71 C-42.76 71.41 -46.54 77.02 -47.87 79.12 C-48.82 80.62 -51.97 86.18 -52.74 87.72 C-54.09 90.41 -53.53 93.15 -51.29 94.87 C-49.61 96.15 -49.27 96.77 -49.26 98.57 C-49.25 100.12 -49.61 101.07 -50.50 101.87 C-51.98 103.21 -52.04 104.57 -50.74 107.52 C-49.57 110.18 -49.74 111.60 -51.51 113.89 C-53.36 116.28 -53.57 117.08 -53.73 122.07 L-53.88 126.51 L-55.08 127.54 C-56.70 128.93 -56.62 129.45 -54.64 130.12 C-52.96 130.69 -53.51 129.85 -49.59 137.86 C-48.38 140.32 -47.00 142.81 -46.51 143.39 C-46.02 143.97 -45.01 145.26 -44.25 146.25 C-43.49 147.24 -41.84 148.95 -40.58 150.05 L-38.28 152.05 L-38.13 153.46 C-38.04 154.24 -37.95 155.10 -37.92 155.38 C-37.85 156.16 -37.10 155.97 -36.45 155.00 L-35.86 154.12 L-33.68 154.05 C-31.75 153.99 -31.30 154.06 -29.61 154.74 C-27.32 155.66 -27.36 155.66 -25.50 154.88 C-23.65 154.10 -23.16 154.10 -21.40 154.88 C-20.28 155.37 -19.57 155.50 -18.03 155.50 C-15.88 155.50 -15.50 155.71 -14.98 157.19 C-14.74 157.90 -14.82 158.17 -15.86 160.11 C-18.82 165.62 -18.63 165.07 -18.60 168.12 C-18.57 171.27 -18.06 173.10 -16.76 174.74 C-15.93 175.78 -15.70 176.39 -14.61 180.36 C-12.61 187.67 -9.74 190.07 -3.67 189.49 C-0.71 189.21 0.17 188.99 1.45 188.21 C2.87 187.34 5.24 184.99 5.82 183.88 C6.60 182.37 7.25 178.10 7.24 174.50 C7.24 166.28 6.10 163.28 2.33 161.48 C0.63 160.67 0.21 160.10 0.43 158.94 C0.66 157.71 1.17 157.51 4.52 157.34 C6.30 157.25 7.94 157.04 8.38 156.84 C9.51 156.32 13.25 152.86 14.97 150.75 C17.40 147.77 17.37 147.90 17.39 138.75 C17.40 130.44 17.49 129.68 18.72 127.38 C19.02 126.80 19.15 125.56 19.26 122.12 L19.40 117.62 L20.59 114.62 C21.25 112.97 21.96 111.37 22.16 111.06 C22.97 109.79 24.56 103.59 24.99 100.00 C25.15 98.69 25.44 96.56 25.64 95.25 C25.84 93.94 26.11 91.00 26.23 88.72 L26.45 84.56 L27.62 81.72 C30.47 74.74 31.00 72.51 31.00 67.40 C31.00 62.44 30.53 61.08 28.04 58.75 C27.09 57.86 26.18 56.87 26.02 56.57 C25.75 56.04 26.15 53.16 27.25 47.62 C27.39 46.94 27.73 44.63 28.02 42.50 C29.27 33.11 29.49 31.58 29.73 30.51 C30.00 29.32 30.81 19.66 31.25 12.25 C31.40 9.84 31.62 6.92 31.75 5.75 C31.87 4.58 32.10 1.88 32.25 -0.25 C32.52 -4.01 32.79 -5.45 34.34 -11.12 C35.57 -15.63 35.78 -16.29 37.13 -19.88 C37.88 -21.88 38.50 -23.64 38.50 -23.78 C38.50 -24.32 42.05 -31.27 42.88 -32.36 L43.75 -33.50 L8.86 -33.50 C-25.54 -33.50 -26.01 -33.49 -25.76 -33.02 ZM21.13 -32.74 C21.68 -32.29 21.58 -31.50 20.74 -29.38 C19.79 -27.02 19.74 -25.65 20.51 -23.38 C21.23 -21.26 21.30 -18.98 20.70 -16.88 C20.13 -14.83 18.83 -7.75 18.39 -4.25 C18.20 -2.67 17.80 -0.31 17.52 1.00 C16.78 4.44 15.57 13.28 15.25 17.60 C14.81 23.49 14.52 24.47 12.51 26.88 C11.93 27.57 10.86 29.36 10.11 30.88 C8.94 33.27 8.67 34.13 8.00 37.50 C7.14 41.90 6.67 43.01 4.48 45.75 C3.46 47.04 2.30 49.05 0.77 52.17 C-1.68 57.18 -2.19 57.79 -3.48 57.26 C-4.70 56.75 -5.03 55.65 -5.27 51.28 C-5.55 46.37 -5.91 41.42 -6.24 37.88 C-6.39 36.36 -6.68 33.21 -6.89 30.88 C-7.99 18.83 -8.66 13.64 -9.65 9.50 C-9.99 8.06 -10.38 6.43 -10.50 5.88 C-10.92 4.02 -10.80 0.49 -10.25 -1.06 C-9.97 -1.87 -9.75 -3.13 -9.75 -3.96 C-9.75 -4.77 -9.59 -7.11 -9.39 -9.15 C-9.19 -11.20 -8.96 -14.23 -8.88 -15.88 C-8.79 -17.52 -8.55 -20.56 -8.35 -22.62 C-8.14 -24.69 -7.88 -27.70 -7.77 -29.31 C-7.64 -31.15 -7.43 -32.40 -7.22 -32.66 C-6.91 -33.03 -6.09 -33.06 1.50 -32.93 C6.11 -32.85 11.68 -32.87 13.88 -32.99 C18.56 -33.23 20.63 -33.16 21.13 -32.74 ZM19.46 76.52 C20.73 77.88 20.80 81.29 19.60 83.49 C18.92 84.75 16.17 88.33 14.65 89.95 C13.70 90.96 12.75 90.97 12.40 89.96 C12.21 89.41 12.34 88.93 13.18 87.21 C14.67 84.11 16.10 80.86 16.88 78.78 C17.87 76.13 18.55 75.54 19.46 76.52 Z"), HIKER_D, 1.6, 3);
+hikerGeo.translate(-(HIKER_AXIS - 255.5), -(496.5 - FEET_Y) + 241.5, 0);   // hiker3.d is centred at (255.5, 255)
+const hiker = new THREE.Mesh(hikerGeo, ceramic()); hiker.castShadow = hiker.receiveShadow = true; hikerPivot.add(hiker);
+const hill = new THREE.Mesh(new THREE.SphereGeometry(1, 64, 32), ceramic());
+hill.scale.set(70, 15, 36); hill.position.set(6, -13.5, -4); hill.castShadow = hill.receiveShadow = true; hikerRig.add(hill);
 
-// Outer pin outline (rebuilt as it draws itself).
-const RING = { x: 256, y: 178, r: 160.5, w: 7.4, a: Math.PI / 6, endY: 321 };
-const ringCenter = (() => {
+// Outline — a lacquered tube that grows around the globe.
+const RING = { x: 256, y: 178, r: 160.5, a: Math.PI / 6, endY: 321, tube: 7.2 };
+const ringCurve = (() => {
   const { x: cx, y: cy, r, a, endY } = RING;
   const tl = [cx - r * Math.cos(a), cy + r * Math.sin(a)], tr = [cx + r * Math.cos(a), cy + r * Math.sin(a)];
   const run = (endY - tl[1]) * Math.tan(a);
   const el = [tl[0] + run, endY], er = [tr[0] - run, endY];
-  const seg = Math.hypot(run, endY - tl[1]), arcLen = r * (Math.PI + 2 * a);
-  const L = 2 * seg + arcLen;
-  const at = s => {
-    if (s <= seg) { const k = s / seg; return [lerp(el[0], tl[0], k), lerp(el[1], tl[1], k)]; }
-    if (s <= seg + arcLen) { const th = Math.PI - a + (s - seg) / r; return [cx + r * Math.cos(th), cy + r * Math.sin(th)]; }
-    const k = (s - seg - arcLen) / seg; return [lerp(tr[0], er[0], k), lerp(tr[1], er[1], k)];
-  };
-  return { at, L };
+  const pts = [];
+  for (let i = 0; i <= 12; i++) pts.push([lerp(el[0], tl[0], i / 12), lerp(el[1], tl[1], i / 12)]);
+  for (let i = 1; i <= 160; i++) { const th = Math.PI - a + (Math.PI + 2 * a) * i / 160; pts.push([cx + r * Math.cos(th), cy + r * Math.sin(th)]); }
+  for (let i = 1; i <= 12; i++) pts.push([lerp(tr[0], er[0], i / 12), lerp(tr[1], er[1], i / 12)]);
+  return new THREE.CatmullRomCurve3(pts.map(([x, y]) => { const v = P(x, y); return new THREE.Vector3(v.x, v.y, 0); }), false, "centripetal");
 })();
-const ringMat = blueMat();
+const ringMat = lacquer();
+const ringGroup = new THREE.Group(); logo.add(ringGroup);
+const capGeo = new THREE.SphereGeometry(RING.tube, 24, 16);
+const capA = new THREE.Mesh(capGeo, ringMat), capB = new THREE.Mesh(capGeo, ringMat);
+[capA, capB].forEach(m => { m.castShadow = true; ringGroup.add(m); });
 let ringMesh = null, ringP = -1;
 function buildRing(p) {
-  p = Math.round(p * 400) / 400;
+  p = Math.round(p * 300) / 300;
   if (p === ringP) return; ringP = p;
-  if (ringMesh) { logo.remove(ringMesh); ringMesh.geometry.dispose(); ringMesh = null; }
-  if (p <= 0.002) return;
-  const len = ringCenter.L * p, n = Math.max(4, Math.ceil(len / 3));
-  const outer = [], inner = [];
-  for (let i = 0; i <= n; i++) {
-    const s = len * i / n;
-    const a = ringCenter.at(Math.max(0, s - 0.5)), b = ringCenter.at(Math.min(ringCenter.L, s + 0.5));
-    const tx = b[0] - a[0], ty = b[1] - a[1], m = Math.hypot(tx, ty);
-    const nx = -ty / m * RING.w / 2, ny = tx / m * RING.w / 2;
-    const c = ringCenter.at(s);
-    outer.push([c[0] + nx, c[1] + ny]); inner.push([c[0] - nx, c[1] - ny]);
-  }
-  ringMesh = mesh(extrude(shapeOf(outer.concat(inner.reverse())), 12, 1.0), ringMat);
+  if (ringMesh) { ringGroup.remove(ringMesh); ringMesh.geometry.dispose(); ringMesh = null; }
+  capA.visible = capB.visible = p > 0.004;
+  if (p <= 0.004) return;
+  const n = 400, pts = [];
+  for (let i = 0; i <= n; i++) pts.push(ringCurve.getPointAt(p * i / n));
+  ringMesh = new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(pts), Math.max(8, Math.ceil(n * p)), RING.tube, 20, false), ringMat);
+  ringMesh.castShadow = ringMesh.receiveShadow = true; ringGroup.add(ringMesh);
+  capA.position.copy(pts[0]); capB.position.copy(pts[n]);
 }
 
-// Bars, V outline, inner triangle.
-function flyPart(geo, pivot) {
-  const rig = new THREE.Group(); logo.add(rig);
-  geo.translate(-pivot.x, -pivot.y, 0);
-  rig.position.set(pivot.x, pivot.y, 0);
-  mesh(geo, blueMat(), rig); return rig;
-}
-const rect = (x0, y0, x1, y1) => shapeOf([[x0, y0], [x1, y0], [x1, y1], [x0, y1]]);
-const topBar = flyPart(extrude(rect(91, 335.6, 420, 341.6), 10, 1.0), P(255.5, 338.6));
-const botBar = flyPart(extrude(rect(91.5, 407.6, 420.5, 413.6), 10, 1.0), P(256, 410.6));
-const vShape = shapeOf([[214.6, 427.6], [296.4, 427.6], [255.5, 496.5]]);
-vShape.holes.push(new THREE.Path([[222.6, 427.6], [255.5, 483.0], [288.4, 427.6]].map(([x, y]) => P(x, y))));
-const vRig = flyPart(extrude(vShape, 12, 1.0), P(255.5, 455));
-const triRig = flyPart(extrude(shapeOf([[238.8, 427.6], [272.2, 427.6], [255.5, 453.5]]), 12, 1.0), P(255.5, 436));
+// Bars, lettering and the pin tip.
+const roundBar = (x0, x1, yc) => {
+  const g = new THREE.RoundedBoxGeometry(x1 - x0, 9, 16, 4, 3.2);
+  const c = P((x0 + x1) / 2, yc); g.translate(c.x, c.y, 0); return { g, c };
+};
+const tb = roundBar(91, 420, 338.6), bb = roundBar(91.5, 420.5, 410.6);
+const topBar = part(tb.g, lacquer(), tb.c), botBar = part(bb.g, lacquer(), bb.c);
+const tipShape = shapeOf([[214.6, 427.6], [296.4, 427.6], [255.5, 496.5]]);
+const tipC = P(255.5, 450);
+const tip = part(extrude(tipShape, 22, 3.2, 4), lacquer(), tipC);
 
-// 3D lettering «МОЯ ПЛАНЕТА» (Roboto Slab outlines).
 const GL = {"upm": 2048, "cap": 1456, "g": {"\u041b": {"d": "M57.0 0.0L57.0 154.0L97.0 154.0Q165.0 154.0 211.5 186.5Q258.0 219.0 287.5 291.5Q317.0 364.0 334.0 481.5Q351.0 599.0 358.0 770.0L382.0 1302.0L226.0 1329.0L226.0 1456.0L1441.0 1456.0L1441.0 1329.0L1278.0 1301.0L1278.0 154.0L1441.0 126.0L1441.0 0.0L918.0 0.0L918.0 126.0L1081.0 154.0L1081.0 1301.0L578.0 1301.0L554.0 770.0Q545.0 565.0 518.0 418.5Q491.0 272.0 439.5 179.5Q388.0 87.0 307.0 43.5Q226.0 0.0 109.0 0.0Z", "adv": 1512, "b": [57, 0, 1441, 1456]}, "\u041d": {"d": "M81.0 0.0L81.0 126.0L244.0 154.0L244.0 1301.0L81.0 1329.0L81.0 1456.0L604.0 1456.0L604.0 1329.0L441.0 1301.0L441.0 798.0L1137.0 798.0L1137.0 1301.0L974.0 1329.0L974.0 1456.0L1137.0 1456.0L1334.0 1456.0L1497.0 1456.0L1497.0 1329.0L1334.0 1301.0L1334.0 154.0L1497.0 126.0L1497.0 0.0L974.0 0.0L974.0 126.0L1137.0 154.0L1137.0 643.0L441.0 643.0L441.0 154.0L604.0 126.0L604.0 0.0Z", "adv": 1578, "b": [81, 0, 1497, 1456]}, "\u0422": {"d": "M440.0 0.0L440.0 126.0L603.0 154.0L603.0 1307.0L273.0 1307.0L244.0 1105.0L96.0 1105.0L96.0 1456.0L1306.0 1456.0L1306.0 1105.0L1160.0 1105.0L1130.0 1307.0L800.0 1307.0L800.0 154.0L963.0 126.0L963.0 0.0Z", "adv": 1406, "b": [96, 0, 1306, 1456]}, "\u0410": {"d": "M70.0 0.0L70.0 126.0L178.0 141.0L687.0 1456.0L856.0 1456.0L1356.0 141.0L1463.0 126.0L1463.0 0.0L1045.0 0.0L1045.0 126.0L1155.0 145.0L1059.0 413.0L476.0 413.0L377.0 145.0L487.0 126.0L487.0 0.0ZM537.0 578.0L999.0 578.0L785.0 1170.0L773.0 1203.0L767.0 1203.0L755.0 1170.0Z", "adv": 1533, "b": [70, 0, 1463, 1456]}, "\u041c": {"d": "M94.0 0.0L94.0 126.0L257.0 154.0L257.0 1301.0L94.0 1329.0L94.0 1456.0L257.0 1456.0L520.0 1456.0L989.0 351.0L995.0 351.0L1449.0 1456.0L1888.0 1456.0L1888.0 1329.0L1725.0 1301.0L1725.0 154.0L1888.0 126.0L1888.0 0.0L1365.0 0.0L1365.0 126.0L1537.0 154.0L1537.0 576.0L1537.0 1187.0L1532.0 1188.0L1059.0 52.0L928.0 52.0L439.0 1186.0L434.0 1185.0L441.0 576.0L441.0 154.0L617.0 126.0L617.0 0.0Z", "adv": 1982, "b": [94, 0, 1888, 1456]}, "\u0415": {"d": "M81.0 0.0L81.0 126.0L244.0 154.0L244.0 1301.0L81.0 1329.0L81.0 1456.0L1159.0 1456.0L1159.0 1106.0L1001.0 1106.0L979.0 1304.0L441.0 1304.0L441.0 830.0L978.0 830.0L978.0 675.0L441.0 675.0L441.0 148.0L1011.0 148.0L1033.0 349.0L1190.0 349.0L1190.0 0.0Z", "adv": 1306, "b": [81, 0, 1190, 1456]}, "\u041f": {"d": "M77.0 0.0L77.0 126.0L240.0 154.0L240.0 1301.0L77.0 1329.0L77.0 1456.0L1505.0 1456.0L1505.0 1329.0L1342.0 1301.0L1342.0 154.0L1505.0 126.0L1505.0 0.0L982.0 0.0L982.0 126.0L1145.0 154.0L1145.0 1301.0L437.0 1301.0L437.0 154.0L600.0 126.0L600.0 0.0Z", "adv": 1576, "b": [77, 0, 1505, 1456]}, "\u042f": {"d": "M1306.0 126.0L1306.0 0.0L782.0 0.0L782.0 126.0L945.0 154.0L945.0 570.0L650.0 570.0L431.0 167.0Q382.0 82.0 319.0 37.0Q256.0 -8.0 181.0 -8.0Q139.0 -8.0 111.5 2.0Q84.0 12.0 56.0 34.0L84.0 173.0Q117.0 163.0 145.0 163.0Q186.0 163.0 216.5 187.0Q247.0 211.0 275.0 256.0L478.0 607.0L481.0 612.0Q325.0 663.0 243.0 765.5Q161.0 868.0 161.0 1018.0Q161.0 1226.0 298.0 1341.0Q435.0 1456.0 676.0 1456.0L1306.0 1456.0L1306.0 1329.0L1143.0 1301.0L1143.0 154.0ZM676.0 1301.0Q520.0 1301.0 439.0 1226.0Q358.0 1151.0 358.0 1020.0Q358.0 889.0 440.0 807.5Q522.0 726.0 675.0 726.0L945.0 726.0L945.0 1301.0Z", "adv": 1384, "b": [56, -8, 1306, 1456]}, "\u041e": {"d": "M675.0 -21.0Q534.0 -21.0 422.0 33.0Q310.0 87.0 231.5 185.5Q153.0 284.0 111.5 419.0Q70.0 554.0 70.0 717.0L70.0 738.0Q70.0 900.0 111.5 1035.5Q153.0 1171.0 231.5 1270.0Q310.0 1369.0 422.0 1423.0Q534.0 1477.0 675.0 1477.0Q824.0 1477.0 937.0 1423.0Q1050.0 1369.0 1126.5 1270.0Q1203.0 1171.0 1242.0 1035.5Q1281.0 900.0 1281.0 738.0L1281.0 717.0Q1281.0 554.0 1242.0 419.0Q1203.0 284.0 1126.5 185.5Q1050.0 87.0 937.0 33.0Q824.0 -21.0 675.0 -21.0ZM675.0 143.0Q820.0 143.0 909.5 215.0Q999.0 287.0 1041.0 416.5Q1083.0 546.0 1083.0 717.0L1083.0 740.0Q1083.0 910.0 1040.5 1038.5Q998.0 1167.0 908.0 1239.5Q818.0 1312.0 675.0 1312.0Q544.0 1312.0 453.0 1239.0Q362.0 1166.0 315.0 1037.5Q268.0 909.0 268.0 740.0L268.0 717.0Q268.0 547.0 315.0 417.5Q362.0 288.0 453.0 215.5Q544.0 143.0 675.0 143.0Z", "adv": 1445, "b": [70, -21, 1281, 1477]}}, "space": 509};
 const TEXT = "МОЯ ПЛАНЕТА", CAP = 31.5, BASE = 391, TX0 = 92, TX1 = 420;
 const letters = [];
@@ -3181,109 +3670,99 @@ const letters = [];
   const natural = adv.slice(0, -1).reduce((a, b) => a + b, 0) - first.b[0] * s + last.b[2] * s;
   const extra = (TX1 - TX0 - natural) / (chars.length - 1);
   let x = TX0 - first.b[0] * s;
+  const mat = lacquer();
   chars.forEach((ch, i) => {
     if (ch !== " ") {
       const g = GL.g[ch];
-      const geo = extrude(svgShapes(g.d), 10 / s, 0.9 / s);
+      const geo = extrude(svgShapes(g.d), 7 / s, 1.0 / s, 3);
       const cx = (g.b[0] + g.b[2]) / 2, cy = GL.cap / 2;
-      geo.translate(-cx, -cy, 0);
-      geo.scale(s, s, s);
-      const rig = new THREE.Group(); logo.add(rig);
+      geo.translate(-cx, -cy, 0); geo.scale(s, s, s);
       const home = P(x + cx * s, BASE - CAP / 2);
-      rig.position.set(home.x, home.y, 0);
-      mesh(geo, blueMat(), rig);
-      letters.push({ rig, home });
+      const rig = new THREE.Group(); rig.position.set(home.x, home.y, 0); rig.userData.home = rig.position.clone();
+      const m = new THREE.Mesh(geo, mat); m.castShadow = m.receiveShadow = true; rig.add(m); logo.add(rig);
+      letters.push(rig);
     }
     x += adv[i] + extra;
   });
 }
 
-// Shards rushing past the camera during the fly-in.
-const shardGeo = [new THREE.TetrahedronGeometry(1), new THREE.OctahedronGeometry(1), new THREE.IcosahedronGeometry(1, 0)];
-const shardMat = [blueMat(), glossy(new THREE.MeshStandardMaterial({ color: 0x8fe0f6, roughness: 0.3 })), whiteMat()];
-const SHARDS = Array.from({ length: 34 }, (_, i) => {
-  const r = n => { const x = Math.sin(i * 127.1 + n * 311.7) * 43758.5453; return x - Math.floor(x); };
-  const m = new THREE.Mesh(shardGeo[i % 3], shardMat[r(9) < 0.55 ? 0 : r(9) < 0.8 ? 1 : 2]);
-  m.castShadow = false; scene.add(m);
-  return { m, ang: r(1) * Math.PI * 2, rad: 60 + r(2) * 420, t0: r(3) * 0.8, size: 4 + r(4) * 9,
-           spin: new THREE.Vector3(r(5) - .5, r(6) - .5, r(7) - .5).multiplyScalar(14) };
+// Sand puff where the tip plants itself.
+const puffMat = new THREE.MeshStandardMaterial({ color: 0xe8cfa4, roughness: 1, transparent: true, opacity: 1 });
+const PUFF = Array.from({ length: 40 }, (_, i) => {
+  const m = new THREE.Mesh(new THREE.IcosahedronGeometry(1, 1), puffMat.clone()); m.castShadow = false; scene.add(m);
+  return { m, a: rnd(i, 1) * Math.PI * 2, sp: 60 + rnd(i, 2) * 160, up: 30 + rnd(i, 3) * 90, sz: 2 + rnd(i, 4) * 5 };
 });
 
 // ---------------- motion ----------------
-// Fly out of the depth toward the viewer, slightly past the screen, then settle.
-function fly(rig, home, t, t0, dur, from) {
+const camera = new THREE.PerspectiveCamera(30, W / H, 5, 40000);
+const LOOK = new THREE.Vector3(0, 245, 0);
+const camFit = Math.max(1, (H / W) * 1.55);   // pull back on taller frames
+
+// Fly from the far dunes toward the viewer, slightly past home, then settle.
+function fly(rig, t, t0, dur, f) {
   const k = prog(t, t0, dur);
   rig.visible = k > 0;
-  if (k <= 0) return;
-  const travel = 1 - eOutQuart(k);
-  const over = Math.sin(Math.PI * clamp((k - 0.42) / 0.58));
-  rig.position.set(home.x + from.x * travel, home.y + from.y * travel, -9000 * travel + 140 * over * (1 - k * 0.2));
+  if (k <= 0) return k;
+  const home = rig.userData.home, travel = 1 - eOutQuart(k);
+  const over = Math.sin(Math.PI * clamp((k - 0.45) / 0.55)) * (1 - k * 0.3);
+  rig.position.set(home.x + f.x * travel, home.y + f.y * travel + 900 * travel * travel, home.z - 7000 * travel + 120 * over);
   const rk = 1 - eOutCubic(k);
-  rig.rotation.set(from.rx * rk, from.ry * rk + 0.25 * over * (from.ry ? Math.sign(from.ry) : 1) * 0, from.rz * rk);
+  rig.rotation.set(f.rx * rk, f.ry * rk, f.rz * rk);
+  return k;
 }
 
 window.renderFrame3D = function (t) {
-  // whole-logo attitude: starts angled, glides to a calm 3/4 hero pose
-  const glide = eInOutCubic(prog(t, 0, 6.6));
-  logo.rotation.set(lerp(0.22, 0.07, glide), lerp(-0.55, 0.20, glide), lerp(0.04, 0, glide));
+  // camera: slow arc from a low 3/4 view to the hero angle
+  const c = eInOutCubic(prog(t, 0, 7.4));
+  const az = Q.has("az") ? +Q.get("az") : lerp(0.55, 0.26, c), el = lerp(0.04, 0.12, c), dist = lerp(1450, 1180, c) * camFit;
+  camera.position.set(LOOK.x + Math.sin(az) * Math.cos(el) * dist, LOOK.y + Math.sin(el) * dist, LOOK.z + Math.cos(az) * Math.cos(el) * dist);
+  camera.lookAt(LOOK);
 
-  // globe + ground
-  const g = bump(t, 1.75, 0.6, 1.25, 0.6);
-  const sz = lerp(0.14, 1, g);
-  fly(globeRig, P(DISC.x, DISC.y), t, 0.0, 1.15, { x: 0, y: 60, rx: 0.6, ry: -1.4, rz: -0.3 });
-  globeTilt.scale.set(1, 1, sz);
-  globeTilt.rotation.x = 0.28 * g;
-  globe.rotation.y = -0.4 - 2.8 * eInOutSine(prog(t, 1.75, 2.45));
-  paintGlobe(g);
+  // whole pin hovers a touch, then plants into the sand
+  logo.position.y = 0;
 
-  // hiker: always solid; turns toward the viewer and back during the globe beat
-  fly(hikerRig, P(HIKER_AXIS, FEET_Y), t, 0.16, 1.1, { x: 90, y: -140, rx: -0.5, ry: 1.6, rz: 0.4 });
-  const turn = bump(t, 2.6, 0.6, 0.6, 0.65);
-  hikerPivot.rotation.y = -0.62 * turn;
-  hikerPivot.position.z = DISC.r * sz * 0.98 + HIKER_D / 2 + 1 + 12 * turn;
-  hikerPivot.position.y = 0;
-  const lift = 1 + 0.06 * turn; hikerPivot.scale.set(lift, lift, lift);
+  fly(globeRig, t, 0.00, 1.25, { x: 140, y: 80, rx: 0.4, ry: -2.2, rz: 0.3 });
+  globe.rotation.y = 0.6 + t * 0.35 + 2.4 * eInOutSine(prog(t, 1.7, 2.5));
 
-  // outer pin outline draws itself
-  buildRing(eInOutCubic(prog(t, 0.65, 1.15)));
-  if (ringMesh) ringMesh.position.z = 0;
+  fly(hikerRig, t, 0.18, 1.15, { x: -180, y: -40, rx: -0.4, ry: 2.4, rz: 0.3 });
+  const turn = bump(t, 2.5, 0.65, 0.6, 0.7);
+  hikerPivot.rotation.y = 0.75 * turn;          // turns toward the camera and back
+  hikerPivot.position.z = 14 * turn;
 
-  fly(topBar, P(255.5, 338.6), t, 0.32, 1.0, { x: -320, y: -60, rx: 0.9, ry: -1.2, rz: -0.4 });
-  fly(botBar, P(256, 410.6), t, 0.42, 1.0, { x: 340, y: 70, rx: -0.9, ry: 1.3, rz: 0.35 });
-  fly(vRig, P(255.5, 455), t, 0.50, 1.0, { x: -60, y: -220, rx: 2.2, ry: 0.8, rz: 1.1 });
-  fly(triRig, P(255.5, 436), t, 0.58, 1.0, { x: 120, y: -260, rx: -1.8, ry: -2.6, rz: -2.0 });
+  buildRing(eInOutCubic(prog(t, 0.6, 1.25)));
 
-  // kinetic 3D lettering
-  letters.forEach((L, i) => {
-    const k = prog(t, 4.05 + i * 0.085, 0.65);
-    L.rig.visible = k > 0;
-    if (k <= 0) return;
-    const dir = i % 2 ? -1 : 1;
-    const s = lerp(2.6, 1, eOutBack(k, 2.0));
-    L.rig.scale.set(s, s, s);
-    L.rig.position.set(L.home.x, L.home.y - 26 * (1 - eOutCubic(k)), 260 * (1 - eOutCubic(k)));
-    L.rig.rotation.set(0.5 * dir * (1 - eOutCubic(k)), dir * Math.PI * 1.15 * (1 - eOutCubic(k)), dir * 0.35 * (1 - eOutCubic(k)));
+  fly(topBar, t, 0.32, 1.05, { x: -420, y: 40, rx: 1.1, ry: -1.4, rz: -0.5 });
+  fly(botBar, t, 0.42, 1.05, { x: 440, y: -20, rx: -1.1, ry: 1.5, rz: 0.4 });
+  const kt = fly(tip, t, 0.50, 1.05, { x: 0, y: 200, rx: 2.4, ry: 1.2, rz: 0.6 });
+
+  // sand puff when the tip lands (~1.3 s)
+  const kp = prog(t, 1.18, 1.1);
+  PUFF.forEach((p, i) => {
+    p.m.visible = kp > 0 && kp < 1;
+    if (!p.m.visible) return;
+    const e = eOutCubic(kp);
+    p.m.position.set(Math.cos(p.a) * p.sp * e, p.up * Math.sin(Math.PI * Math.min(1, kp * 1.3)) * (0.4 + 0.6 * rnd(i, 7)), Math.sin(p.a) * p.sp * e * 0.8);
+    p.m.scale.setScalar(p.sz * (0.6 + kp));
+    p.m.material.opacity = 1 - kp;
   });
 
-  // shards
-  for (const sh of SHARDS) {
-    const k = prog(t, sh.t0, 0.95);
-    sh.m.visible = k > 0 && k < 1;
-    if (!sh.m.visible) continue;
-    const z = lerp(-7000, camDist + 200, Math.pow(k, 1.7));
-    sh.m.position.set(Math.cos(sh.ang) * sh.rad, Math.sin(sh.ang) * sh.rad * 0.7, z);
-    sh.m.rotation.set(sh.spin.x * k, sh.spin.y * k, sh.spin.z * k);
-    sh.m.scale.setScalar(sh.size * Math.min(1, k * 4));
-  }
+  letters.forEach((rig, i) => {
+    const k = prog(t, 3.95 + i * 0.085, 0.7);
+    rig.visible = k > 0;
+    if (k <= 0) return;
+    const dir = i % 2 ? -1 : 1, e = eOutCubic(k), h = rig.userData.home;
+    const s = lerp(2.8, 1, eOutBack(k, 2.0));
+    rig.scale.setScalar(s);
+    rig.position.set(h.x, h.y + 40 * (1 - e), h.z + 300 * (1 - e));
+    rig.rotation.set(0.6 * dir * (1 - e), dir * Math.PI * 1.2 * (1 - e), dir * 0.4 * (1 - e));
+  });
 
-  // glossy light sweep left → right across the assembled logo
-  const ks = prog(t, 6.0, 1.1);
-  SWEEP.value.set(lerp(-480, 520, eInOutSine(ks)), 26, ks > 0 && ks < 1 ? 0.92 : 0);
+  const ks = prog(t, 5.95, 1.15);
+  SWEEP.value.set(lerp(-520, 560, eInOutSine(ks)), 24, ks > 0 && ks < 1 ? 0.85 : 0);
 
   renderer.render(scene, camera);
 };
 
-// Frame with motion blur (temporal super-sampling, 180° shutter) into the 2D canvas.
 window.renderFrame = (t, samples = 1) => {
   for (let i = 0; i < samples; i++) {
     const ts = samples > 1 ? Math.max(0, t + (i / samples - 0.5) * (0.5 / FPS)) : t;
