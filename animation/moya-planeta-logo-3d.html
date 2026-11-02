@@ -3696,7 +3696,7 @@ const PUFF = Array.from({ length: 40 }, (_, i) => {
 // ---------------- motion ----------------
 const camera = new THREE.PerspectiveCamera(30, W / H, 5, 40000);
 const LOOK = new THREE.Vector3(0, 245, 0);
-const camFit = Math.max(1, (H / W) * 1.55);   // pull back on taller frames
+const camFit = W >= H ? 1 : H / W;   // pull back only on portrait frames
 
 // Fly from the far dunes toward the viewer, slightly past home, then settle.
 function fly(rig, t, t0, dur, f) {
