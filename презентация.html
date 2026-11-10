@@ -253,6 +253,10 @@ td.ans{color:var(--acc);font-weight:500}
 .phil .k{color:var(--ink-acc);margin-top:6px}
 .phil .box h3{font-size:15px;margin-bottom:4px}
 
+.phil-text{display:grid;grid-template-columns:1.5fr 1fr;gap:clamp(24px,4vw,56px);align-items:center;font-size:clamp(15px,1.45vw,18px);line-height:1.62;color:var(--ink-fg)}
+.phil-text p{margin:0 0 14px}
+.phil-m{font:700 clamp(20px,2.4vw,30px)/1.2 var(--display);color:var(--ink-acc);text-wrap:balance}
+
 @media (max-width:900px){
   .slide{aspect-ratio:auto}
   .g4{grid-template-columns:repeat(2,1fr)}
@@ -267,6 +271,7 @@ td.ans{color:var(--acc);font-weight:500}
   .logo1{grid-template-columns:1fr;grid-template-rows:none}.logo1 .main{grid-row:auto;min-height:220px}
   .fill .pos p:not(.t){margin-top:0}
   .src{columns:1}
+  .phil-text{grid-template-columns:1fr}
 }
 @media (max-width:560px){
   .g2,.g3,.g4,.parts{grid-template-columns:1fr}
@@ -395,22 +400,8 @@ td.ans{color:var(--acc);font-weight:500}
 <!-- 8. Философия -->
 <section class="slide ink">
   <div class="eyebrow">7 · Философия</div>
-  <p class="mission-q">В чём мы видим нашу социальную миссию</p>
-  <h2 class="mission">Чтобы продавец гордился своей карточкой, а покупатель радовался посылке</h2>
-  <div class="phil fill">
-    <span class="k">Эмоции, которые мы дарим</span>
-    <div class="grid g3">
-      <div class="box"><h3>Гордость</h3><p>Товар на фото выглядит так, как его задумал мастер.</p></div>
-      <div class="box"><h3>Спокойствие</h3><p>Не нужно искать подрядчиков и бояться возвратов.</p></div>
-      <div class="box"><h3>Радость покупателя</h3><p>Открыл коробку, а там то же, что на фото.</p></div>
-    </div>
-    <span class="k">Ценности, в которые мы верим</span>
-    <div class="grid g3">
-      <div class="box"><h3>Честность</h3><p>Снимаем только реальный товар, без подмены.</p></div>
-      <div class="box"><h3>Результат</h3><p>Красоту карточки проверяем кликами, а не вкусом.</p></div>
-      <div class="box"><h3>Уважение к труду</h3><p>К вещи, сделанной своими руками, и к времени продавца.</p></div>
-    </div>
-  </div>
+  <h2 class="mission">Во что мы верим</h2>
+  <div class="phil-text fill"><p>Мы верим, что за каждой карточкой стоит человек, который вложил в свой товар время, силы и душу. Мастер, который сам отлил свечу или сшил платье, должен гордиться тем, как его вещь выглядит на экране. Поэтому мы снимаем только реальный товар — таким, какой он есть, без подмены и нейросетевых «улучшений». Честный кадр дарит покупателю радость: он открывает коробку и видит ровно то, что выбрал. А продавцу он дарит спокойствие: меньше возвратов, меньше разочарованных отзывов и больше доверия. Мы не спорим о вкусах: красоту карточки проверяют клики покупателей, а не мнение дизайнера. Для нас результат — это не красивые файлы, а заказы, которые приносит карточка. Мы ценим время продавца и берём на себя всё: съёмку, обработку, инфографику и текст. Мы хотим, чтобы небольшой продавец из Зеленограда конкурировал с крупными брендами качеством товара, а не рекламным бюджетом.</p><p class="phil-m">Наша миссия — чтобы продавец гордился своей карточкой, а покупатель радовался посылке.</p></div>
   <span class="pg">08 / 08</span>
 </section>
 
