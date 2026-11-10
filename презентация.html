@@ -249,6 +249,10 @@ td.ans{color:var(--acc);font-weight:500}
 .mission{font-size:clamp(24px,3.4vw,42px);line-height:1.12;max-width:24ch;color:var(--ink-fg)}
 .sl5{grid-template-rows:repeat(5,1fr)!important}
 
+.phil{display:flex;flex-direction:column;justify-content:flex-end;gap:10px}
+.phil .k{color:var(--ink-acc);margin-top:6px}
+.phil .box h3{font-size:15px;margin-bottom:4px}
+
 @media (max-width:900px){
   .slide{aspect-ratio:auto}
   .g4{grid-template-columns:repeat(2,1fr)}
@@ -377,11 +381,20 @@ td.ans{color:var(--acc);font-weight:500}
 <section class="slide ink">
   <div class="eyebrow">6 · Философия</div>
   <p class="mission-q">В чём мы видим нашу социальную миссию</p>
-  <h2 class="mission">Вернуть доверие к фото товара: покупатель получает то, что видел, а небольшой продавец выигрывает честностью</h2>
-  <div class="grid g3" style="margin-top:auto">
-    <div class="box"><h3>Покупателю</h3><p>Видеть на фото реальную вещь и не тратить время на возвраты.</p></div>
-    <div class="box"><h3>Продавцу</h3><p>Конкурировать с крупными брендами качеством товара, а не бюджетом на рекламу.</p></div>
-    <div class="box"><h3>Городу</h3><p>Поддерживать мастеров и магазины Зеленограда и сокращать лишние возвраты, перевозки и упаковку.</p></div>
+  <h2 class="mission">Чтобы продавец гордился своей карточкой, а покупатель радовался посылке</h2>
+  <div class="phil fill">
+    <span class="k">Эмоции, которые мы дарим</span>
+    <div class="grid g3">
+      <div class="box"><h3>Гордость</h3><p>Товар на фото выглядит так, как его задумал мастер.</p></div>
+      <div class="box"><h3>Спокойствие</h3><p>Не нужно искать подрядчиков и бояться возвратов.</p></div>
+      <div class="box"><h3>Радость покупателя</h3><p>Открыл коробку, а там то же, что на фото.</p></div>
+    </div>
+    <span class="k">Ценности, в которые мы верим</span>
+    <div class="grid g3">
+      <div class="box"><h3>Честность</h3><p>Снимаем только реальный товар, без подмены.</p></div>
+      <div class="box"><h3>Результат</h3><p>Красоту карточки проверяем кликами, а не вкусом.</p></div>
+      <div class="box"><h3>Уважение к труду</h3><p>К вещи, сделанной своими руками, и к времени продавца.</p></div>
+    </div>
   </div>
   <span class="pg">07 / 08</span>
 </section>
