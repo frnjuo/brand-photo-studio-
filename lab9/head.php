@@ -14,12 +14,12 @@ a { color: #1d1f23; text-decoration: none; }
 /* «Шапка» */
 .shapka { height: 150px; background-color: #ffffff; border-bottom: 1px solid #e4e6ea; }
 .logo { padding-top: 22px; font-size: 30px; font-weight: bold; }
-.logo span { color: #ff4f00; }
+.logo span { color: #8b1e3f; }
 .logo small { display: block; font-size: 13px; font-weight: normal; color: #6f737b; }
 .poisk { padding-top: 26px; text-align: right; }
-.poisk input { height: 40px; border: 2px solid #ff4f00; font-size: 15px; vertical-align: top; }
+.poisk input { height: 40px; border: 2px solid #8b1e3f; font-size: 15px; vertical-align: top; }
 .poisk .pole { width: 340px; padding: 0 12px; border-right: none; }
-.poisk .knopka_poisk { padding: 0 20px; background-color: #ff4f00; color: #ffffff; font-weight: bold; cursor: pointer; }
+.poisk .knopka_poisk { padding: 0 20px; background-color: #8b1e3f; color: #ffffff; font-weight: bold; cursor: pointer; }
 .tel { padding-top: 26px; text-align: right; font-size: 17px; font-weight: bold; }
 .tel small { display: block; font-size: 12px; font-weight: normal; color: #6f737b; }
 .menu { padding-top: 14px; }
@@ -33,13 +33,13 @@ h1 { margin: 40px 0 18px 0; font-size: 26px; }
 .banner { padding: 50px 44px; border-radius: 16px; background-color: #1d1f23; }
 .banner h2 { margin: 0 0 14px 0; font-size: 38px; color: #ffffff; }
 .banner p { width: 560px; max-width: 100%; margin: 0 0 28px 0; font-size: 17px; line-height: 1.5; color: #b9bcc2; }
-.knopka { display: inline-block; padding: 13px 26px; border-radius: 10px; background-color: #ff4f00; color: #ffffff; font-weight: bold; }
-.knopka:hover { background-color: #e04500; }
+.knopka { display: inline-block; padding: 13px 26px; border-radius: 10px; background-color: #8b1e3f; color: #ffffff; font-weight: bold; }
+.knopka:hover { background-color: #6e1631; }
 .blok { padding: 26px; border-radius: 14px; background-color: #ffffff; }
 .blok p { margin: 0 0 12px 0; line-height: 1.6; color: #4a4e56; }
 .blok h3 { margin: 0 0 8px 0; font-size: 18px; }
-.nomer { display: block; margin-bottom: 12px; font-size: 28px; font-weight: bold; color: #ff4f00; }
-.akciya_1 { background-color: #ff4f00; }
+.nomer { display: block; margin-bottom: 12px; font-size: 28px; font-weight: bold; color: #8b1e3f; }
+.akciya_1 { background-color: #8b1e3f; }
 .akciya_1 h3, .akciya_1 p, .akciya_1 .nomer { color: #ffffff; }
 
 /* «Подвал» */
@@ -47,7 +47,7 @@ h1 { margin: 40px 0 18px 0; font-size: 26px; }
 .podval h4 { margin: 0 0 12px 0; font-size: 15px; }
 .podval p { margin: 0; font-size: 14px; line-height: 1.9; color: #4a4e56; }
 .podval a { display: block; font-size: 14px; line-height: 1.9; color: #4a4e56; }
-.podval a:hover { color: #ff4f00; }
+.podval a:hover { color: #8b1e3f; }
 .kopirait { margin-top: 24px; padding-top: 16px; border-top: 1px solid #e4e6ea; font-size: 13px; color: #6f737b; }
 
 /* Телефон */
