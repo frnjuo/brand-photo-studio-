@@ -15,8 +15,7 @@ a { color: #1d1f23; text-decoration: none; }
 .shapka { height: 150px; background-color: #ffffff; border-bottom: 1px solid #e4e6ea; }
 .logo { padding-top: 20px; font-size: 28px; font-weight: bold; }
 .logo a { display: inline-block; }
-.logo_znak { display: inline-block; position: relative; width: 32px; height: 32px; margin-right: 8px; border-radius: 8px; background-color: #8b1e3f; vertical-align: -5px; }
-.logo_znak span { position: absolute; left: 10px; top: 10px; width: 12px; height: 12px; border-radius: 2px; background-color: #ffffff; }
+.logo_znak { display: inline-block; width: 12px; height: 12px; margin-right: 8px; border: 10px solid #8b1e3f; border-radius: 8px; background-color: #ffffff; vertical-align: -5px; }
 .logo small { display: block; margin-top: 4px; font-size: 13px; font-weight: normal; color: #6f737b; }
 .podval .logo { padding-top: 0; margin-bottom: 12px; font-size: 22px; }
 .poisk { padding-top: 26px; text-align: right; }
@@ -73,7 +72,7 @@ h1 { margin: 40px 0 18px 0; font-size: 26px; }
 		<table class="setka">
 		<tr>
 			<!-- Логотип -->
-			<td style="width:30%"><div class="logo"><a href="index.php"><span class="logo_znak"><span></span></span>Сокет</a><small>магазин комплектующих для ПК</small></div></td>
+			<td style="width:30%"><div class="logo"><a href="index.php"><span class="logo_znak"></span>Сокет</a><small>магазин комплектующих для ПК</small></div></td>
 			<!-- Строка поиска -->
 			<td style="width:50%"><form class="poisk" action="#" method="get"><input type="text" class="pole" name="poisk" placeholder="Поиск комплектующих" /><input type="submit" class="knopka_poisk" value="Найти" /></form></td>
 			<!-- Телефон -->
