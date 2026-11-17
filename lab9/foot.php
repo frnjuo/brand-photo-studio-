@@ -1,7 +1,39 @@
-<tr><td style="height:50px; background-color:#1f2a3d; color:#c8d4e0; font-family:Arial; font-size:13px; padding-left:20px">
-<p style="margin:5px 0px">Контакты: телефон 8 (800) 555-35-35, e-mail info@kompdetal.ru, адрес: г. Москва, ул. Компьютерная, д. 1</p>
-<p style="margin:5px 0px">Разделы сайта: Главная | Регистрация | Кабинет | Каталог | Контакты</p>
-<p style="margin:5px 0px">© 2026 КомпДеталь – магазин комплектующих для ПК</p>
+<tr><td style="height:50px">
+<div id="podval">
+	<div class="wrap">
+		<div class="podval_setka">
+			<div>
+				<h4>КомпДеталь</h4>
+				<p>Комплектующие для сборки и апгрейда компьютеров с официальной гарантией. Работаем с 2015 года.</p>
+			</div>
+			<div>
+				<h4>Структура сайта</h4>
+				<a href="index.php">Главная</a>
+				<a>Регистрация</a>
+				<a>Кабинет</a>
+				<a>Каталог</a>
+				<a>Контакты</a>
+			</div>
+			<div>
+				<h4>Покупателям</h4>
+				<a>Доставка и оплата</a>
+				<a>Гарантия и возврат</a>
+				<a>Политика конфиденциальности</a>
+			</div>
+			<div>
+				<h4>Контакты</h4>
+				<p>8 (800) 555-35-35</p>
+				<p>info@kompdetal.ru</p>
+				<p>г. Москва, ул. Компьютерная, д. 1</p>
+				<p>Ежедневно 9:00 – 21:00</p>
+			</div>
+		</div>
+		<div class="kopirait">
+			<span>© 2026 КомпДеталь – магазин комплектующих для ПК</span>
+			<span>Все права защищены</span>
+		</div>
+	</div>
+</div>
 </td></tr>
 </table>
 </body></html>
