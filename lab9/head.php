@@ -3,7 +3,7 @@
 <style>
 /* Общие стили */
 body { background-color: #f2f3f5; }
-table { border-collapse: collapse; border: none; }
+table { border-collapse: collapse; border: none; table-layout: fixed; }
 td { border: none; padding: 0; vertical-align: top; font-family: Arial, sans-serif; font-size: 15px; color: #1d1f23; }
 a { color: #1d1f23; text-decoration: none; }
 .wrap { max-width: 1100px; margin: 0 auto; padding: 0 20px; }
@@ -52,6 +52,7 @@ h1 { margin: 40px 0 18px 0; font-size: 26px; }
 
 /* Телефон */
 @media (max-width: 700px) {
+	.setka, .setka tbody, .setka tr { display: block; width: 100%; }
 	.setka td { display: block; width: auto !important; padding: 0 0 12px 0; }
 	.shapka { height: auto; padding-bottom: 12px; }
 	.poisk, .tel { padding-top: 12px; text-align: left; }
