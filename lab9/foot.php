@@ -3,7 +3,7 @@
 	<div class="wrap">
 		<div class="podval_setka">
 			<div>
-				<div class="logo"><span>Сокет</span></div>
+				<div class="logo"><span class="logo_znak"></span>Сокет</div>
 				<p class="podval_text">Комплектующие для сборки и апгрейда компьютеров с официальной гарантией. Работаем с 2015 года.</p>
 			</div>
 			<div>
