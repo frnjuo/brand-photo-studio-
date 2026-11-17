@@ -52,16 +52,6 @@ h1 { margin: 40px 0 18px 0; font-size: 26px; }
 .podval a:hover { color: #8b1e3f; }
 .kopirait { margin-top: 24px; padding-top: 16px; border-top: 1px solid #e4e6ea; font-size: 13px; color: #6f737b; }
 
-/* Страница контактов */
-.kontakty h3 { margin: 0 0 4px 0; font-size: 14px; font-weight: normal; color: #6f737b; }
-.kontakty p { margin: 0 0 18px 0; font-size: 17px; font-weight: bold; color: #1d1f23; }
-.karta { padding: 0; overflow: hidden; background-color: #e4e6ea; }
-.karta iframe { display: block; width: 100%; height: 400px; border: 0; }
-.forma label { display: block; margin: 0 0 6px 0; font-size: 14px; color: #6f737b; }
-.forma .pole_formy { width: 100%; margin: 0 0 16px 0; padding: 10px 12px; border: 1px solid #d5d8dd; border-radius: 8px; font-family: Arial, sans-serif; font-size: 15px; box-sizing: border-box; }
-.forma textarea.pole_formy { height: 140px; resize: vertical; }
-.forma .knopka { border: none; font-size: 15px; cursor: pointer; }
-
 /* Телефон */
 @media (max-width: 700px) {
 	.setka, .setka tbody, .setka tr { display: block; width: 100%; }

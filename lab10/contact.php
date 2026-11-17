@@ -1,5 +1,16 @@
 <?php include("head.php");?>
 <tr><td>
+<style>
+/* Стили страницы контактов */
+.kontakty h3 { margin: 0 0 4px 0; font-size: 14px; font-weight: normal; color: #6f737b; }
+.kontakty p { margin: 0 0 18px 0; font-size: 17px; font-weight: bold; color: #1d1f23; }
+.karta { padding: 0; overflow: hidden; background-color: #e4e6ea; }
+.karta iframe { display: block; width: 100%; height: 420px; border: 0; }
+.forma label { display: block; margin: 0 0 6px 0; font-size: 14px; color: #6f737b; }
+.forma .pole_formy { display: block; width: 100%; margin: 0 0 16px 0; padding: 10px 12px; border: 1px solid #d5d8dd; border-radius: 8px; font-family: Arial, sans-serif; font-size: 15px; box-sizing: border-box; }
+.forma textarea.pole_formy { height: 140px; resize: vertical; }
+.forma .knopka { display: inline-block; border: none; font-size: 15px; cursor: pointer; }
+</style>
 <div class="soderzhanie">
 <div class="wrap">
 
@@ -24,7 +35,7 @@
 		</td>
 		<td class="posl" style="width:65%">
 			<div class="blok karta">
-				<iframe src="https://yandex.ru/map-widget/v1/?ll=37.610818%2C55.757718&z=16&pt=37.610818%2C55.757718%2Cpm2rdm" allowfullscreen="true"></iframe>
+				<iframe width="100%" height="420" frameborder="0" src="https://yandex.ru/map-widget/v1/?ll=37.610818%2C55.757718&z=16&pt=37.610818%2C55.757718%2Cpm2rdm" allowfullscreen="true"></iframe>
 			</div>
 		</td>
 	</tr>
