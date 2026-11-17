@@ -4,7 +4,7 @@
 		<table class="setka">
 		<tr>
 			<td style="width:40%">
-				<h4>Сокет</h4>
+				<div class="logo"><span class="logo_znak"><span></span></span>Сокет</div>
 				<p>Магазин комплектующих для ПК.<br />Работаем с 2015 года.</p>
 			</td>
 			<td style="width:30%">
