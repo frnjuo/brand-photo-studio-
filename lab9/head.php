@@ -1,4 +1,4 @@
-<html><head><title>КомпДеталь – магазин комплектующих для ПК</title>
+<html><head><title>Сокет – магазин комплектующих для ПК</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="https://fonts.googleapis.com/css2?family=PT+Sans:wght@400;700&family=Russo+One&display=swap" rel="stylesheet" />
@@ -118,7 +118,7 @@ h1 { display: inline; margin: 0; font-family: "Russo One", Arial, sans-serif; fo
 	<div class="wrap">
 		<div id="shapka_verh">
 			<!-- Логотип -->
-			<a href="index.php" class="logo">Комп<span>Деталь</span><small>магазин комплектующих для ПК</small></a>
+			<a href="index.php" class="logo"><span>Сокет</span><small>магазин комплектующих для ПК</small></a>
 			<!-- Строка поиска -->
 			<form class="poisk" action="#" method="get">
 				<input type="text" name="poisk" placeholder="Видеокарта, процессор, SSD..." /><input type="submit" value="Найти" />

@@ -3,7 +3,7 @@
 	<div class="wrap">
 		<div class="podval_setka">
 			<div>
-				<div class="logo">Комп<span>Деталь</span></div>
+				<div class="logo"><span>Сокет</span></div>
 				<p class="podval_text">Комплектующие для сборки и апгрейда компьютеров с официальной гарантией. Работаем с 2015 года.</p>
 			</div>
 			<div>
@@ -23,13 +23,13 @@
 			<div>
 				<h4>Контакты</h4>
 				<p>8 (800) 555-35-35</p>
-				<p>info@kompdetal.ru</p>
+				<p>info@soket-shop.ru</p>
 				<p>г. Москва, ул. Компьютерная, д. 1</p>
 				<p>Ежедневно 9:00 – 21:00</p>
 			</div>
 		</div>
 		<div class="kopirait">
-			<span>© 2026 КомпДеталь – магазин комплектующих для ПК</span>
+			<span>© 2026 Сокет – магазин комплектующих для ПК</span>
 			<span>Все права защищены</span>
 		</div>
 	</div>
