@@ -1,0 +1,330 @@
+<title>Брендбук ФОТОКОРПУС</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700&family=Onest:wght@400;500;600;700&display=swap">
+<style>
+/* Брендбук как документ: главы с номерами, листы-плитки для логотипа. Графит + бордо, Unbounded + Onest. */
+:root{
+  --bg:#f7f6f4;--card:#fff;--fg:#232528;--mut:#5d6066;--ln:#d8d5d2;--acc:#7b1e2e;--acc-soft:#f3e6e8;
+  --ink:#25272b;--ink-2:#31343a;--ink-fg:#eeece9;--ink-mut:#a9abb0;--ink-acc:#d9707f;
+  --logo-light:#f7f6f4;--logo-ink:#25272b;--logo-acc:#7b1e2e;--logo-acc-l:#d9707f;--logo-white:#fff;
+  --bad:#b3261e;
+  --display:"Unbounded","Arial Black",system-ui,sans-serif;
+  --body:"Onest","Segoe UI",Roboto,Arial,sans-serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#151618;--card:#212327;--fg:#ebe9e6;--mut:#a3a5aa;--ln:#36383d;--acc:#d4697a;--acc-soft:#3a2328;--bad:#f2867c;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#151618;--card:#212327;--fg:#ebe9e6;--mut:#a3a5aa;--ln:#36383d;--acc:#d4697a;--acc-soft:#3a2328;--bad:#f2867c;color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font:400 16px/1.55 var(--body);padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 64px}
+a{color:var(--acc)}
+h1,h2,h3{margin:0;text-wrap:balance}
+h1,h2{font-family:var(--display);font-weight:700;letter-spacing:-.01em}
+h2{font-size:clamp(24px,3.2vw,38px);line-height:1.1}
+h3{font:600 17px/1.3 var(--body)}
+p{margin:0}
+.k{font:700 11.5px/1.2 var(--body);letter-spacing:.15em;text-transform:uppercase;color:var(--acc)}
+.mut{color:var(--mut)}
+
+/* Обложка */
+.cover{background:var(--ink);color:var(--ink-fg);margin-inline:calc(-1*max(16px,env(safe-area-inset-left,0px)));padding:64px max(16px,env(safe-area-inset-left,0px)) 56px}
+.cover .in{max-width:1120px;margin:0 auto;display:grid;gap:22px;container-type:inline-size}
+.cover .k{color:var(--ink-acc)}
+.cover .lockup{font-size:min(84px,9.6cqi);color:var(--ink-fg);--lm-acc:var(--ink-acc)}
+.cover p{color:var(--ink-mut);max-width:60ch}
+.toc{display:flex;flex-wrap:wrap;gap:8px 18px;font-size:14px}
+.toc a{color:var(--ink-fg);text-decoration:none;border-bottom:1px solid var(--ink-2)}
+.toc a:hover,.toc a:focus-visible{border-color:var(--ink-acc);outline:none}
+
+.wrap{max-width:1120px;margin:0 auto;display:flex;flex-direction:column;gap:72px;padding-top:56px}
+section{display:grid;gap:22px;scroll-margin-top:24px}
+.head{display:grid;grid-template-columns:88px 1fr;gap:4px 20px;align-items:baseline}
+.head .no{font:700 44px/1 var(--display);color:var(--acc);grid-row:span 2}
+.head .lead{color:var(--mut);max-width:64ch}
+.grid{display:grid;gap:12px}
+.g2{grid-template-columns:repeat(2,1fr)}.g3{grid-template-columns:repeat(3,1fr)}.g4{grid-template-columns:repeat(4,1fr)}
+.box{background:var(--card);border:1px solid var(--ln);border-radius:6px;padding:18px 20px;min-width:0;display:grid;gap:8px;align-content:start}
+.box p,.box li{font-size:14.5px;color:var(--mut)}
+.box b{color:var(--fg)}
+.box ul{margin:0;padding-left:18px;display:grid;gap:5px}
+.big,.box .big{font:700 clamp(20px,2.4vw,28px)/1.2 var(--display);color:var(--fg)}
+.quote{background:var(--acc);color:#fff;border-radius:6px;padding:22px 24px;display:grid;gap:8px}
+.quote .k{color:#fff;opacity:.8}
+.quote .big{color:#fff}
+
+/* Таблицы */
+.tw{overflow-x:auto;border:1px solid var(--ln);border-radius:6px;background:var(--card)}
+table{border-collapse:collapse;width:100%;min-width:720px;font-size:14px}
+th,td{padding:9px 12px;border-bottom:1px solid var(--ln);text-align:left;vertical-align:top}
+tr:last-child td{border-bottom:0}
+th{background:var(--ink);color:var(--ink-fg);font-weight:600;font-size:13px}
+td{color:var(--mut)}
+td:first-child{color:var(--fg);font-weight:600}
+td.c,th.c{text-align:center}
+td.tot{font-weight:700;color:var(--fg);text-align:center}
+tr.win td{background:var(--acc-soft)}
+
+/* Логотип */
+.lockup{display:inline-flex;align-items:baseline;font:700 1em/1 var(--display);white-space:nowrap;padding:.1em 0 .1em .17em;color:var(--logo-ink);--lm-acc:var(--logo-acc)}
+.fr{position:relative;display:inline-block;margin-right:.18em}
+.fr svg{position:absolute;left:-.16em;top:-.1em;width:1.6em;height:1.2em;overflow:visible}
+.fr path{fill:none;stroke:var(--lm-acc);stroke-width:9}
+.lockup .k2,.wm .k2{color:var(--lm-acc)}
+.mark{display:inline-flex;font:700 1em/1 var(--display);padding:.1em .17em;color:var(--logo-ink);--lm-acc:var(--logo-acc)}
+.mark .fr{margin-right:0}
+.tile{border-radius:6px;display:grid;place-items:center;padding:28px 20px;min-height:150px;container-type:inline-size;position:relative}
+.tile .lockup{font-size:min(44px,9cqi)}
+.t-light{background:var(--logo-light);border:1px solid var(--ln)}
+.t-ink{background:var(--logo-ink)}.t-ink .lockup,.t-ink .mark{color:var(--logo-light);--lm-acc:var(--logo-acc-l)}
+.t-acc{background:var(--logo-acc)}.t-acc .lockup,.t-acc .mark{color:var(--logo-white);--lm-acc:var(--logo-white)}
+.tcap{font:600 11px/1.3 var(--body);letter-spacing:.12em;text-transform:uppercase;color:var(--mut);margin-top:8px;display:block}
+.hero-logo{min-height:260px}.hero-logo .lockup{font-size:min(72px,9cqi)}
+.constr{position:relative;display:flex;padding-block:26px;container-type:inline-size;line-height:1}
+.constr .lockup{font-size:min(64px,9cqi)}
+.gl{position:absolute;left:0;right:0;border-top:1px dashed var(--mut);font:500 11px/1 var(--body);color:var(--mut);text-align:right}
+.gl span{position:relative;top:-15px;background:var(--card);padding-left:6px}
+.gl.b span{top:5px}
+.parts{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.part{display:flex;gap:14px;align-items:flex-start}
+.part .ic{flex:none;width:56px;display:grid;place-items:center}
+.part .ic svg{width:56px;height:42px}.part .ic path{fill:none;stroke:var(--acc);stroke-width:9}
+.part .ic b{font:700 30px/1 var(--display);color:var(--fg)}
+.clear{position:relative;display:inline-block;outline:1.5px dashed var(--acc);outline-offset:0}
+.clear .lockup{font-size:min(44px,8cqi);margin:1em}
+.clear i{position:absolute;font:700 12px/1 var(--display);color:var(--acc);font-style:normal}
+.sizes{display:flex;align-items:flex-end;gap:22px;flex-wrap:wrap}
+.sizes figure{margin:0;display:grid;justify-items:center;gap:8px;font:500 12px/1 var(--body);color:var(--mut)}
+.avatar{width:96px;height:96px;border-radius:50%;background:var(--logo-ink);display:grid;place-items:center}
+.avatar .mark{font-size:32px;color:var(--logo-light);--lm-acc:var(--logo-acc-l)}
+.lv{display:inline-flex;flex-direction:column;align-items:center;gap:.5em;line-height:1;font-size:20px}
+.lv .mark{font-size:2.1em}.wm{font:700 1em/1 var(--display);color:var(--logo-ink);--lm-acc:var(--logo-acc)}
+.lv small{font:500 .55em/1.2 var(--body);letter-spacing:.06em;color:var(--mut)}
+.bad{position:relative}
+.bad::after{content:"Нельзя";position:absolute;top:10px;left:12px;background:var(--card);padding:4px 7px;border-radius:4px;font:700 10.5px/1 var(--body);letter-spacing:.12em;text-transform:uppercase;color:var(--bad)}
+.x-stretch .lockup{transform:scaleX(1.35)}
+.x-color .lockup{color:#1f6fb2;--lm-acc:#e0a100}
+.x-busy{background:repeating-linear-gradient(45deg,#c9a46a 0 14px,#7e9a6b 14px 28px)}
+.x-busy .lockup{color:#25272b;--lm-acc:#7b1e2e}
+.x-fx .lockup{text-shadow:3px 3px 0 #d9707f,6px 6px 0 #25272b;transform:rotate(-8deg)}
+
+/* Цвет */
+.sw{border-radius:6px;overflow:hidden;border:1px solid var(--ln);background:var(--card);display:grid}
+.sw .chip{height:120px;display:flex;align-items:flex-end;padding:12px 14px;font:700 13px/1 var(--display)}
+.sw .meta{padding:12px 14px;display:grid;gap:3px;font-size:13px;color:var(--mut);font-variant-numeric:tabular-nums}
+.sw .meta b{color:var(--fg);font-size:14px}
+.prop{display:flex;height:56px;border-radius:6px;overflow:hidden;border:1px solid var(--ln)}
+.prop div{display:flex;align-items:center;padding:0 12px;font:600 12px/1 var(--body);white-space:nowrap;overflow:hidden}
+.pairs{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.pair{border-radius:6px;padding:16px;display:grid;gap:4px;font-size:13px}
+.pair b{font:700 18px/1.2 var(--display)}
+.pair span{opacity:.85}
+
+/* Типографика */
+.spec{display:grid;gap:4px}
+.box .abc{color:var(--mut)}.spec .s1,.spec .s2,.scale p{color:var(--fg)}
+.spec .s1{font:700 clamp(34px,5vw,60px)/1 var(--display)}
+.spec .s2{font:400 clamp(22px,2.6vw,30px)/1.3 var(--body)}
+.abc{font-size:15px;color:var(--mut);word-break:break-word}
+.scale{display:grid;gap:0}
+.scale div{display:grid;grid-template-columns:150px 1fr;align-items:baseline;gap:16px;padding:12px 0;border-bottom:1px solid var(--ln)}
+.scale span{font:600 12px/1.3 var(--body);color:var(--mut)}
+
+/* Тон */
+.dd{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.do,.dont{border-radius:6px;padding:16px 18px;display:grid;gap:8px;border:1px solid var(--ln);background:var(--card)}
+.do .k{color:#2e7d4f}.dont .k{color:var(--bad)}
+.do p,.dont p{font-size:15px;color:var(--fg)}
+.dont p{text-decoration:line-through;text-decoration-color:var(--bad);color:var(--mut)}
+
+/* Носители */
+.card-biz{aspect-ratio:90/50;max-width:100%;border-radius:6px;padding:7% 7%;display:flex;flex-direction:column;justify-content:space-between;container-type:inline-size}
+.card-biz .lockup{font-size:7.5cqi}
+.card-biz p{font-size:3.6cqi;line-height:1.45}
+.post{aspect-ratio:1/1;border-radius:6px;background:var(--logo-ink);color:var(--logo-light);padding:7%;display:flex;flex-direction:column;justify-content:space-between;container-type:inline-size}
+.post .k{color:var(--logo-acc-l)}
+.post .big{font-size:9cqi;color:var(--logo-light)}
+.post .mark{font-size:7cqi;color:var(--logo-light);--lm-acc:var(--logo-acc-l)}
+.post .row{display:flex;justify-content:space-between;align-items:flex-end;gap:10px;font-size:3.6cqi;color:var(--ink-mut)}
+
+.media{display:grid;grid-template-columns:1.25fr 1fr;gap:12px;align-items:start}.stack{display:grid;gap:12px}
+@media (max-width:700px){.media{grid-template-columns:1fr}}
+.next li{font-size:15px}
+.src{font-size:13.5px;color:var(--mut);display:grid;gap:4px;padding-left:20px;margin:0}
+
+@media (max-width:900px){
+  .g4,.pairs{grid-template-columns:repeat(2,1fr)}
+  .g3,.parts{grid-template-columns:1fr 1fr}
+  .head{grid-template-columns:1fr}.head .no{grid-row:auto;font-size:32px}
+}
+@media (max-width:560px){
+  .g2,.g3,.g4,.parts,.pairs,.dd{grid-template-columns:1fr}
+  .scale div{grid-template-columns:1fr;gap:4px}
+}
+@media (prefers-reduced-motion:reduce){*{scroll-behavior:auto}}
+</style>
+
+<header class="cover"><div class="in">
+  <span class="k">Брендбук · версия 0.1</span>
+  <span class="lockup" role="img" aria-label="ФОТОКОРПУС"><span class="fr">Ф<svg viewBox="0 0 160 120" aria-hidden="true"><path d="M4.5 30V4.5h25M130.5 4.5h25V30M4.5 90v25.5h25M130.5 115.5h25V90"/></svg></span><span aria-hidden="true">ОТО</span><span class="k2" aria-hidden="true">КОРПУС</span></span>
+  <p>Фотостудия и «фабрика карточек» для продавцов маркетплейсов со своим товаром. Зеленоград. Здесь собраны правила, по которым бренд выглядит и говорит одинаково везде: на сайте, в объявлениях, в карточках клиентов.</p>
+  <nav class="toc" aria-label="Содержание">
+    <a href="#platform">01 Платформа</a><a href="#name">02 Название</a><a href="#logo">03 Логотип</a><a href="#color">04 Цвет</a><a href="#type">05 Шрифты</a><a href="#voice">06 Тон</a><a href="#media">07 Носители</a><a href="#next">Что дальше</a>
+  </nav>
+</div></header>
+
+<main class="wrap">
+
+<section id="platform">
+  <div class="head"><span class="no">01</span><h2>Платформа бренда</h2><p class="lead">На этом держится всё остальное: логотип, цвет и тексты должны выражать одну позицию.</p></div>
+  <div class="grid g2">
+    <div class="quote"><span class="k">Позиционирование</span><p class="big">Обложка, проверенная тестом</p><p>Делаем две обложки и оставляем ту, что набрала больше кликов в A/B-тесте. Снимаем только реальный товар.</p></div>
+    <div class="box"><span class="k">Основной слоган</span><p class="big">«Снято честно. Проверено кликом.»</p><p>Две пары слов — два отличия: реальный товар и проверенный результат.</p></div>
+  </div>
+  <div class="grid g3">
+    <div class="box"><span class="k">Миссия</span><p><b>Чтобы продавец гордился своей карточкой, а покупатель радовался посылке.</b></p></div>
+    <div class="box"><span class="k">Ценности</span><ul><li><b>Честность</b> — только реальный товар</li><li><b>Результат</b> — проверяем кликами, а не вкусом</li><li><b>Уважение к труду</b> — к вещи и к времени продавца</li></ul></div>
+    <div class="box"><span class="k">Аудитория</span><p>Продавцы со своим товаром, 5–80 артикулов: мастера и мини-производства, местные магазины, начинающие продавцы.</p></div>
+  </div>
+</section>
+
+<section id="name">
+  <div class="head"><span class="no">02</span><h2>Название: ФОТОКОРПУС</h2><p class="lead">Короткое русское слово из двух понятных частей. Звучит по-местному и не обещает того, что делают все.</p></div>
+  <div class="grid g3">
+    <div class="box"><span class="k">Корпус камеры</span><p>Слово фотографа. «Фото» и «корпус» вместе говорят: здесь снимают настоящей камерой, а не генерируют.</p></div>
+    <div class="box"><span class="k">Корпус в адресе</span><p>В Зеленограде адрес — это номер корпуса: «корп. 1505». Название звучит как своё, городское.</p></div>
+    <div class="box"><span class="k">Всё в одном корпусе</span><p>Съёмка, обработка, текст и тест обложки под одной крышей.</p></div>
+  </div>
+  <div class="tw"><table>
+    <thead><tr><th>Вариант</th><th class="c">О продукте</th><th class="c">О позиции</th><th class="c">Звучит по-местному</th><th class="c">Можно защитить</th><th class="c">Итог</th><th>Комментарий</th></tr></thead>
+    <tbody>
+      <tr class="win"><td>ФОТОКОРПУС</td><td class="c">3</td><td class="c">2</td><td class="c">3</td><td class="c">3</td><td class="tot">11</td><td>Выбран. Неофициально так зовут студию аренды в Ставрополе — другой город и услуга</td></tr>
+      <tr><td>Без фокусов</td><td class="c">1</td><td class="c">3</td><td class="c">1</td><td class="c">1</td><td class="tot">6</td><td>Сильнее как слоган: расхожее выражение трудно зарегистрировать</td></tr>
+      <tr><td>Честный кадр</td><td class="c">2</td><td class="c">3</td><td class="c">1</td><td class="c">1</td><td class="tot">7</td><td>Описательное, слабо защищается</td></tr>
+      <tr><td>Кликкадр</td><td class="c">2</td><td class="c">3</td><td class="c">1</td><td class="c">2</td><td class="tot">8</td><td>Трудно произнести и написать на слух</td></tr>
+      <tr><td>ЗелКадр</td><td class="c">2</td><td class="c">1</td><td class="c">3</td><td class="c">2</td><td class="tot">8</td><td>Только про фото, не про карточку</td></tr>
+      <tr><td>Кадр под ключ</td><td class="c">3</td><td class="c">1</td><td class="c">1</td><td class="c">1</td><td class="tot">6</td><td>«Под ключ» обещают все конкуренты</td></tr>
+    </tbody>
+  </table></div>
+  <p class="mut" style="font-size:14px">Латиницей: <b>FOTOKORPUS</b>. Перед запуском: проверить знак в реестре ФИПС (классы МКТУ 35 и 41), занять домен и ники в Telegram и ВК.</p>
+</section>
+
+<section id="logo">
+  <div class="head"><span class="no">03</span><h2>Логотип: буква Ф в фокусе</h2><p class="lead">Первая буква названия стоит в рамке фокуса камеры. Буква взята из шрифта названия, поэтому знак читается частью слова.</p></div>
+  <div class="tile t-light hero-logo"><span class="lockup" role="img" aria-label="ФОТОКОРПУС"><span class="fr">Ф<svg viewBox="0 0 160 120" aria-hidden="true"><path d="M4.5 30V4.5h25M130.5 4.5h25V30M4.5 90v25.5h25M130.5 115.5h25V90"/></svg></span><span aria-hidden="true">ОТО</span><span class="k2" aria-hidden="true">КОРПУС</span></span></div>
+  <div class="parts">
+    <div class="box part"><div class="ic"><svg viewBox="0 0 160 120" aria-hidden="true"><path d="M4.5 30V4.5h25M130.5 4.5h25V30M4.5 90v25.5h25M130.5 115.5h25V90"/></svg></div><div><h3>Рамка фокуса 4:3</h3><p class="mut" style="font-size:14px">В фокусе — реальный товар. Кадр 4:3, повёрнутый на 90°, даёт формат карточки 3:4.</p></div></div>
+    <div class="box part"><div class="ic"><b>Ф</b></div><div><h3>Буква из шрифта</h3><p class="mut" style="font-size:14px">Unbounded Bold, как всё слово. Знак работает и в логотипе, и отдельно на аватаре.</p></div></div>
+    <div class="box part"><div class="ic"><svg viewBox="0 0 56 42" aria-hidden="true"><rect x="4" y="9" width="22" height="22" rx="3" style="fill:var(--logo-ink);stroke:none"/><rect x="30" y="9" width="22" height="22" rx="3" style="fill:var(--logo-acc);stroke:none"/></svg></div><div><h3>Два цвета</h3><p class="mut" style="font-size:14px">ФОТО — графит, КОРПУС и рамка — бордо: видно два слова названия.</p></div></div>
+  </div>
+
+  <div class="grid g2">
+    <div class="box"><span class="k">Построение</span>
+      <div class="constr"><div class="gl" style="top:calc(26px + min(64px,9cqi)*.225)"><span>высота букв</span></div><div class="gl b" style="top:calc(26px + min(64px,9cqi)*.973)"><span>базовая линия</span></div><span class="lockup" role="img" aria-label="ФОТОКОРПУС"><span class="fr">Ф<svg viewBox="0 0 160 120" aria-hidden="true"><path d="M4.5 30V4.5h25M130.5 4.5h25V30M4.5 90v25.5h25M130.5 115.5h25V90"/></svg></span><span aria-hidden="true">ОТО</span><span class="k2" aria-hidden="true">КОРПУС</span></span></div>
+      <p>Рамка выступает над буквами и под ними на 0,1 высоты строки. Толщина линии рамки — 0,09 высоты строки.</p></div>
+    <div class="box"><span class="k">Охранное поле</span>
+      <div style="container-type:inline-size;display:grid;place-items:center;padding:8px 0"><span class="clear"><span class="lockup" role="img" aria-label="ФОТОКОРПУС"><span class="fr">Ф<svg viewBox="0 0 160 120" aria-hidden="true"><path d="M4.5 30V4.5h25M130.5 4.5h25V30M4.5 90v25.5h25M130.5 115.5h25V90"/></svg></span><span aria-hidden="true">ОТО</span><span class="k2" aria-hidden="true">КОРПУС</span></span><i style="top:4px;left:50%">x</i><i style="left:4px;top:45%">x</i></span></div>
+      <p>Вокруг логотипа свободно поле не меньше <b>x</b> — высоты буквы. В нём нет текста, краёв носителя и других знаков.</p></div>
+  </div>
+
+  <div class="grid g3">
+    <div><div class="tile t-light"><span class="lockup" role="img" aria-label="ФОТОКОРПУС"><span class="fr">Ф<svg viewBox="0 0 160 120" aria-hidden="true"><path d="M4.5 30V4.5h25M130.5 4.5h25V30M4.5 90v25.5h25M130.5 115.5h25V90"/></svg></span><span aria-hidden="true">ОТО</span><span class="k2" aria-hidden="true">КОРПУС</span></span></div><span class="tcap">Основной — светлый фон</span></div>
+    <div><div class="tile t-ink"><span class="lockup" role="img" aria-label="ФОТОКОРПУС"><span class="fr">Ф<svg viewBox="0 0 160 120" aria-hidden="true"><path d="M4.5 30V4.5h25M130.5 4.5h25V30M4.5 90v25.5h25M130.5 115.5h25V90"/></svg></span><span aria-hidden="true">ОТО</span><span class="k2" aria-hidden="true">КОРПУС</span></span></div><span class="tcap">Тёмный фон</span></div>
+    <div><div class="tile t-acc"><span class="lockup" role="img" aria-label="ФОТОКОРПУС"><span class="fr">Ф<svg viewBox="0 0 160 120" aria-hidden="true"><path d="M4.5 30V4.5h25M130.5 4.5h25V30M4.5 90v25.5h25M130.5 115.5h25V90"/></svg></span><span aria-hidden="true">ОТО</span><span class="k2" aria-hidden="true">КОРПУС</span></span></div><span class="tcap">Одноцветный на бордо</span></div>
+  </div>
+  <div class="grid g3">
+    <div><div class="tile t-light"><span class="lv"><span class="mark" role="img" aria-label="Знак ФОТОКОРПУС"><span class="fr">Ф<svg viewBox="0 0 160 120" aria-hidden="true"><path d="M4.5 30V4.5h25M130.5 4.5h25V30M4.5 90v25.5h25M130.5 115.5h25V90"/></svg></span></span><span class="wm">ФОТО<span class="k2">КОРПУС</span></span><small>контент для маркетплейсов</small></span></div><span class="tcap">Вертикальный</span></div>
+    <div><div class="tile t-light"><div class="avatar"><span class="mark" role="img" aria-label="Знак ФОТОКОРПУС"><span class="fr">Ф<svg viewBox="0 0 160 120" aria-hidden="true"><path d="M4.5 30V4.5h25M130.5 4.5h25V30M4.5 90v25.5h25M130.5 115.5h25V90"/></svg></span></span></div></div><span class="tcap">Аватар: Telegram, ВК, 2ГИС</span></div>
+    <div><div class="tile t-light"><div class="sizes"><figure><span class="mark" style="font-size:40px" role="img" aria-label="Знак ФОТОКОРПУС"><span class="fr">Ф<svg viewBox="0 0 160 120" aria-hidden="true"><path d="M4.5 30V4.5h25M130.5 4.5h25V30M4.5 90v25.5h25M130.5 115.5h25V90"/></svg></span></span>64 px</figure><figure><span class="mark" style="font-size:20px" role="img" aria-label="Знак ФОТОКОРПУС"><span class="fr">Ф<svg viewBox="0 0 160 120" aria-hidden="true"><path d="M4.5 30V4.5h25M130.5 4.5h25V30M4.5 90v25.5h25M130.5 115.5h25V90"/></svg></span></span>32 px</figure><figure><span class="mark" style="font-size:10px" role="img" aria-label="Знак ФОТОКОРПУС"><span class="fr">Ф<svg viewBox="0 0 160 120" aria-hidden="true"><path d="M4.5 30V4.5h25M130.5 4.5h25V30M4.5 90v25.5h25M130.5 115.5h25V90"/></svg></span></span>16 px — минимум</figure></div></div><span class="tcap">Знак отдельно</span></div>
+  </div>
+  <p class="mut" style="font-size:14px">Минимальная ширина полного логотипа: 120 px на экране, 25 мм в печати. Меньше — используем только знак.</p>
+
+  <div class="grid g4">
+    <div><div class="tile t-light bad x-stretch"><span class="lockup" role="img" aria-label="ФОТОКОРПУС"><span class="fr">Ф<svg viewBox="0 0 160 120" aria-hidden="true"><path d="M4.5 30V4.5h25M130.5 4.5h25V30M4.5 90v25.5h25M130.5 115.5h25V90"/></svg></span><span aria-hidden="true">ОТО</span><span class="k2" aria-hidden="true">КОРПУС</span></span></div><span class="tcap">Растягивать и сжимать</span></div>
+    <div><div class="tile t-light bad x-color"><span class="lockup" role="img" aria-label="ФОТОКОРПУС"><span class="fr">Ф<svg viewBox="0 0 160 120" aria-hidden="true"><path d="M4.5 30V4.5h25M130.5 4.5h25V30M4.5 90v25.5h25M130.5 115.5h25V90"/></svg></span><span aria-hidden="true">ОТО</span><span class="k2" aria-hidden="true">КОРПУС</span></span></div><span class="tcap">Менять цвета</span></div>
+    <div><div class="tile bad x-busy"><span class="lockup" role="img" aria-label="ФОТОКОРПУС"><span class="fr">Ф<svg viewBox="0 0 160 120" aria-hidden="true"><path d="M4.5 30V4.5h25M130.5 4.5h25V30M4.5 90v25.5h25M130.5 115.5h25V90"/></svg></span><span aria-hidden="true">ОТО</span><span class="k2" aria-hidden="true">КОРПУС</span></span></div><span class="tcap">Ставить на пёстрый фон</span></div>
+    <div><div class="tile t-light bad x-fx"><span class="lockup" role="img" aria-label="ФОТОКОРПУС"><span class="fr">Ф<svg viewBox="0 0 160 120" aria-hidden="true"><path d="M4.5 30V4.5h25M130.5 4.5h25V30M4.5 90v25.5h25M130.5 115.5h25V90"/></svg></span><span aria-hidden="true">ОТО</span><span class="k2" aria-hidden="true">КОРПУС</span></span></div><span class="tcap">Добавлять тени и поворот</span></div>
+  </div>
+</section>
+
+<section id="color">
+  <div class="head"><span class="no">04</span><h2>Цвет</h2><p class="lead">Графит — нейтральный «студийный» цвет: не спорит с товаром на фото. Бордо — единственный акцент. Тёплый, с уклоном в красный, чтобы не путаться с фиолетовым Wildberries и синим Ozon.</p></div>
+  <div class="grid g4">
+    <div class="sw"><div class="chip" style="background:#25272b;color:#eeece9">Графит</div><div class="meta"><b>#25272B</b><span>RGB 37 39 43</span><span>CMYK ≈ 14 9 0 83</span><span>Основа: текст, тёмные фоны</span></div></div>
+    <div class="sw"><div class="chip" style="background:#7b1e2e;color:#fff">Бордо</div><div class="meta"><b>#7B1E2E</b><span>RGB 123 30 46</span><span>CMYK ≈ 0 76 63 52</span><span>Акцент: логотип, главное</span></div></div>
+    <div class="sw"><div class="chip" style="background:#f7f6f4;color:#25272b">Светлый</div><div class="meta"><b>#F7F6F4</b><span>RGB 247 246 244</span><span>CMYK ≈ 0 0 1 3</span><span>Фон страниц и слайдов</span></div></div>
+    <div class="sw"><div class="chip" style="background:#d9707f;color:#25272b">Розовое бордо</div><div class="meta"><b>#D9707F</b><span>RGB 217 112 127</span><span>CMYK ≈ 0 48 41 15</span><span>Акцент только на графите</span></div></div>
+  </div>
+  <div class="prop" role="img" aria-label="Пропорции цвета: светлый 55 процентов, графит 30, бордо 10, розовое бордо 5">
+    <div style="flex:55;background:#f7f6f4;color:#25272b">Светлый 55%</div>
+    <div style="flex:30;background:#25272b;color:#eeece9">Графит 30%</div>
+    <div style="flex:10;background:#7b1e2e;color:#fff">Бордо 10%</div>
+    <div style="flex:5;background:#d9707f;color:#25272b">5%</div>
+  </div>
+  <div class="pairs">
+    <div class="pair" style="background:#f7f6f4;color:#25272b;border:1px solid var(--ln)"><b>Аа</b><span>Графит на светлом</span></div>
+    <div class="pair" style="background:#25272b;color:#eeece9"><b>Аа</b><span>Светлый на графите</span></div>
+    <div class="pair" style="background:#7b1e2e;color:#fff"><b>Аа</b><span>Белый на бордо</span></div>
+    <div class="pair" style="background:#25272b;color:#d9707f"><b>Аа</b><span>Розовое бордо на графите</span></div>
+  </div>
+  <p class="mut" style="font-size:14px">Бордо не ставим мелким текстом на графит, розовое бордо — на светлый фон: им не хватает контраста. Значения CMYK — расчётные, для печати уточнить по пробе.</p>
+</section>
+
+<section id="type">
+  <div class="head"><span class="no">05</span><h2>Шрифты</h2><p class="lead">Широкий гротеск в заголовках — устойчивый, «инженерный», хорошо читается на вывеске и в аватаре. Спокойный гротеск в тексте. Оба бесплатны и поддерживают кириллицу.</p></div>
+  <div class="grid g2">
+    <div class="box spec"><span class="k">Заголовки · Unbounded Bold</span><p class="s1">Снято честно</p><p class="abc" style="font-family:var(--display)">АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ 0123456789</p></div>
+    <div class="box spec"><span class="k">Текст · Onest Regular и SemiBold</span><p class="s2">Проверено кликом</p><p class="abc">Абвгдеёжзийклмнопрстуфхцчшщъыьэюя 0123456789 — «» ₽ %</p></div>
+  </div>
+  <div class="box"><span class="k">Шкала</span>
+    <div class="scale">
+      <div><span>Заголовок 1 · Unbounded 700 · 56/1,0</span><p style="font:700 clamp(30px,4.6vw,56px)/1 var(--display)">Из показа в заказ</p></div>
+      <div><span>Заголовок 2 · Unbounded 700 · 32/1,1</span><p style="font:700 clamp(22px,2.8vw,32px)/1.1 var(--display)">Обложка, проверенная тестом</p></div>
+      <div><span>Подзаголовок · Onest 600 · 18/1,3</span><p style="font:600 18px/1.3 var(--body)">Сдача и тест обложки</p></div>
+      <div><span>Текст · Onest 400 · 16/1,55</span><p style="font:400 16px/1.55 var(--body)">Карточка готова за 48 часов, две правки включены.</p></div>
+      <div><span>Метка · Onest 700 · 11, разрядка 15%</span><p class="k">Позиционирование</p></div>
+    </div>
+  </div>
+  <p class="mut" style="font-size:14px">Где фирменных шрифтов нет (PowerPoint, Word у клиента): заголовки — Arial Black, текст — Arial.</p>
+</section>
+
+<section id="voice">
+  <div class="head"><span class="no">06</span><h2>Тон общения</h2><p class="lead">Говорим как знающий коллега продавца: прямо, по делу, цифрами. Без восторгов и «продающих» клише.</p></div>
+  <div class="grid g3">
+    <div class="box"><span class="k">Прямо</span><p>Цена, срок и что входит — в первом сообщении.</p></div>
+    <div class="box"><span class="k">Цифрами</span><p>CTR, заказы, возвраты вместо «красиво» и «стильно».</p></div>
+    <div class="box"><span class="k">Честно</span><p>Не обещаем топ выдачи. Обещаем реальный товар и проверку.</p></div>
+  </div>
+  <div class="dd">
+    <div class="do"><span class="k">Так говорим</span><p>Сделаем две обложки и через неделю оставим ту, у которой выше CTR.</p><p>Карточка будет готова в четверг. Две правки включены.</p></div>
+    <div class="dont"><span class="k">Так не говорим</span><p>Создадим вау-карточку, которая взорвёт продажи!</p><p>Выведем ваш товар в топ Wildberries за неделю.</p></div>
+  </div>
+</section>
+
+<section id="media">
+  <div class="head"><span class="no">07</span><h2>Носители</h2><p class="lead">Первые примеры. Полный набор — на следующем этапе.</p></div>
+  <div class="media">
+    <div class="stack"><div><div class="card-biz" style="background:#f7f6f4;color:#25272b;border:1px solid var(--ln)"><span class="lockup" role="img" aria-label="ФОТОКОРПУС"><span class="fr">Ф<svg viewBox="0 0 160 120" aria-hidden="true"><path d="M4.5 30V4.5h25M130.5 4.5h25V30M4.5 90v25.5h25M130.5 115.5h25V90"/></svg></span><span aria-hidden="true">ОТО</span><span class="k2" aria-hidden="true">КОРПУС</span></span><p><b>Анна Смирнова</b><br>фотограф, карточки для WB и Ozon<br>+7 900 000-00-00 · Зеленоград</p></div><span class="tcap">Визитка, лицо · 90×50 мм</span></div>
+    <div><div class="card-biz" style="background:#25272b;color:#eeece9"><p class="k" style="color:#d9707f;font-size:3.4cqi">Снято честно. Проверено кликом.</p><p style="font:700 6.4cqi/1.15 var(--display)">Две обложки.<br>Остаётся та,<br>что кликают.</p></div><span class="tcap">Визитка, оборот</span></div></div>
+    <div><div class="post"><span class="k" style="font-size:3.4cqi">Кейс · тест обложки</span><p class="big">CTR 2,1% → 3,4%</p><div class="row"><span>Свеча ручной работы<br>A/B-тест, 7 дней</span><span class="mark" role="img" aria-label="Знак ФОТОКОРПУС"><span class="fr">Ф<svg viewBox="0 0 160 120" aria-hidden="true"><path d="M4.5 30V4.5h25M130.5 4.5h25V30M4.5 90v25.5h25M130.5 115.5h25V90"/></svg></span></span></div></div><span class="tcap">Пост в Telegram</span></div>
+  </div>
+  <p class="mut" style="font-size:14px">Имя, телефон и цифры CTR на макетах — примеры, не реальные данные.</p>
+</section>
+
+<section id="next">
+  <div class="head"><span class="no">→</span><h2>Что дальше</h2><p class="lead">Версия 0.1 закрывает основу. Следующие разделы брендбука:</p></div>
+  <div class="box next"><ul>
+    <li><b>Фотостиль</b> — свет, фон, ракурсы, как выглядит «честный кадр»</li>
+    <li><b>Шаблоны инфографики</b> для карточек клиентов: сетка, плашки, где можно ставить знак</li>
+    <li><b>Носители</b> — вывеска, упаковка для образцов, бланк договора, сайт</li>
+    <li><b>Файлы</b> — логотип в SVG, PDF, PNG и AI; паспорт цвета для печати</li>
+    <li><b>Проверка названия</b> в реестре ФИПС и регистрация домена</li>
+  </ul></div>
+</section>
+
+<section>
+  <span class="k">Источники</span>
+  <ol class="src">
+    <li><a href="https://corpusstudio.orgs.biz/news/5" target="_blank" rel="noopener">CORPUS STUDIO, Ставрополь</a> — неофициальное название «Фотокорпус»</li>
+    <li><a href="https://fonts.google.com/specimen/Unbounded" target="_blank" rel="noopener">Unbounded</a> и <a href="https://fonts.google.com/specimen/Onest" target="_blank" rel="noopener">Onest</a> — Google Fonts, свободная лицензия OFL</li>
+  </ol>
+</section>
+</main>
