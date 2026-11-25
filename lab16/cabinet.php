@@ -123,7 +123,7 @@ $err="Вход успешен";
 		<div class="blok moi_otziv">
 			<table class="setka">
 			<tr>
-				<td style="width:110px"><a href="tovar.php?id=<?php echo $data['tovar']; ?>"><img src="images/<?php echo $data['image']; ?>" alt="<?php echo $data['name']; ?>" /></a></td>
+				<td style="width:110px"><a href="tovar.php?id=<?php echo $data['tovar']; ?>"><img src="tovar/<?php echo $data['image']; ?>" alt="<?php echo $data['name']; ?>" /></a></td>
 				<td class="posl">
 					<a href="tovar.php?id=<?php echo $data['tovar']; ?>" class="moi_otziv_tovar"><?php echo $data['name']; ?></a>
 					<span class="moi_otziv_data"><?php echo date("d.m.Y", strtotime($data['date'])); ?></span>

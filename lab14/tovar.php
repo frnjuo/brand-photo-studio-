@@ -30,7 +30,7 @@
 	<table class="setka">
 	<tr>
 		<td style="width:45%">
-			<div class="blok tovar_foto"><img src="images/<?php echo $data['image'];?>" alt="<?php echo $data['name'];?>" /></div>
+			<div class="blok tovar_foto"><img src="tovar/<?php echo $data['image'];?>" alt="<?php echo $data['name'];?>" /></div>
 		</td>
 		<td class="posl" style="width:55%">
 			<div class="blok">

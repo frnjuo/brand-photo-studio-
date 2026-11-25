@@ -15,7 +15,7 @@
 	<div style="display: flex; flex-wrap: wrap; justify-content: center;">
 	<?php do{ ?>
 		<div class="card">
-			<div class="card_foto"><img src="images/<?php echo $data['image'];?>" alt="<?php echo $data['name'];?>" /></div>
+			<div class="card_foto"><img src="tovar/<?php echo $data['image'];?>" alt="<?php echo $data['name'];?>" /></div>
 			<div class="card_kat"><?php echo $data['description'];?></div>
 			<div class="card_nazv"><?php echo $data['name'];?></div>
 			<div class="card_har">Цвет: <?php echo $data['color'];?></div>
