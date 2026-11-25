@@ -18,42 +18,43 @@
 <?php $urls=parse_url($_SERVER['REQUEST_URI']); parse_str($urls['query'],$params); ?>
 <?php $link=mysqli_connect("localhost", "root", NULL, "strukov") or die("Could not connect: ".mysqli_connect_error()); ?>
 <?php mysqli_set_charset($link, "utf8"); ?>
-<?php $query0 = mysqli_query($link,"SELECT * FROM tovary WHERE id=".$params['id']); ?>
+<?php $query0 = mysqli_query($link,"SELECT * FROM tovar WHERE id=".$params['id']); ?>
 <?php $data=mysqli_fetch_array($query0); ?>
 
 <div class="soderzhanie">
 <div class="wrap">
 
-	<div class="hleb"><a href="catalog.php">Каталог</a> / <?php echo $data['kategoriya'];?></div>
+	<div class="hleb"><a href="catalog.php">Каталог</a> / <?php echo $data['description'];?></div>
 
 	<!-- Фото и основная информация о товаре -->
 	<table class="setka">
 	<tr>
 		<td style="width:45%">
-			<div class="blok tovar_foto"><img src="<?php echo $data['image'];?>" alt="<?php echo $data['name'];?>" /></div>
+			<div class="blok tovar_foto"><img src="images/<?php echo $data['image'];?>" alt="<?php echo $data['name'];?>" /></div>
 		</td>
 		<td class="posl" style="width:55%">
 			<div class="blok">
-				<div class="tovar_kat"><?php echo $data['kategoriya'];?> · <?php echo $data['proizvoditel'];?></div>
+				<div class="tovar_kat"><?php echo $data['category'];?> · <?php echo $data['description'];?></div>
 				<h1 class="tovar_nazv"><?php echo $data['name'];?></h1>
-				<p class="tovar_har"><?php echo $data['harakteristiki'];?></p>
-				<div class="tovar_cena"><?php echo $data['cena'];?> ₽</div>
-				<div class="tovar_nal">В наличии: <?php echo $data['kolichestvo'];?> шт.</div>
+				<p class="tovar_har">Цвет: <?php echo $data['color'];?></p>
+				<div class="tovar_cena"><?php echo $data['price'];?> ₽</div>
+				<div class="tovar_nal"><?php echo $data['availability'];?></div>
 				<a class="knopka">Добавить в корзину</a>
 			</div>
 		</td>
 	</tr>
 	</table>
 
-	<!-- Описание и характеристики -->
-	<h1>Описание и характеристики</h1>
+	<!-- Характеристики -->
+	<h1>Характеристики</h1>
 	<div class="blok">
-		<p><?php echo $data['opisanie'];?></p>
 		<table class="tovar_info" style="width:100%">
-			<tr><td class="nazv_polya">Категория</td><td><?php echo $data['kategoriya'];?></td></tr>
-			<tr><td class="nazv_polya">Производитель</td><td><?php echo $data['proizvoditel'];?></td></tr>
-			<tr><td class="nazv_polya">Характеристики</td><td><?php echo $data['harakteristiki'];?></td></tr>
-			<tr><td class="nazv_polya">Гарантия</td><td><?php echo $data['garantiya'];?> мес.</td></tr>
+			<tr><td class="nazv_polya">Категория</td><td><?php echo $data['category'];?></td></tr>
+			<tr><td class="nazv_polya">Тип</td><td><?php echo $data['description'];?></td></tr>
+			<tr><td class="nazv_polya">Цвет</td><td><?php echo $data['color'];?></td></tr>
+			<tr><td class="nazv_polya">Наличие</td><td><?php echo $data['availability'];?></td></tr>
+			<tr><td class="nazv_polya">Рассрочка</td><td><?php echo $data['credit'];?></td></tr>
+			<tr><td class="nazv_polya">Доставка</td><td><?php echo $data['delivery'];?></td></tr>
 			<tr><td class="nazv_polya">Артикул</td><td><?php echo $data['id'];?></td></tr>
 		</table>
 	</div>

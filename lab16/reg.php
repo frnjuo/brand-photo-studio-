@@ -1,7 +1,7 @@
 <?php if (isset($_POST['login'])) {
 $link=mysqli_connect("localhost", "root", NULL, "strukov") or die("Could not connect: ".mysqli_connect_error());
 mysqli_set_charset($link, "utf8");
-$query0 = mysqli_query($link,"INSERT INTO `strukov`.`klienty` (`login`, `pass`, `familiya`, `imya`, `email`, `telefon`, `gorod`, `adres`, `data_rozhdeniya`) VALUES ('".$_POST['login']."', '".$_POST['pass']."', '".$_POST['familiya']."', '".$_POST['imya']."', '".$_POST['email']."', '".$_POST['telefon']."', '".$_POST['gorod']."', '".$_POST['adres']."', '".$_POST['data_rozhdeniya']."')");
+$query0 = mysqli_query($link,"INSERT INTO `strukov`.`clients` (`login`, `pass`, `email`, `phone`, `country`, `city`, `avatar`, `first name`, `last name`) VALUES ('".$_POST['login']."', '".$_POST['pass']."', '".$_POST['email']."', '".$_POST['phone']."', '".$_POST['country']."', '".$_POST['city']."', '".$_POST['avatar']."', '".$_POST['first_name']."', '".$_POST['last_name']."')");
 header('Location: reg.php?ok=1');
 exit;
 } ?>
@@ -35,15 +35,15 @@ exit;
 					<label>Логин *</label><input name="login" class="pole_formy" />
 					<label>Пароль *</label><input name="pass" type="password" class="pole_formy" />
 					<label>Повторите пароль *</label><input name="pass2" type="password" class="pole_formy" />
-					<label>Фамилия *</label><input name="familiya" class="pole_formy" />
-					<label>Имя *</label><input name="imya" class="pole_formy" />
+					<label>Имя *</label><input name="first_name" class="pole_formy" />
+					<label>Фамилия *</label><input name="last_name" class="pole_formy" />
 				</td>
 				<td class="posl" style="width:50%">
 					<label>Электронная почта *</label><input name="email" class="pole_formy" />
-					<label>Телефон</label><input name="telefon" class="pole_formy" placeholder="+7 (900) 000-00-00" />
-					<label>Город</label><input name="gorod" class="pole_formy" />
-					<label>Адрес доставки</label><input name="adres" class="pole_formy" />
-					<label>Дата рождения *</label><input name="data_rozhdeniya" type="date" class="pole_formy" />
+					<label>Телефон * (10 цифр без +7)</label><input name="phone" maxlength="10" class="pole_formy" placeholder="9061234567" />
+					<label>Страна</label><input name="country" class="pole_formy" placeholder="Россия" />
+					<label>Город</label><input name="city" class="pole_formy" />
+					<label>Аватар (имя файла в папке images)</label><input name="avatar" class="pole_formy" placeholder="например, 11.jpg" />
 				</td>
 			</tr>
 			</table>
@@ -53,12 +53,12 @@ exit;
 		<script type="text/javascript">
 		regforma.onsubmit = function() {
 		if (regforma.login.value.length < 3) {err.innerHTML="Логин должен содержать не менее 3 символов"; return false;}
-		if (regforma.pass.value.length < 6) {err.innerHTML="Пароль должен содержать не менее 6 символов"; return false;}
+		if (regforma.pass.value.length < 4) {err.innerHTML="Пароль должен содержать не менее 4 символов"; return false;}
 		if (regforma.pass.value != regforma.pass2.value) {err.innerHTML="Пароли не совпадают"; return false;}
-		if (regforma.familiya.value == "") {err.innerHTML="Введите фамилию"; return false;}
-		if (regforma.imya.value == "") {err.innerHTML="Введите имя"; return false;}
+		if (regforma.first_name.value == "") {err.innerHTML="Введите имя"; return false;}
+		if (regforma.last_name.value == "") {err.innerHTML="Введите фамилию"; return false;}
 		if (regforma.email.value.indexOf("@") == -1) {err.innerHTML="Введите корректный адрес электронной почты"; return false;}
-		if (regforma.data_rozhdeniya.value == "") {err.innerHTML="Укажите дату рождения"; return false;}
+		if (!/^[0-9]{10}$/.test(regforma.phone.value)) {err.innerHTML="Телефон должен состоять из 10 цифр, например 9061234567"; return false;}
 		}
 		</script>
 	</div>
